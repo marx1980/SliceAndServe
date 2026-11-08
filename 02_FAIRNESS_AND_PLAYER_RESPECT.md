@@ -137,3 +137,13 @@ Display a concise promise:
 8. There are no fake countdowns.
 9. The campaign has a real ending.
 10. Player data is handled transparently.
+
+## Phase 3 implementation notes
+- **Timeline** is a tree of stable states. Undo, redo and scrubbing move a cursor; a different move from an earlier state starts a new branch; nothing is discarded. Playing the same move from the same state reuses the node. Restart goes to the start and keeps the timeline, unless the tray model setting changed, which starts a fresh timeline.
+- **Hint ladder** (all rungs unlimited): 1 ring up to three cells, 2 two cells, 3 the recommended plate and cell, 4 label/value rows from real engine numbers, 5 the next two turns numbered on the board, 6 demonstration played onto a new branch that can be stopped or rewound. The badge says Solver-confirmed, Heuristic or No route.
+- **Move evaluation** runs the real engine and a bounded solver per distinct move. Ranking is win, unknown, no-win, then shorter known line, more cakes, more empty cells, less fragmentation.
+- **Teach Me** (setting) compares each played move with the evaluation of the position it was played from and shows You and Best columns.
+- **Failure analysis** finds the last position with a solver-confirmed route by binary search along the lost line, which is valid because a position without a route never leads back to one. It reports the closing move, moves played afterwards, the most spread flavour, a missed completion and the best verified alternative. If the solver budget runs out the report says Best known.
+- **Fair Bake receipts** live in `src/content/receipts.json`, one per level and tray model, with a hash of the level definition so edits mark a receipt outdated. Regenerate with `npm run verify-levels -- --write`. Each receipt stores a replayable solution; a unit test replays every one.
+- Solver work runs in a Web Worker, with a main-thread fallback.
+- Deferred: converting a failed board into a Rescue challenge (Phase 6), persisting the timeline across sessions (Phase 5 suspend and resume), a third hat.

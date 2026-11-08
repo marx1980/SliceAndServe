@@ -1,12 +1,23 @@
 import Phaser from 'phaser';
 import './style.css';
 import { GameSession } from './session';
-import { BoardScene, describeBoard, describePlate } from '../game/scenes/BoardScene';
+import {
+  BoardScene,
+  describeBoard,
+  describePlate,
+  type HintMarks,
+} from '../game/scenes/BoardScene';
 import { FLAVORS } from '../content/flavors';
 import { LEVELS } from '../content/levels';
+import receiptsJson from '../content/receipts.json';
 import { setVolume } from '../ui/sound';
 import { t } from '../ui/strings';
-import type { EngineResult, OrderSpec } from '../game/model/types';
+import { applyCommand } from '../game/rules/engine';
+import { compareMoves, explainMove, type HintData } from '../game/analysis/hints';
+import type { FailureReport } from '../game/analysis/failure';
+import { receiptStatus, type Receipt } from '../game/analysis/receipt';
+import { requestFailure, requestHints } from '../game/analysis/client';
+import type { EngineResult, GameState, OrderSpec, PlacePlateCommand } from '../game/model/types';
 import type { AnimationSpeed, Language, TrayModeSetting } from '../save/storage';
 
 const $ = <T extends HTMLElement>(id: string): T => {
@@ -20,13 +31,18 @@ setVolume(session.settings.soundVolume);
 let ready = false;
 let resultTimer: number | undefined;
 let lastPreview: EngineResult | null = null;
+let pendingEffects: EngineResult | null = null;
 
 const lang = (): Language => session.settings.language;
+const L = (key: string): string => t(lang(), key);
 const flavorName = (id: string): string => {
   const f = FLAVORS[id];
   return f ? f.name[lang()] : id;
 };
 const flavorNames = (): string[] => session.level.flavors.map(flavorName);
+const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
+const animFactor = (): number =>
+  session.settings.animation === 'off' ? 0 : session.settings.animation === 'fast' ? 0.5 : 1;
 
 // ---- scene ---------------------------------------------------------------------------------
 
@@ -35,7 +51,10 @@ const scene = new BoardScene(session, {
     lastPreview = preview;
     updateHud(slot);
   },
-  onMove: (result) => announceMove(result),
+  onMove: (result) => {
+    announceMove(result);
+    teachAfterMove(result);
+  },
 });
 
 new Phaser.Game({
@@ -57,28 +76,26 @@ new Phaser.Game({
 // ---- HUD -----------------------------------------------------------------------------------
 
 function orderLabel(spec: OrderSpec): { swatch?: number; text: string } {
-  const l = lang();
   switch (spec.kind) {
     case 'complete-flavor': {
       const id = session.level.flavors[spec.flavor] ?? '';
       return { swatch: FLAVORS[id]?.color, text: flavorName(id) };
     }
     case 'complete-any':
-      return { text: t(l, 'cakes') };
+      return { text: L('cakes') };
     case 'complete-distinct':
-      return { text: t(l, 'distinct') };
+      return { text: L('distinct') };
     case 'chain':
-      return { text: t(l, 'chain') };
+      return { text: L('chain') };
   }
 }
 
 function updateHud(selectedSlot: number | null): void {
-  const l = lang();
   const state = session.state;
   $('level-title').textContent = `${session.level.id.replace('L', '')}. ${session.level.title}`;
-  $('v-moves').textContent = `${t(l, 'moves')} ${state.moveNumber}`;
-  $('v-target').textContent = `${t(l, 'target')} ${session.level.moveTarget}`;
-  $('v-score').textContent = `${t(l, 'score')} ${state.score}`;
+  $('v-moves').textContent = `${L('moves')} ${state.moveNumber}`;
+  $('v-target').textContent = `${L('target')} ${session.level.moveTarget}`;
+  $('v-score').textContent = `${L('score')} ${state.score}`;
 
   const list = $('orders');
   list.replaceChildren();
@@ -109,42 +126,295 @@ function updateHud(selectedSlot: number | null): void {
   });
 
   $('btn-undo').toggleAttribute('disabled', !session.history.canUndo());
+  $('btn-hint').toggleAttribute('disabled', state.status !== 'playing');
   $('btn-place').toggleAttribute(
     'disabled',
     !(lastPreview && selectedSlot !== null && state.status === 'playing'),
   );
 
-  const sr = describeBoard(state, flavorNames(), l);
+  const sr = describeBoard(state, flavorNames(), lang());
   const trayText = state.tray
     .map((p, i) => (p ? `${i + 1}: ${describePlate(p.slices, flavorNames())}` : null))
     .filter(Boolean)
     .join('. ');
   $('stage').setAttribute('role', 'application');
-  $('stage').setAttribute('aria-label', `${t(l, 'board')}. ${sr}. ${t(l, 'tray')}. ${trayText}`);
+  $('stage').setAttribute('aria-label', `${L('board')}. ${sr}. ${L('tray')}. ${trayText}`);
+  if (!$('timeline').hidden) buildTimeline();
 }
 
 function announceMove(result: EngineResult): void {
-  const l = lang();
   const a = result.analysis;
-  const parts = [`${t(l, 'moves')} ${result.nextState.moveNumber}`];
-  if (a.cakesCompleted > 0) parts.push(`${t(l, 'cakes')} ${a.cakesCompleted}`);
-  if (a.chainDepth > 1) parts.push(`${t(l, 'chain')} ${a.chainDepth}`);
+  const parts = [`${L('moves')} ${result.nextState.moveNumber}`];
+  if (a.cakesCompleted > 0) parts.push(`${L('cakes')} ${a.cakesCompleted}`);
+  if (a.chainDepth > 1) parts.push(`${L('chain')} ${a.chainDepth}`);
   $('sr-status').textContent = parts.join('. ');
   scheduleResult();
 }
 
 function applyStrings(): void {
-  const l = lang();
-  document.documentElement.lang = l;
-  $('btn-menu').textContent = t(l, 'menu');
-  $('btn-undo').textContent = t(l, 'undo');
-  $('btn-place').textContent = t(l, 'place');
-  $('btn-restart').textContent = t(l, 'restart');
-  $('btn-settings').textContent = t(l, 'settings');
-  $('menu-title').textContent = t(l, 'levels');
-  $('menu-close').textContent = t(l, 'close');
-  $('settings-title').textContent = t(l, 'settings');
-  $('settings-close').textContent = t(l, 'close');
+  document.documentElement.lang = lang();
+  const set = (id: string, key: string): void => {
+    $(id).textContent = L(key);
+  };
+  set('btn-menu', 'menu');
+  set('btn-undo', 'undo');
+  set('btn-hint', 'hint');
+  set('btn-place', 'place');
+  set('btn-restart', 'restart');
+  set('menu-title', 'levels');
+  set('menu-fair', 'fairBake');
+  set('menu-close', 'close');
+  set('settings-title', 'settings');
+  set('settings-close', 'close');
+  set('timeline-title', 'timeline');
+  set('timeline-close', 'close');
+  set('tl-undo', 'undo');
+  set('tl-redo', 'redo');
+  set('tl-bookmark', 'bookmark');
+  set('fair-title', 'fairBake');
+  set('fair-close', 'close');
+  for (const [id, key] of [
+    ['btn-timeline', 'timeline'],
+    ['btn-settings', 'settings'],
+  ] as const) {
+    $(id).setAttribute('aria-label', L(key));
+    $(id).setAttribute('title', L(key));
+  }
+  $('timeline-range').setAttribute('aria-label', L('timeline'));
+  $('timeline').setAttribute('aria-label', L('timeline'));
+  if (!replaying) set('tl-replay', 'watch');
+}
+
+// ---- helpers for text ----------------------------------------------------------------------
+
+function moveText(plate: readonly number[] | null, cmd: PlacePlateCommand): string {
+  const where = `${cmd.row + 1},${cmd.column + 1}`;
+  return plate ? `${describePlate(plate, flavorNames())} → ${where}` : where;
+}
+
+function rowsList(
+  into: HTMLElement,
+  rows: Array<{ label: string; values: string[] }>,
+  header?: string[],
+): void {
+  into.replaceChildren();
+  into.classList.toggle('three', (rows[0]?.values.length ?? 1) > 1);
+  const add = (label: string, values: string[]): void => {
+    const dt = document.createElement('dt');
+    dt.textContent = label;
+    into.appendChild(dt);
+    for (const v of values) {
+      const dd = document.createElement('dd');
+      dd.textContent = v;
+      into.appendChild(dd);
+    }
+  };
+  if (header) add('', header);
+  for (const r of rows) add(r.label, r.values);
+}
+
+function button(text: string, onClick: () => void, cls = 'btn'): HTMLButtonElement {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = cls;
+  b.textContent = text;
+  b.addEventListener('click', onClick);
+  return b;
+}
+
+const verdictLabel = (v: string): string =>
+  v === 'win' ? L('win') : v === 'no-win' ? L('noWin') : v === 'unknown' ? L('unknown') : v;
+
+// ---- coach bar: hints, demonstration and Teach Me ------------------------------------------
+
+interface HintSession {
+  state: GameState;
+  data: HintData;
+  rung: number;
+}
+let hint: HintSession | null = null;
+let hintToken = 0;
+let demoRunning = false;
+let demoCancel = false;
+const teachCache = new WeakMap<GameState, Promise<HintData>>();
+
+function coach(): HTMLElement {
+  return $('coach');
+}
+
+function closeCoach(): void {
+  if (demoRunning) return;
+  hintToken++;
+  hint = null;
+  coach().hidden = true;
+  coach().replaceChildren();
+  scene.setHintMarks(null);
+}
+
+function coachHead(title: string, badge?: { text: string; dead?: boolean }): HTMLElement {
+  const head = document.createElement('div');
+  head.className = 'coach-head';
+  const strong = document.createElement('strong');
+  strong.textContent = title;
+  head.appendChild(strong);
+  if (badge) {
+    const b = document.createElement('span');
+    b.className = `badge${badge.dead ? ' dead' : ''}`;
+    b.textContent = badge.text;
+    head.appendChild(b);
+  }
+  return head;
+}
+
+function startHint(): void {
+  if (session.state.status !== 'playing') return;
+  if (hint && hint.state === session.state) {
+    moreHint();
+    return;
+  }
+  const state = session.state;
+  const token = ++hintToken;
+  coach().hidden = false;
+  coach().replaceChildren(coachHead(`${L('hint')} ${L('analyzing')}`));
+  void requestHints(state).then((data) => {
+    if (token !== hintToken || session.state !== state) return;
+    hint = { state, data, rung: 1 };
+    renderHint();
+  });
+}
+
+function moreHint(): void {
+  if (!hint || hint.data.certainty === 'dead' || hint.rung >= 6) return;
+  hint.rung++;
+  renderHint();
+}
+
+function renderHint(): void {
+  if (!hint) return;
+  const { state, data, rung } = hint;
+  const el = coach();
+  el.hidden = false;
+  el.replaceChildren();
+
+  if (data.certainty === 'dead' || !data.best) {
+    const head = coachHead(L('hint'), { text: L('dead'), dead: true });
+    head.appendChild(button(L('close'), closeCoach));
+    el.appendChild(head);
+    scene.setHintMarks(null);
+    return;
+  }
+
+  const badge = data.certainty === 'confirmed' ? L('confirmed') : L('heuristic');
+  const head = coachHead(`${L('hint')} ${rung}/6`, { text: badge });
+  if (rung < 6) head.appendChild(button(L('more'), moreHint));
+  head.appendChild(button(L('close'), closeCoach));
+  el.appendChild(head);
+
+  const best = data.best;
+  const cellOf = (c: PlacePlateCommand): number => c.row * state.columns + c.column;
+  const marks: HintMarks = { cells: [], slot: null, target: null, sequence: [] };
+  if (rung === 1) marks.cells = data.cells.slice(0, 3);
+  else if (rung === 2) marks.cells = data.cells.slice(0, 2);
+  else if (rung <= 4) {
+    marks.slot = best.cmd.slot;
+    marks.target = cellOf(best.cmd);
+  } else {
+    marks.slot = best.cmd.slot;
+    data.line.slice(0, 2).forEach((c, i) => marks.sequence.push({ cell: cellOf(c), n: i + 1 }));
+  }
+  scene.setHintMarks(marks);
+
+  if (rung >= 4) {
+    const rows = explainMove(state, best, data).map((r) => ({
+      label: L(r.key),
+      values: [r.value],
+    }));
+    const dl = document.createElement('dl');
+    dl.className = 'rows';
+    rowsList(dl, rows);
+    el.appendChild(dl);
+  }
+  if (rung >= 5) {
+    const dl = document.createElement('dl');
+    dl.className = 'rows';
+    let s = state;
+    const seq: Array<{ label: string; values: string[] }> = [];
+    for (const [i, c] of data.line.slice(0, 2).entries()) {
+      seq.push({ label: String(i + 1), values: [moveText(s.tray[c.slot]?.slices ?? null, c)] });
+      s = applyCommand(s, c).nextState;
+      if (s.status !== 'playing') break;
+    }
+    rowsList(dl, seq);
+    el.appendChild(dl);
+  }
+  if (rung === 6) {
+    el.appendChild(button(L('showSolution'), () => void demonstrate(data.line), 'btn primary'));
+  }
+}
+
+/** Plays a line on the board as a new branch; the player can stop or rewind at any time. */
+async function demonstrate(line: PlacePlateCommand[]): Promise<void> {
+  if (demoRunning) return;
+  demoRunning = true;
+  demoCancel = false;
+  const el = coach();
+  el.replaceChildren();
+  const head = coachHead(L('showSolution'));
+  head.appendChild(
+    button(L('stop'), () => {
+      demoCancel = true;
+    }),
+  );
+  el.appendChild(head);
+  scene.setHintMarks(null);
+  for (const cmd of line) {
+    if (demoCancel || session.state.status !== 'playing') break;
+    scene.playCommand(cmd);
+    await sleep(Math.max(250, 800 * animFactor()));
+  }
+  demoRunning = false;
+  closeCoach();
+}
+
+function prefetchTeach(state: GameState): void {
+  if (!session.settings.teachMe || state.status !== 'playing' || teachCache.has(state)) return;
+  teachCache.set(state, requestHints(state));
+}
+
+function teachAfterMove(result: EngineResult): void {
+  if (!session.settings.teachMe || demoRunning) return;
+  const before = result.previousState;
+  const played = session.history.moves.at(-1);
+  if (!played) return;
+  const pending = teachCache.get(before) ?? requestHints(before);
+  void pending.then((data) => {
+    if (session.state !== result.nextState) return;
+    const cmp = compareMoves(before, played, data.evals);
+    const el = coach();
+    el.hidden = false;
+    el.replaceChildren();
+    const head = coachHead(L('teachMe'), {
+      text: cmp.matchesBest ? L('matches') : L('differs'),
+      dead: !cmp.matchesBest,
+    });
+    head.appendChild(button(L('close'), closeCoach));
+    el.appendChild(head);
+    const dl = document.createElement('dl');
+    dl.className = 'rows';
+    rowsList(
+      dl,
+      cmp.rows.map((r) => ({
+        label: L(r.key),
+        values: [
+          r.key === 'verdict' ? verdictLabel(r.chosen) : r.chosen,
+          r.key === 'verdict' ? verdictLabel(r.best) : r.best,
+        ],
+      })),
+      [L('you'), L('best')],
+    );
+    el.appendChild(dl);
+    prefetchTeach(result.nextState);
+  });
 }
 
 // ---- overlays ------------------------------------------------------------------------------
@@ -192,13 +462,13 @@ function segmented<T extends string>(
   const row = document.createElement('div');
   row.className = 'row';
   const label = document.createElement('label');
-  label.textContent = t(lang(), labelKey);
+  label.textContent = L(labelKey);
   const seg = document.createElement('div');
   seg.className = 'seg';
   for (const [value, key] of options) {
     const b = document.createElement('button');
     b.type = 'button';
-    b.textContent = t(lang(), key);
+    b.textContent = L(key);
     b.setAttribute('aria-pressed', String(value === current));
     b.addEventListener('click', () => onPick(value));
     seg.appendChild(b);
@@ -251,6 +521,20 @@ function buildSettings(): void {
       buildSettings();
     },
   );
+  segmented<'on' | 'off'>(
+    body,
+    'teachMe',
+    [
+      ['on', 'on'],
+      ['off', 'off'],
+    ],
+    s.teachMe ? 'on' : 'off',
+    (v) => {
+      session.updateSettings({ teachMe: v === 'on' });
+      if (v === 'on') prefetchTeach(session.state);
+      buildSettings();
+    },
+  );
   segmented<Language>(
     body,
     'language',
@@ -267,13 +551,13 @@ function buildSettings(): void {
   const row = document.createElement('div');
   row.className = 'row';
   const label = document.createElement('label');
-  label.textContent = t(lang(), 'sound');
+  label.textContent = L('sound');
   const range = document.createElement('input');
   range.type = 'range';
   range.min = '0';
   range.max = '100';
   range.value = String(Math.round(s.soundVolume * 100));
-  range.setAttribute('aria-label', t(lang(), 'sound'));
+  range.setAttribute('aria-label', L('sound'));
   range.addEventListener('input', () => {
     const v = Number(range.value) / 100;
     setVolume(v);
@@ -283,25 +567,125 @@ function buildSettings(): void {
   body.appendChild(row);
 }
 
+// ---- timeline ------------------------------------------------------------------------------
+
+let replaying = false;
+let replayCancel = false;
+
+function buildTimeline(): void {
+  const h = session.history;
+  const max = h.length - 1;
+  const range = $<HTMLInputElement>('timeline-range');
+  range.max = String(max);
+  range.value = String(h.position);
+  $('timeline-pos').textContent = `${L('move')} ${h.position} / ${max}`;
+  $('tl-undo').toggleAttribute('disabled', !h.canUndo());
+  $('tl-redo').toggleAttribute('disabled', !h.canRedo());
+  const marked = h.pathTo(h.cursorId).at(-1)?.bookmark ?? false;
+  $('tl-bookmark').setAttribute('aria-pressed', String(marked));
+
+  const marks = $('tl-bookmarks');
+  marks.replaceChildren();
+  for (const n of h.bookmarks()) {
+    marks.appendChild(button(`★ ${n.depth}`, () => session.goToNode(n.id)));
+  }
+  const branches = $('tl-branches');
+  branches.replaceChildren();
+  h.branches().forEach((b, i) => {
+    const mark = b.status === 'won' ? ' ✓' : b.status === 'lost' ? ' ✗' : '';
+    const btn = button(`${i + 1}: ${b.moves}${mark}`, () => session.switchBranch(b.id));
+    btn.setAttribute('aria-pressed', String(b.active));
+    btn.setAttribute('aria-label', `${L('branches')} ${i + 1}`);
+    branches.appendChild(btn);
+  });
+  $('tl-replay').textContent = replaying ? L('stop') : L('watch');
+}
+
+/** Steps through the active branch from the start; the timeline is untouched. */
+async function replayActive(): Promise<void> {
+  if (replaying) {
+    replayCancel = true;
+    return;
+  }
+  replaying = true;
+  replayCancel = false;
+  closeCoach();
+  const path = session.history.activePath();
+  session.seek(0);
+  for (let i = 1; i < path.length && !replayCancel; i++) {
+    await sleep(Math.max(250, 800 * animFactor()));
+    if (replayCancel) break;
+    const prev = path[i - 1];
+    const next = path[i];
+    if (!prev || !next || !next.command) break;
+    pendingEffects = applyCommand(prev.state, next.command);
+    session.seek(i);
+  }
+  replaying = false;
+  if (!$('timeline').hidden) buildTimeline();
+}
+
+// ---- result and failure analysis -----------------------------------------------------------
+
 function scheduleResult(): void {
   window.clearTimeout(resultTimer);
-  const state = session.state;
-  if (state.status === 'playing') return;
-  const factor =
-    session.settings.animation === 'off' ? 0 : session.settings.animation === 'fast' ? 0.5 : 1;
-  resultTimer = window.setTimeout(showResult, 500 + 700 * factor);
+  if (session.state.status === 'playing') return;
+  resultTimer = window.setTimeout(showResult, 500 + 700 * animFactor());
+}
+
+function failureRows(
+  report: FailureReport,
+  state: GameState,
+): Array<{ label: string; values: string[] }> {
+  const rows: Array<{ label: string; values: string[] }> = [];
+  if (report.lastWinningIndex === null) return rows;
+  const states = session.history.statesToCursor();
+  const at = states[report.lastWinningIndex] ?? state;
+  rows.push({ label: L('lastWinning'), values: [`${L('move')} ${report.lastWinningIndex}`] });
+  if (!report.conclusive) rows.push({ label: L('bestKnown'), values: ['~'] });
+  if (report.criticalMove) {
+    rows.push({
+      label: L('closingMove'),
+      values: [
+        moveText(
+          at.tray[report.criticalMove.slot]?.slices ?? report.criticalPlate,
+          report.criticalMove,
+        ),
+      ],
+    });
+  }
+  rows.push({ label: L('afterClosing'), values: [String(report.movesAfterCritical)] });
+  if (report.fragmented) {
+    const id = session.level.flavors[report.fragmented.flavor] ?? '';
+    rows.push({
+      label: L('spread'),
+      values: [`${flavorName(id)} × ${report.fragmented.plates}`],
+    });
+  }
+  if (report.missedCompletion) {
+    rows.push({
+      label: L('missed'),
+      values: [moveText(report.missedCompletion.plate, report.missedCompletion.cmd)],
+    });
+  }
+  if (report.alternative) {
+    rows.push({
+      label: L('alternative'),
+      values: [moveText(report.alternative.plate, report.alternative.cmd)],
+    });
+  }
+  return rows;
 }
 
 function showResult(): void {
-  const l = lang();
   const state = session.state;
   if (state.status === 'playing') return;
   $('result-title').textContent =
     state.status === 'won'
-      ? t(l, 'complete')
+      ? L('complete')
       : state.tray.every((p) => p === null) && state.board.some((p) => p === null)
-        ? t(l, 'noPlates')
-        : t(l, 'noSpace');
+        ? L('noPlates')
+        : L('noSpace');
   const values = $('result-values');
   values.replaceChildren();
   const add = (text: string, cls?: string): void => {
@@ -311,33 +695,104 @@ function showResult(): void {
     values.appendChild(s);
   };
   if (state.status === 'won') add(hats(session.hatsFor(state.moveNumber)), 'hats-big');
-  add(`${t(l, 'moves')} ${state.moveNumber}`);
-  add(`${t(l, 'score')} ${state.score}`);
+  add(`${L('moves')} ${state.moveNumber}`);
+  add(`${L('score')} ${state.score}`);
 
+  const analysis = $('result-analysis');
+  analysis.replaceChildren();
   const actions = $('result-actions');
   actions.replaceChildren();
-  const btn = (key: string, fn: () => void, primary = false): void => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = `btn${primary ? ' primary' : ''}`;
-    b.textContent = t(l, key);
-    b.addEventListener('click', () => {
-      show('result', false);
-      fn();
-    });
-    actions.appendChild(b);
+  const act = (key: string, fn: () => void, primary = false, front = false): void => {
+    const b = button(
+      L(key),
+      () => {
+        show('result', false);
+        fn();
+      },
+      `btn${primary ? ' primary' : ''}`,
+    );
+    if (front) actions.prepend(b);
+    else actions.appendChild(b);
   };
   if (state.status === 'won') {
     const next = session.nextLevelId();
-    if (next) btn('next', () => startLevel(next), true);
-    btn('replay', () => session.restart());
+    if (next) act('next', () => startLevel(next), true);
+    act('watch', () => void replayActive());
+    act('replay', () => session.restart());
   } else {
-    btn('undo', () => session.undo(), true);
-    btn('restart', () => session.restart());
+    act('explore', () => undefined, true);
+    act('restart', () => session.restart());
+    // Failure analysis runs in a worker; the neutral summary appears when it is ready.
+    const states = session.history.statesToCursor();
+    const moves = [...session.history.moves];
+    analysis.appendChild(
+      Object.assign(document.createElement('dt'), { textContent: L('analyzing') }),
+    );
+    void requestFailure(states, moves).then((report) => {
+      if (session.state !== state || $('result').hidden) return;
+      rowsList(analysis, failureRows(report, state));
+      const idx = report.lastWinningIndex;
+      if (idx !== null) {
+        if (report.alternative) {
+          const alt = report.alternative.cmd;
+          actions.prepend(
+            button(L('watchAlt'), () => {
+              show('result', false);
+              session.seek(idx);
+              window.setTimeout(() => scene.playCommand(alt), 300);
+            }),
+          );
+        }
+        actions.prepend(
+          button(
+            `${L('retry')} ${idx}`,
+            () => {
+              show('result', false);
+              session.seek(idx);
+            },
+            'btn primary',
+          ),
+        );
+      }
+    });
   }
-  btn('menu', () => openMenu());
+  act('menu', () => openMenu());
   show('result', true);
   (actions.firstElementChild as HTMLElement | null)?.focus();
+}
+
+// ---- Fair Bake -----------------------------------------------------------------------------
+
+function buildFair(): void {
+  const level = session.level;
+  const mode = session.state.ruleset.trayMode;
+  const receipt = (receiptsJson as Receipt[]).find(
+    (r) => r.levelId === level.id && r.trayMode === mode,
+  );
+  const status = receiptStatus(level, receipt);
+  const rows: Array<{ label: string; values: string[] }> = [
+    { label: L('levelId'), values: [level.id] },
+    { label: L('seed'), values: [level.generation.seed] },
+    { label: L('trayModel'), values: [L(mode)] },
+    { label: L('status'), values: [L(status)] },
+  ];
+  if (receipt) {
+    rows.push({
+      label: L('knownRoutes'),
+      values: [`${receipt.exact ? '' : '≥ '}${receipt.routes}`],
+    });
+    rows.push({
+      label: L('viableFirst'),
+      values: [`${receipt.viableFirstMoves}/${receipt.firstMoves}`],
+    });
+    rows.push({
+      label: receipt.exact ? L('shortestMoves') : L('solutionMoves'),
+      values: [String(receipt.shortest ?? receipt.solution.length)],
+    });
+  }
+  rows.push({ label: L('sequence'), values: [L('fixed')] });
+  rows.push({ label: L('randomness'), values: [L('none')] });
+  rowsList($('fair-rows'), rows);
 }
 
 function openMenu(): void {
@@ -348,6 +803,7 @@ function openMenu(): void {
 
 function startLevel(id: string): void {
   show('result', false);
+  closeCoach();
   session.startLevel(id);
 }
 
@@ -362,36 +818,87 @@ function refreshAll(): void {
 
 session.subscribe((e) => {
   if (!ready) return;
+  if (e.kind === 'settings') {
+    updateHud(null);
+    return;
+  }
   show('result', false);
   window.clearTimeout(resultTimer);
+  if (!demoRunning) closeCoach();
   if (e.kind === 'level' || e.kind === 'restart') scene.loadLevel();
-  else if (e.kind === 'undo') scene.refresh();
-  else if (e.kind === 'settings') updateHud(null);
+  else {
+    const effects = pendingEffects ?? undefined;
+    pendingEffects = null;
+    scene.refresh(effects);
+  }
+  prefetchTeach(session.state);
 });
 
 $('btn-menu').addEventListener('click', openMenu);
 $('menu-close').addEventListener('click', () => show('menu', false));
+$('menu-fair').addEventListener('click', () => {
+  buildFair();
+  show('menu', false);
+  show('fairbake', true);
+});
+$('fair-close').addEventListener('click', () => show('fairbake', false));
 $('btn-settings').addEventListener('click', () => {
   buildSettings();
   show('settings', true);
 });
 $('settings-close').addEventListener('click', () => show('settings', false));
+$('btn-timeline').addEventListener('click', () => {
+  buildTimeline();
+  show('timeline', true);
+});
+$('timeline-close').addEventListener('click', () => {
+  replayCancel = true;
+  show('timeline', false);
+});
+$<HTMLInputElement>('timeline-range').addEventListener('input', (ev) => {
+  replayCancel = true;
+  session.seek(Number((ev.target as HTMLInputElement).value));
+});
+$('tl-undo').addEventListener('click', () => session.undo());
+$('tl-redo').addEventListener('click', () => session.redo());
+$('tl-bookmark').addEventListener('click', () => session.toggleBookmark());
+$('tl-replay').addEventListener('click', () => void replayActive());
 $('btn-undo').addEventListener('click', () => session.undo());
+$('btn-hint').addEventListener('click', startHint);
 $('btn-restart').addEventListener('click', () => session.restart());
 $('btn-place').addEventListener('click', () => scene.confirmPreview());
 window.addEventListener('keydown', (ev) => {
   if (ev.key === 'Escape') {
-    if (!$('menu').hidden) show('menu', false);
-    else if (!$('settings').hidden) show('settings', false);
+    for (const id of ['menu', 'settings', 'timeline', 'fairbake']) {
+      if (!$(id).hidden) {
+        show(id, false);
+        return;
+      }
+    }
+    if (!coach().hidden) closeCoach();
+  }
+  if (ev.key === 'h' || ev.key === 'H') {
+    if (document.activeElement?.tagName !== 'INPUT') startHint();
   }
 });
 
 applyStrings();
 buildMenu();
 buildSettings();
-// Expose a tiny read-only hook for end-to-end tests.
-(window as unknown as { __sas: unknown }).__sas = {
+// Read-only hook for end-to-end tests; the e2e query flag also allows playing commands.
+const sas: Record<string, unknown> = {
   state: () => session.state,
   level: () => session.level.id,
+  history: () => ({
+    position: session.history.position,
+    length: session.history.length,
+    branches: session.history.branches().length,
+    bookmarks: session.history.bookmarks().length,
+  }),
 };
+if (new URLSearchParams(location.search).has('e2e')) {
+  sas.play = (cmd: PlacePlateCommand) => scene.playCommand(cmd);
+}
+(window as unknown as { __sas: unknown }).__sas = sas;
 updateHud(null);
+prefetchTeach(session.state);
