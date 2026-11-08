@@ -3,16 +3,16 @@ This is the source of truth for what should be built next.
 
 ## NEXT
 
-### 10. Phase 6: modes
+### 11. Phase 7: Bakery Workshop
 Status: NEXT
 Goal:
-Daily Bake framework, Endless Service, Zen Kitchen, Rescue Kitchen, Recipe Challenges, Pass-the-Cake. See `06_IMPLEMENTATION_ROADMAP.md`.
+Puzzle editor, share codes and playtesting. See `06_IMPLEMENTATION_ROADMAP.md`.
 
 ---
 
 ## QUEUED
 
-Phase 7 (Bakery Workshop) and later: see `06_IMPLEMENTATION_ROADMAP.md`.
+Phase 8 and later: see `06_IMPLEMENTATION_ROADMAP.md`.
 
 ## COMPLETED
 
@@ -38,6 +38,16 @@ Phase 7 (Bakery Workshop) and later: see `06_IMPLEMENTATION_ROADMAP.md`.
 - Recipe book (30 stamps in six families), bakery with seven restorable areas and two styles each, short skippable dialogue, ending screen.
 - Suspend and resume with the full timeline per level; saves are version 2 with migrations from version 1; export and import.
 
+### 10. Phase 6: modes (DONE)
+- Mode screen (Menu > Modes) with Daily Bake, Endless Service, Zen Kitchen, Rescue Kitchen, Recipe Challenges and Pass-the-Cake. Everything runs offline.
+- Daily Bake: pool of 42 pre-verified puzzles (three tiers) in `src/content/modes.json`; the local date picks the entry, the last seven days stay playable; results record moves, best chain, peak plates, score.
+- Endless Service: generated stages (more flavours, cakes and plates as stages rise), labelled Not solver-checked, seed and rules shown in Fair Bake.
+- Zen Kitchen: selectable goal, amount and flavour count; no score, no hats; a stuck board only offers undo and restart.
+- Rescue Kitchen: 10 near-full boards; a failed timeline converts to a Rescue puzzle (latest solver-confirmed position); share codes (`SSR1:`) import and export with validation and a solver check.
+- Recipe Challenges: 12 fixed boards with a visible queue and specified cakes.
+- Pass-the-Cake: two players alternate placements on one device; turn is derived from the timeline so undo hands the turn back; tools on or off (shared).
+- Saves are version 3 (adds mode results, Endless best, imported rescues) with migrations from versions 1 and 2.
+
 ---
 
 ## Decisions / Important Context
@@ -55,3 +65,8 @@ Phase 7 (Bakery Workshop) and later: see `06_IMPLEMENTATION_ROADMAP.md`.
 - Receipt hashes ignore title and move target; changing rules, board, seed or orders marks receipts outdated.
 - Playwright cannot download its browser in the cloud workspace; use `PW_CHROME`.
 - Not deployed yet. GitHub Pages deployment is Phase 8.
+- Mode content: `npm run build-modes` rebuilds `modes.json` (add `-- daily`, `recipes` or `rescue` for one part). Every shipped entry is solver-checked in both tray models. Daily difficulty tiers are checked against the ordinary agent's win rate.
+- Mode puzzles never touch hats, the recipe book or the bakery.
+- Rescue conversion keeps the remaining orders, tray and queue; in batch mode a partly used tray becomes a fresh tray, so imported boards are re-checked in the player's current tray model.
+- Rush Hour and Puzzle of the Week are not part of Phase 6.
+

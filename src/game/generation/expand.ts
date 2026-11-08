@@ -1,5 +1,6 @@
 import { NO_TOOLS } from '../model/types';
 import type {
+  FixedLayout,
   ToolId,
   GameState,
   LevelDefinition,
@@ -99,10 +100,20 @@ function tryLayout(level: LevelDefinition, playable: boolean[], attempt: number)
   return { start, queue };
 }
 
+function fixedLayout(f: FixedLayout): Layout {
+  return {
+    start: f.cells.map((c, i) => ({
+      cell: c.cell,
+      plate: { id: `s${i}`, slices: c.slices.slice().sort((a, b) => a - b) },
+    })),
+    queue: f.queue.map((q, i) => ({ id: `q${i}`, slices: q.slice().sort((a, b) => a - b) })),
+  };
+}
+
 /** Deterministically expands an authored level into its initial game state. */
 export function createInitialState(level: LevelDefinition, opts: NewGameOptions = {}): GameState {
   const playable = playableFrom(level);
-  let layout: Layout | null = null;
+  let layout: Layout | null = level.layout ? fixedLayout(level.layout) : null;
   for (let attempt = 0; attempt < 2000 && !layout; attempt++) {
     layout = tryLayout(level, playable, attempt);
   }
