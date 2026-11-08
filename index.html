@@ -25,14 +25,21 @@
             <span id="v-score"></span>
           </div>
         </div>
+        <button id="btn-timeline" class="btn icon" type="button">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </button>
+        <button id="btn-settings" class="btn icon" type="button">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+        </button>
       </header>
       <ul id="orders"></ul>
       <main id="stage" tabindex="0"></main>
+      <section id="coach" hidden></section>
       <footer id="actions">
         <button id="btn-undo" class="btn" type="button"></button>
+        <button id="btn-hint" class="btn" type="button"></button>
         <button id="btn-place" class="btn primary" type="button" disabled></button>
         <button id="btn-restart" class="btn" type="button"></button>
-        <button id="btn-settings" class="btn" type="button"></button>
       </footer>
       <div id="sr-status" class="sr-only" aria-live="polite"></div>
 
@@ -40,7 +47,10 @@
         <div class="panel">
           <h2 id="menu-title"></h2>
           <div id="level-grid"></div>
-          <button id="menu-close" class="btn" type="button"></button>
+          <div class="button-row">
+            <button id="menu-fair" class="btn" type="button"></button>
+            <button id="menu-close" class="btn" type="button"></button>
+          </div>
         </div>
       </section>
 
@@ -52,10 +62,38 @@
         </div>
       </section>
 
+      <section id="timeline" class="overlay sheet" hidden role="dialog" aria-label="Timeline">
+        <div class="panel">
+          <div class="timeline-head">
+            <h2 id="timeline-title"></h2>
+            <span id="timeline-pos"></span>
+          </div>
+          <input id="timeline-range" type="range" min="0" max="0" value="0" />
+          <div class="button-row">
+            <button id="tl-undo" class="btn" type="button"></button>
+            <button id="tl-redo" class="btn" type="button"></button>
+            <button id="tl-bookmark" class="btn" type="button" aria-pressed="false"></button>
+            <button id="tl-replay" class="btn" type="button"></button>
+          </div>
+          <div id="tl-bookmarks" class="chips"></div>
+          <div id="tl-branches" class="chips"></div>
+          <button id="timeline-close" class="btn" type="button"></button>
+        </div>
+      </section>
+
+      <section id="fairbake" class="overlay" hidden role="dialog" aria-modal="true">
+        <div class="panel">
+          <h2 id="fair-title"></h2>
+          <dl id="fair-rows" class="rows"></dl>
+          <button id="fair-close" class="btn" type="button"></button>
+        </div>
+      </section>
+
       <section id="result" class="overlay" hidden role="dialog" aria-modal="true">
         <div class="panel">
           <h2 id="result-title"></h2>
           <div id="result-values"></div>
+          <dl id="result-analysis" class="rows"></dl>
           <div id="result-actions"></div>
         </div>
       </section>

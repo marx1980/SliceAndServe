@@ -11,6 +11,17 @@ import type { EngineResult, GameState } from '../model/types';
 export const LOGICAL_WIDTH = 360;
 const PAD = 12;
 
+export interface HintMarks {
+  /** Cells to ring. */
+  cells: number[];
+  /** Tray slot to ring. */
+  slot: number | null;
+  /** Cell to mark as the recommended placement. */
+  target: number | null;
+  /** Numbered turn markers. */
+  sequence: Array<{ cell: number; n: number }>;
+}
+
 export interface SceneHooks {
   /** Called whenever HUD-relevant scene state changes (selection, preview, level). */
   onChange(preview: EngineResult | null, selectedSlot: number | null): void;
@@ -38,6 +49,8 @@ export class BoardScene extends Phaser.Scene {
   private pending: { slot: number; x: number; y: number; wasSelected: boolean } | null = null;
   private drag: { slot: number; x: number; y: number } | null = null;
   private fx: Phaser.GameObjects.GameObject[] = [];
+  private hint: HintMarks | null = null;
+  private hintTexts: Phaser.GameObjects.Text[] = [];
 
   constructor(
     private readonly session: GameSession,
@@ -66,6 +79,7 @@ export class BoardScene extends Phaser.Scene {
     this.pending = null;
     this.cursorCell = this.firstPlayable();
     this.computeLayout();
+    this.setHintMarks(null);
     this.clearFx();
     this.render();
     this.notify();
@@ -269,12 +283,41 @@ export class BoardScene extends Phaser.Scene {
     this.notify();
   }
 
-  /** Called after undo/restart so the scene drops stale selection. */
-  refresh(): void {
+  /** Called after undo, scrubbing or restart so the scene drops stale selection. */
+  refresh(result?: EngineResult): void {
     this.selectedSlot = null;
     this.previewCell = null;
     this.render();
+    if (result) this.playEffects(result);
     this.notify();
+  }
+
+  /** Play a command as if the player made it (demonstrations and alternatives). */
+  playCommand(cmd: { slot: number; row: number; column: number }): void {
+    const s = this.session.state;
+    this.commit(cmd.slot, cmd.row * s.columns + cmd.column);
+  }
+
+  setHintMarks(marks: HintMarks | null): void {
+    for (const t of this.hintTexts) t.destroy();
+    this.hintTexts = [];
+    this.hint = marks;
+    if (marks) {
+      for (const m of marks.sequence) {
+        const c = this.cellCenter(m.cell);
+        const text = this.add
+          .text(c.x, c.y, String(m.n), {
+            fontFamily: 'system-ui, sans-serif',
+            fontSize: '20px',
+            fontStyle: 'bold',
+            color: '#ffffff',
+          })
+          .setOrigin(0.5)
+          .setDepth(5);
+        this.hintTexts.push(text);
+      }
+    }
+    this.render();
   }
 
   private commit(slot: number, cell: number): void {
@@ -362,11 +405,40 @@ export class BoardScene extends Phaser.Scene {
       drawPlate(g, c.x, c.y, trayR, p.slices, this.flavors);
     }
 
+    this.drawHint(g);
     this.drawPreview(g);
 
     if (this.drag) {
       const p = s.tray[this.drag.slot];
       if (p) drawPlate(g, this.drag.x, this.drag.y - 18, plateR + 6, p.slices, this.flavors);
+    }
+  }
+
+  private drawHint(g: Phaser.GameObjects.Graphics): void {
+    const h = this.hint;
+    if (!h) return;
+    const { plateR, trayR } = this.layout;
+    for (const cell of h.cells) {
+      const c = this.cellCenter(cell);
+      g.lineStyle(4, 0x8e44ad, 1);
+      g.strokeCircle(c.x, c.y, plateR + 7);
+    }
+    if (h.target !== null) {
+      const c = this.cellCenter(h.target);
+      g.fillStyle(0x8e44ad, 0.18);
+      g.fillCircle(c.x, c.y, plateR + 7);
+      g.lineStyle(4, 0x8e44ad, 1);
+      g.strokeCircle(c.x, c.y, plateR + 7);
+    }
+    if (h.slot !== null) {
+      const c = this.slotCenter(h.slot);
+      g.lineStyle(4, 0x8e44ad, 1);
+      g.strokeCircle(c.x, c.y, trayR + 10);
+    }
+    for (const m of h.sequence) {
+      const c = this.cellCenter(m.cell);
+      g.fillStyle(0x8e44ad, 0.9);
+      g.fillCircle(c.x, c.y, 15);
     }
   }
 

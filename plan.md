@@ -3,34 +3,29 @@ This is the source of truth for what should be built next.
 
 ## NEXT
 
-### 7. Phase 3: player-respect systems
+### 8. Phase 4: balancing
 Status: NEXT
 Goal:
-Full timeline rewind with branching, progressive hints on the solver, failure analysis, and the Fair Bake receipt screen.
+Full agent set, stronger solver, JSON and CSV reports, difficulty report, and a CI solvability check. Retune the five slice levels before authoring more.
 
 Requirements:
-- Timeline scrub and branch from any earlier state (builds on `History`).
-- Hint ladder with solver-confirmed vs heuristic labels.
-- Failure analysis: last winning state, first losing move, verified alternative.
-- Retry from critical move.
+- Remaining agents from `05_TESTING_SIMULATION_AND_ACCEPTANCE.md` (Completion, Space, Order, Combo, Safety, HumanError, Lookahead).
+- Simulation metrics (win rate by agent, occupancy, first completion turn, comeback rate, dominant-move frequency).
+- Receipt refresh and a test or CI step that fails on outdated receipts.
+- Retune L01 to L05 toward the balancing targets; prove hat 2 move targets are achievable.
 
 Acceptance criteria:
-- Rewind restores exact states; replay reproduces the final state (tests exist for the linear case).
-- Hints never lie about solvability.
+- Every level verified in both tray models with a current receipt.
+- Difficulty report with agent win rates per level.
 
 ---
 
 ## QUEUED
 
-### 8. Phase 4: balancing
-Status: NOT STARTED
-Goal:
-Full agent set, stronger solver, JSON and CSV reports, difficulty report, CI solvability check. Retune the five slice levels (see decisions) before authoring more.
-
 ### 9. Phase 5: progression
 Status: NOT STARTED
 Goal:
-30 levels, recipe book, bakery, tools, mastery, save migrations.
+30 levels, recipe book, bakery, tools, mastery (hat 3), suspend and resume with the full timeline, save migrations.
 
 ---
 
@@ -42,6 +37,9 @@ Goal:
 - Basic solver, `verify-levels`, simulation CLI with random and greedy agents.
 - Phaser vertical slice: five levels, tap (with preview) and drag, keyboard, settings, Croatian and English strings, sound, versioned saves.
 
+### 3. Phase 3: player-respect systems (DONE)
+- Timeline tree with branches and bookmarks, solver-backed hint ladder, Teach Me, failure analysis with retry from the closing move, Fair Bake receipts, worker-based analysis.
+
 ---
 
 ## Decisions / Important Context
@@ -49,7 +47,10 @@ Goal:
 - Tray model (slot or batch) is a setting applied at the next restart. Both consume the same fixed queue.
 - Level supply is generated from a seed with zero leftover slices; levels carry slack by making more cakes than the order needs.
 - Only the first two chef hats exist; the move targets are provisional and not solver-verified as achievable.
-- Hat 3 (mastery goal), tools, hints, failure analysis and branching are not built yet.
+- Hat 3 (mastery goal) and tools are not built yet. The timeline is not persisted across sessions yet.
+- Hints and analysis use bounded solver searches; the badge says Heuristic or Best known when a search is not conclusive.
+- Receipts (`src/content/receipts.json`) carry a level hash; editing a level without re-running `verify-levels -- --write` marks it outdated and fails a unit test.
+- Restart keeps the timeline unless the tray setting changed.
 - Slice levels are not balanced: random agent wins roughly 91%, 21%, 40%, 3%, 1% on L01 to L05 (slot mode). Retune in Phase 4.
 - Playwright cannot download its browser in the cloud workspace; use `PW_CHROME`.
 - Not deployed yet. GitHub Pages deployment is Phase 8.

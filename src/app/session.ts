@@ -18,7 +18,7 @@ import {
 } from '../save/storage';
 
 export interface SessionEvent {
-  kind: 'level' | 'move' | 'undo' | 'restart' | 'settings';
+  kind: 'level' | 'move' | 'undo' | 'seek' | 'restart' | 'settings';
   result?: EngineResult;
 }
 
@@ -84,9 +84,40 @@ export class GameSession {
     this.emit({ kind: 'undo' });
   }
 
+  redo(): void {
+    if (!this.history.canRedo()) return;
+    this.history.redo();
+    this.emit({ kind: 'seek' });
+  }
+
+  /** Scrub to the state after `index` moves on the active branch. */
+  seek(index: number): void {
+    this.history.rewindTo(index);
+    this.emit({ kind: 'seek' });
+  }
+
+  goToNode(id: number): void {
+    this.history.goToNode(id);
+    this.emit({ kind: 'seek' });
+  }
+
+  switchBranch(leafId: number): void {
+    this.history.switchBranch(leafId);
+    this.emit({ kind: 'seek' });
+  }
+
+  toggleBookmark(): void {
+    this.history.toggleBookmark();
+    this.emit({ kind: 'seek' });
+  }
+
+  /** Back to the start. The timeline is kept unless the tray model setting changed. */
   restart(): void {
-    // A fresh state also applies a changed tray mode setting.
-    this.history = new History(this.newState(this.level));
+    if (this.state.ruleset.trayMode === this.settings.trayMode) {
+      this.history.restart();
+    } else {
+      this.history = new History(this.newState(this.level));
+    }
     this.emit({ kind: 'restart' });
   }
 

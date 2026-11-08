@@ -10,6 +10,8 @@ export interface Settings {
   confirmPlacement: boolean;
   soundVolume: number;
   language: Language;
+  /** Compare each move with the solver's recommendation after it is played. */
+  teachMe: boolean;
 }
 
 export interface LevelProgress {
@@ -36,6 +38,7 @@ export function defaultSettings(): Settings {
     confirmPlacement: true,
     soundVolume: 0.6,
     language: 'en',
+    teachMe: false,
   };
 }
 
@@ -72,6 +75,7 @@ export function migrateSettings(raw: unknown): Settings | null {
         ? Math.max(0, Math.min(1, raw.soundVolume))
         : d.soundVolume,
     language: raw.language === 'hr' ? 'hr' : 'en',
+    teachMe: raw.teachMe === true,
   };
 }
 

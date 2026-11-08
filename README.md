@@ -15,7 +15,7 @@ See `plan.md` for the current task and decisions. Rules are specified in `00_RUL
 - Typecheck: `npm run typecheck`
 - Lint: `npm run lint`
 - Build: `npm run build` (relative asset paths, works under a GitHub Pages subpath)
-- Verify levels: `npm run verify-levels` (solver receipts for every level in both tray modes)
+- Verify levels: `npm run verify-levels` (solver receipts for every level in both tray modes); add `-- --write` to refresh `src/content/receipts.json`
 - Simulate: `npm run simulate -- --agent greedy --runs 1000 --mode batch --format csv`
 
 ## Notes
