@@ -22,5 +22,6 @@ See `plan.md` for the current task and decisions. Rules are specified in `00_RUL
 - Balance check: `npm run simulate:check`; difficulty report: `npm run report` (writes `reports/difficulty.{md,json,csv}`)
 
 ## Notes
+- Tutorials: Menu > Tutorials (six lessons). Content in `src/content/tutorials.ts`; a unit test replays every lesson in both tray models.
 - Rules live in framework-independent TypeScript under `src/game`. Phaser only renders.
 - The tray model (slot or batch) is a player setting; every level is verified in both.

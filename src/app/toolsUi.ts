@@ -61,10 +61,11 @@ export function createToolsUi(session: GameSession, scene: SceneApi, root: HTMLE
 
   function begin(tool: ToolId): void {
     const state = session.state;
-    if (state.status !== 'playing') return;
+    if (state.status !== 'playing' || session.availableTools().tools[tool] <= 0) return;
     reset();
     if (tool === 'spoon') {
-      if (isToolLegal(state, { tool: 'spoon' })) session.useTool({ tool: 'spoon' });
+      if (isToolLegal(state, { tool: 'spoon' }) && session.permits({ tool: 'spoon' }))
+        session.useTool({ tool: 'spoon' });
       return;
     }
     active = tool;
@@ -76,7 +77,11 @@ export function createToolsUi(session: GameSession, scene: SceneApi, root: HTMLE
   function onPick(hit: { cell: number; slot: number }): void {
     const state = session.state;
     if (active === 'bin') {
-      if (hit.slot >= 0 && isToolLegal(state, { tool: 'bin', slot: hit.slot })) {
+      if (
+        hit.slot >= 0 &&
+        isToolLegal(state, { tool: 'bin', slot: hit.slot }) &&
+        session.permits({ tool: 'bin', slot: hit.slot })
+      ) {
         session.useTool({ tool: 'bin', slot: hit.slot });
         finish();
       }
@@ -121,18 +126,22 @@ export function createToolsUi(session: GameSession, scene: SceneApi, root: HTMLE
     energy.className = 'tools-energy';
     energy.textContent = `${L('energy')} ${state.energy}/${ENERGY_PER_TOOL}`;
     row.appendChild(energy);
+    const pool = session.availableTools();
 
-    if (state.grants > 0 && state.status === 'playing') {
+    if (pool.grants > 0 && state.status === 'playing') {
       const choose = document.createElement('div');
       choose.className = 'chips';
       choose.append(
         Object.assign(document.createElement('span'), {
-          textContent: `${L('choose')} ${state.grants}`,
+          textContent: `${L('choose')} ${pool.grants}`,
         }),
       );
       for (const tool of allowed) {
         choose.appendChild(
-          btn(L(NAME_KEY[tool]), () => session.useTool({ tool: 'grant', choose: tool })),
+          btn(L(NAME_KEY[tool]), () => {
+            if (session.permits({ tool: 'grant', choose: tool }))
+              session.useTool({ tool: 'grant', choose: tool });
+          }),
         );
       }
       root.append(row, choose);
@@ -143,7 +152,7 @@ export function createToolsUi(session: GameSession, scene: SceneApi, root: HTMLE
     const owned = document.createElement('div');
     owned.className = 'chips';
     for (const tool of allowed) {
-      const count = state.tools[tool];
+      const count = pool.tools[tool];
       if (count <= 0 && active !== tool) continue;
       owned.appendChild(
         btn(

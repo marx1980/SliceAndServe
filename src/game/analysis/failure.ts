@@ -1,5 +1,7 @@
-import { applyCommand, stateKey } from '../rules/engine';
-import type { GameState, PlacePlateCommand } from '../model/types';
+import { stateKey } from '../rules/engine';
+import { applyAny, isToolCommand } from '../rules/apply';
+import { applyCommand } from '../rules/engine';
+import type { Command, GameState } from '../model/types';
 import { boardMetrics } from './metrics';
 import { evaluateMoves, type MoveEval } from './hints';
 import { findSolution } from './solver';
@@ -10,7 +12,7 @@ export interface FailureReport {
   /** Index (moves played) of the last position with a solver-confirmed winning route; null if none. */
   lastWinningIndex: number | null;
   /** The move played from that position, the first after which no confirmed route remained. */
-  criticalMove: PlacePlateCommand | null;
+  criticalMove: Command | null;
   criticalPlate: readonly number[] | null;
   /** Moves played after the critical move before the deadlock. */
   movesAfterCritical: number;
@@ -38,11 +40,14 @@ const EMPTY: FailureReport = {
  * followed by positions with or without one, and once a route is gone it never returns, so a
  * binary search over the line locates the boundary with few solver runs.
  *
+ * Tools are never required, so "winning route" means a route that uses no tools. A tool move can
+ * restore such a route, so with tools in the line the boundary found is a boundary, not the only one.
+ *
  * `states[i]` is the position after i moves and `moves[i]` the move played from it.
  */
 export function analyzeFailure(
   states: readonly GameState[],
-  moves: readonly PlacePlateCommand[],
+  moves: readonly Command[],
   budget = 300_000,
 ): FailureReport {
   const n = moves.length;
@@ -65,8 +70,8 @@ export function analyzeFailure(
   }
   // When the search is inconclusive, the move after `lo` is only a candidate.
   const atLo = states[lo] as GameState;
-  const played = moves[lo] as PlacePlateCommand;
-  const playedKey = stateKey(applyCommand(atLo, played).nextState);
+  const played = moves[lo] as Command;
+  const playedKey = stateKey(applyAny(atLo, played).nextState);
   const evals = evaluateMoves(atLo, { childBudget: 60_000 });
   const playedEval =
     evals.find((e) => stateKey(applyCommand(atLo, e.cmd).nextState) === playedKey) ?? null;
@@ -88,7 +93,7 @@ export function analyzeFailure(
     conclusive,
     lastWinningIndex: lo,
     criticalMove: played,
-    criticalPlate: atLo.tray[played.slot]?.slices ?? null,
+    criticalPlate: isToolCommand(played) ? null : (atLo.tray[played.slot]?.slices ?? null),
     movesAfterCritical: n - (lo + 1),
     fragmented,
     missedCompletion,

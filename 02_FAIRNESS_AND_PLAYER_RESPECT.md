@@ -165,3 +165,9 @@ Display a concise promise:
 - **Pass-the-Cake**: players alternate placements. The tools switch is shared inventory; separate per-player inventories were not built.
 - No timers, no required tools, no changed sequences after a failure.
 
+## Phase 6.1 implementation notes
+- **Tutorials**: six short lessons on fixed boards. The engine, previews and tools are the real ones; a lesson only restricts which command is accepted next. Lessons can be skipped (Exit) and replayed, and fresh profiles are offered the list once. Prompts are single imperative labels.
+- **Failure analysis with tools**: the search ignores tools, so a lost line that used them is still analysed; the boundary it reports is one place where the tool-free route closed.
+- **Shortest lines**: `movesLowerBound` counts cakes still needed, slices on the board and the largest remaining plates. It never overestimates, so a proven line is a true minimum; `?` in receipts means the search ran out of budget.
+- **Separate tools in Pass-the-Cake**: the engine keeps one inventory; per-player pools are derived from the timeline and always sum to it.
+

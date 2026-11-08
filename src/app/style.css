@@ -485,3 +485,17 @@ input[type='range'] {
   flex-wrap: wrap;
   gap: 4px;
 }
+
+#lesson {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+}
+#lesson-prompt {
+  flex: 1;
+  font-weight: 600;
+}
+#lesson[hidden] {
+  display: none;
+}

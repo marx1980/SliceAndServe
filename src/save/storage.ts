@@ -46,10 +46,17 @@ export interface ModeProgress {
   endless: { bestStage: number; bestScore: number; lastSeed: string };
   /** Rescue codes imported or converted by the player. */
   rescues: Array<{ id: string; code: string }>;
+  /** Finished tutorial lessons. */
+  tutorials: string[];
 }
 
 export function defaultModes(): ModeProgress {
-  return { results: {}, endless: { bestStage: 0, bestScore: 0, lastSeed: 'sunny' }, rescues: [] };
+  return {
+    results: {},
+    endless: { bestStage: 0, bestScore: 0, lastSeed: 'sunny' },
+    rescues: [],
+    tutorials: [],
+  };
 }
 
 export interface Progress {
@@ -165,6 +172,8 @@ function migrateModes(raw: unknown): ModeProgress {
       )
       .slice(0, 20);
   }
+  if (Array.isArray(raw.tutorials))
+    m.tutorials = raw.tutorials.filter((x): x is string => typeof x === 'string').slice(0, 40);
   return m;
 }
 

@@ -119,8 +119,8 @@ describe('endless, zen and pass generation', () => {
     }
   }, 60_000);
   it('pass puzzles toggle tools', () => {
-    expect(passLevel('p', false).allowedTools ?? []).toHaveLength(0);
-    expect(passLevel('p', true).allowedTools).toHaveLength(4);
+    expect(passLevel('p', 'off').allowedTools ?? []).toHaveLength(0);
+    expect(passLevel('p', 'shared').allowedTools).toHaveLength(4);
   });
 });
 
@@ -200,5 +200,37 @@ describe('progress v3 migration', () => {
     expect(p?.modes.results.a?.bestMoves).toBe(0);
     expect(p?.modes.endless.bestStage).toBe(0);
     expect(p?.modes.rescues).toEqual([{ id: 'a', code: 'b' }]);
+  });
+});
+
+describe('Pass-the-Cake separate tools', () => {
+  it('keeps each earned tool with the player who earned it and sums to the shared inventory', async () => {
+    const { GameSession } = await import('../../app/session');
+    const session = new GameSession();
+    session.startPuzzle(passLevel('sep', 'separate'), 'pass');
+    expect(session.separateTools).toBe(true);
+    session.debugStart({ grants: 1 });
+    expect(session.passPlayer()).toBe(0);
+    expect(session.availableTools().grants).toBe(1);
+    session.useTool({ tool: 'grant', choose: 'bin' });
+    expect(session.availableTools().tools.bin).toBe(1);
+    const s = session.state;
+    const cell = s.board.findIndex((p, i) => p === null && s.playable[i]);
+    session.place({ slot: 0, row: Math.floor(cell / s.columns), column: cell % s.columns });
+    expect(session.passPlayer()).toBe(1);
+    expect(session.availableTools().tools.bin).toBe(0);
+    const pools = session.toolPools();
+    expect(pools[0]!.tools.bin + pools[1]!.tools.bin).toBe(session.state.tools.bin);
+    expect(pools[0]!.grants + pools[1]!.grants).toBe(session.state.grants);
+    session.undo();
+    expect(session.availableTools().tools.bin).toBe(1);
+  });
+  it('shared mode exposes the whole inventory', async () => {
+    const { GameSession } = await import('../../app/session');
+    const session = new GameSession();
+    session.startPuzzle(passLevel('sh', 'shared'), 'pass');
+    session.debugStart({ grants: 1 });
+    expect(session.separateTools).toBe(false);
+    expect(session.availableTools().grants).toBe(1);
   });
 });

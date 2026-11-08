@@ -290,7 +290,8 @@ export class BoardScene extends Phaser.Scene {
 
   private isEmptyLegal(slot: number, cell: number): boolean {
     const s = this.session.state;
-    return isLegal(s, { slot, row: Math.floor(cell / s.columns), column: cell % s.columns });
+    const cmd = { slot, row: Math.floor(cell / s.columns), column: cell % s.columns };
+    return isLegal(s, cmd) && this.session.permits(cmd);
   }
 
   /** Place the selected plate at the previewed (or keyboard-cursor) cell. */

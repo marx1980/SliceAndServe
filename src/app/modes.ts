@@ -1,7 +1,13 @@
 import type { GameSession } from './session';
 import modesData from '../content/modes.json';
 import { dailyLevel, dateKey, playableDays, type DailyEntry } from '../game/modes/daily';
-import { endlessRules, passLevel, zenLevel, type ZenConfig } from '../game/modes/generate';
+import {
+  endlessRules,
+  passLevel,
+  zenLevel,
+  type PassTools,
+  type ZenConfig,
+} from '../game/modes/generate';
 import { checkRescue, decodeRescue, encodeRescue, type RescueCheck } from '../game/modes/rescue';
 import type { LevelDefinition, ModeId } from '../game/model/types';
 import { hashSeed } from '../game/rules/rng';
@@ -61,7 +67,7 @@ export interface ModeHandlers {
 }
 
 let zen: ZenConfig = { goal: 'any', amount: 4, flavors: 3, seed: 'zen' };
-let passTools = false;
+let passTools: PassTools = 'off';
 let importText = '';
 let importNote = '';
 
@@ -251,10 +257,10 @@ export function buildModes(
   const toolsBtn = el(
     'button',
     { type: 'button', className: 'btn', id: 'pass-tools' },
-    `${L('tools')}: ${passTools ? L('on') : L('off')}`,
+    `${L('tools')}: ${L(passTools === 'off' ? 'off' : passTools === 'shared' ? 'toolsShared' : 'toolsSeparate')}`,
   );
   toolsBtn.addEventListener('click', () => {
-    passTools = !passTools;
+    passTools = passTools === 'off' ? 'shared' : passTools === 'shared' ? 'separate' : 'off';
     buildModes(session, h);
   });
   const startPass = el(
