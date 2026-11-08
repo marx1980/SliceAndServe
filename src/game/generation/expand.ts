@@ -1,4 +1,6 @@
+import { NO_TOOLS } from '../model/types';
 import type {
+  ToolId,
   GameState,
   LevelDefinition,
   OrderProgress,
@@ -140,6 +142,11 @@ export function createInitialState(level: LevelDefinition, opts: NewGameOptions 
     score: 0,
     moveNumber: 0,
     status: 'playing',
+    allowedTools: level.allowedTools ?? [],
+    energy: 0,
+    grants: 0,
+    tools: NO_TOOLS,
+    revealed: 0,
   };
 }
 
@@ -156,6 +163,7 @@ export function stateFromPlates(args: {
   diagonal?: boolean;
   orders?: OrderSpec[];
   mask?: boolean[];
+  allowedTools?: ToolId[];
 }): GameState {
   const board: (Plate | null)[] = Array.from({ length: args.rows * args.columns }, () => null);
   args.cells.forEach((c, i) => {
@@ -201,5 +209,10 @@ export function stateFromPlates(args: {
     score: 0,
     moveNumber: 0,
     status: 'playing',
+    allowedTools: args.allowedTools ?? [],
+    energy: 0,
+    grants: 0,
+    tools: NO_TOOLS,
+    revealed: 0,
   };
 }

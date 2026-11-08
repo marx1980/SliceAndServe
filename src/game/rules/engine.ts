@@ -11,12 +11,15 @@ import type {
 } from '../model/types';
 
 /** Mutable working plate used only inside a single resolution. */
-interface WorkPlate {
+export interface WorkPlate {
   id: string;
   slices: number[];
 }
 
 export class IllegalMoveError extends Error {}
+
+/** Sugar energy needed for one earned tool. */
+export const ENERGY_PER_TOOL = 6;
 
 const ORTHOGONAL: ReadonlyArray<readonly [number, number]> = [
   [-1, 0],
@@ -259,12 +262,29 @@ export function applyCommand(state: GameState, cmd: PlacePlateCommand): EngineRe
     }
   }
 
+  return settle(state, board, tray, queueIndex, placedCell, events, 1);
+}
+
+/**
+ * Resolves a changed board: rounds of transfers and completions, orders, energy and status.
+ * `activeStart` is the cell of the plate that triggered resolution; `moveCost` is how much the
+ * move counter advances (tools that act on the board cost one, others none).
+ */
+export function settle(
+  state: GameState,
+  board: (WorkPlate | null)[],
+  tray: (Plate | null)[],
+  queueIndex: number,
+  activeStart: number,
+  events: GameEvent[],
+  moveCost: number,
+): EngineResult {
   // Resolution rounds. Round 1 examines the active plate; each later round examines only plates
   // that changed in the previous round. A round with completions counts toward chain depth.
   const completedCakes = state.completedCakes.slice();
   const interacting = new Set<number>();
-  let activeCell = placedCell;
-  let hot = new Set<number>([placedCell]);
+  let activeCell = activeStart;
+  let hot = new Set<number>([activeStart]);
   let round = 0;
   let chainDepth = 0;
   let cakes = 0;
@@ -365,15 +385,26 @@ export function applyCommand(state: GameState, cmd: PlacePlateCommand): EngineRe
   // Each cake scores 100 times its chain depth.
   for (const e of events) if (e.type === 'cake-complete') scoreGain += 100 * e.depth;
 
+  // Sugar energy: only on levels that allow tools.
+  let energy = state.energy;
+  let grants = state.grants;
+  if (state.allowedTools.length > 0) {
+    energy += cakes + (chainDepth >= 2 ? 1 : 0) + 2 * ordersCompleted;
+    grants += Math.floor(energy / ENERGY_PER_TOOL);
+    energy %= ENERGY_PER_TOOL;
+  }
+
   const nextState: GameState = {
     ...state,
+    energy,
+    grants,
     board: boardOut,
     tray,
     queueIndex,
     orderProgress,
     completedCakes,
     score: state.score + scoreGain,
-    moveNumber: state.moveNumber + 1,
+    moveNumber: state.moveNumber + moveCost,
     status,
   };
 

@@ -13,6 +13,7 @@ import receiptsJson from '../content/receipts.json';
 import { setVolume } from '../ui/sound';
 import { t } from '../ui/strings';
 import { applyCommand } from '../game/rules/engine';
+import { applyAny, isToolCommand } from '../game/rules/apply';
 import { compareMoves, explainMove, type HintData } from '../game/analysis/hints';
 import type { FailureReport } from '../game/analysis/failure';
 import { receiptStatus, type Receipt } from '../game/analysis/receipt';
@@ -385,7 +386,7 @@ function teachAfterMove(result: EngineResult): void {
   if (!session.settings.teachMe || demoRunning) return;
   const before = result.previousState;
   const played = session.history.moves.at(-1);
-  if (!played) return;
+  if (!played || isToolCommand(played)) return;
   const pending = teachCache.get(before) ?? requestHints(before);
   void pending.then((data) => {
     if (session.state !== result.nextState) return;
@@ -618,7 +619,7 @@ async function replayActive(): Promise<void> {
     const prev = path[i - 1];
     const next = path[i];
     if (!prev || !next || !next.command) break;
-    pendingEffects = applyCommand(prev.state, next.command);
+    pendingEffects = applyAny(prev.state, next.command);
     session.seek(i);
   }
   replaying = false;
@@ -725,36 +726,39 @@ function showResult(): void {
     // Failure analysis runs in a worker; the neutral summary appears when it is ready.
     const states = session.history.statesToCursor();
     const moves = [...session.history.moves];
+    const placements = moves.filter((m): m is PlacePlateCommand => !isToolCommand(m));
+    const analysable = placements.length === moves.length;
     analysis.appendChild(
       Object.assign(document.createElement('dt'), { textContent: L('analyzing') }),
     );
-    void requestFailure(states, moves).then((report) => {
-      if (session.state !== state || $('result').hidden) return;
-      rowsList(analysis, failureRows(report, state));
-      const idx = report.lastWinningIndex;
-      if (idx !== null) {
-        if (report.alternative) {
-          const alt = report.alternative.cmd;
+    if (analysable)
+      void requestFailure(states, placements).then((report) => {
+        if (session.state !== state || $('result').hidden) return;
+        rowsList(analysis, failureRows(report, state));
+        const idx = report.lastWinningIndex;
+        if (idx !== null) {
+          if (report.alternative) {
+            const alt = report.alternative.cmd;
+            actions.prepend(
+              button(L('watchAlt'), () => {
+                show('result', false);
+                session.seek(idx);
+                window.setTimeout(() => scene.playCommand(alt), 300);
+              }),
+            );
+          }
           actions.prepend(
-            button(L('watchAlt'), () => {
-              show('result', false);
-              session.seek(idx);
-              window.setTimeout(() => scene.playCommand(alt), 300);
-            }),
+            button(
+              `${L('retry')} ${idx}`,
+              () => {
+                show('result', false);
+                session.seek(idx);
+              },
+              'btn primary',
+            ),
           );
         }
-        actions.prepend(
-          button(
-            `${L('retry')} ${idx}`,
-            () => {
-              show('result', false);
-              session.seek(idx);
-            },
-            'btn primary',
-          ),
-        );
-      }
-    });
+      });
   }
   act('menu', () => openMenu());
   show('result', true);
