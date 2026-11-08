@@ -303,7 +303,7 @@ test('story lines appear once and can be dismissed', async ({ page }) => {
 
 test('earned tools: choose a tool, reveal upcoming plates with the spoon', async ({ page }) => {
   await page.locator('#btn-menu').click();
-  await page.locator('#level-grid .level-btn').nth(5).click();
+  await page.locator('#level-grid .level-btn').nth(11).click();
   await expect(page.locator('#tools')).toBeVisible();
   await page.evaluate(() =>
     (window as unknown as { __sas: { debugStart(p: object): void } }).__sas.debugStart({
