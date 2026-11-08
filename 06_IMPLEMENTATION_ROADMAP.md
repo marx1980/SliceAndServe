@@ -1,19 +1,19 @@
 # 06: Implementation Roadmap
 
 ## Phase 1: Pure rules prototype
-Deliver state model, board, standard plates, normal slices, placement command, deterministic resolution, completion, win/loss, seeded sequence, and exhaustive unit tests. Use placeholder colours and patterns.
+Deliver state model, board, standard plates, normal slices, placement command, deterministic resolution per `00_RULES_SPEC.md`, completion, win/loss, both tray models, seeded queue generation, and exhaustive unit tests. Use placeholder colours and patterns.
 
 ## Phase 2: Playable vertical slice
-Deliver Phaser board, incoming tray, tap and drag, placement preview, five levels, basic orders, undo/restart, responsive UI, basic sound, and animation.
+Deliver Phaser board, incoming tray, tap and drag, placement preview, five levels, basic orders, undo/restart, responsive UI, basic sound, animation, settings (including the tray model toggle), and a basic solver with `verify-levels` and a minimal simulation CLI so every shipped level is verified in both tray modes.
 
 ## Phase 3: Player-respect systems
-Deliver full timeline rewind, branching, progressive hints, Teach Me mode, failure analysis, retry from critical move, and Fair Bake receipt.
+Deliver full timeline rewind, branching, progressive hints (on the solver), Teach Me mode, failure analysis, retry from critical move, and Fair Bake receipt.
 
-## Phase 4: Progression
+## Phase 4: Automated balancing
+Deliver all initial agents, stronger solver, full simulation CLI, JSON and CSV reports, verification pipeline, difficulty report, and CI solvability validation. Content is not authored at scale before this phase is done.
+
+## Phase 5: Progression
 Deliver 30 levels, recipe book, bakery restoration, concise dialogue, earned chef tools, mastery goals, and save migrations.
-
-## Phase 5: Automated balancing
-Deliver all initial agents, solver, simulation CLI, JSON and CSV reports, verification pipeline, difficulty report, and CI solvability validation.
 
 ## Phase 6: Additional offline modes
 Deliver Daily Bake framework, Endless Service, Zen Kitchen, Rescue Kitchen, Recipe Challenges, and Pass-the-Cake. Backend-dependent leaderboards are not required.
@@ -29,11 +29,11 @@ Deliver accessibility audit, performance optimization, PWA support, GitHub Pages
 2. Resolver and tests
 3. Basic board
 4. Orders and chains
-5. Timeline and rewind
-6. Hints and failure analysis
-7. Bakery and recipes
-8. Level content
-9. Agents, solver, simulation
+5. Solver and level verification
+6. Timeline and rewind, hints and failure analysis
+7. Agents, simulation and balancing
+8. Bakery, recipes and level content
+9. Additional modes
 10. Workshop and share codes
 11. Accessibility and performance
 12. Deployment and documentation
