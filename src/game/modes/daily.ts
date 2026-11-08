@@ -59,7 +59,8 @@ export function dailyFor(pool: readonly DailyEntry[], key: string): DailyEntry |
   const wd = weekdayOf(key);
   const week = Math.floor((dayNumber(key) - wd) / 7);
   const days = TIER_DAYS[tier - 1] as readonly number[];
-  const slot = (week * days.length + days.indexOf(wd)) % entries.length;
+  const raw = week * days.length + days.indexOf(wd);
+  const slot = ((raw % entries.length) + entries.length) % entries.length;
   return entries[order[slot] as number] ?? null;
 }
 

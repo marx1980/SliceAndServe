@@ -388,3 +388,12 @@ test('modes: a bad Rescue code is rejected', async ({ page }) => {
   await page.locator('#rescue-import').click();
   await expect(page.locator('#rescue-note')).toContainText('Invalid code');
 });
+
+test('modes screen fits the width with no horizontal scroll', async ({ page }) => {
+  await openModes(page);
+  const overflow = await page.evaluate(() => {
+    const panel = document.querySelector('#modes .panel') as HTMLElement;
+    return panel.scrollWidth - panel.clientWidth;
+  });
+  expect(overflow).toBeLessThanOrEqual(0);
+});

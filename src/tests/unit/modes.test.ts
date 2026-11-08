@@ -82,6 +82,11 @@ describe('daily selection', () => {
     }
     expect(ids.size).toBe(7);
   });
+  it('still picks a puzzle for dates before the epoch (wrong device clock)', () => {
+    for (const key of ['2025-12-31', '2020-02-29', '1999-01-01']) {
+      expect(dailyFor(modes.daily, key)).not.toBeNull();
+    }
+  });
   it('keeps missed puzzles playable for a week', () => {
     const days = playableDays('2026-03-01');
     expect(days).toHaveLength(DAILY_WINDOW);
@@ -148,6 +153,13 @@ describe('rescue conversion and codes', () => {
     expect(decodeRescue('nonsense', 'X')).toBeNull();
     expect(decodeRescue('SSR1:@@@', 'X')).toBeNull();
     expect(decodeRescue(`SSR1:${btoa('{"r":99}')}`, 'X')).toBeNull();
+  });
+  it('rejects codes with unusable orders', () => {
+    const level = modes.rescue[0]!;
+    const bad = encodeRescue({ ...level, orders: [{ kind: 'complete-any', count: 0 }] });
+    expect(decodeRescue(bad, 'X')).toBeNull();
+    const bad2 = encodeRescue({ ...level, orders: [{ kind: 'bogus', count: 2 } as never] });
+    expect(decodeRescue(bad2, 'X')).toBeNull();
   });
   it('converts a failed timeline into a solvable Rescue puzzle', () => {
     const { states } = play();

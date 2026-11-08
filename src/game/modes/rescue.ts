@@ -1,6 +1,8 @@
 import { findSolution } from '../analysis/solver';
 import { createInitialState } from '../generation/expand';
+import { TOOL_IDS } from '../model/types';
 import type {
+  ToolId,
   FixedLayout,
   GameState,
   LevelDefinition,
@@ -137,6 +139,15 @@ export function decodeRescue(text: string, id: string): LevelDefinition | null {
     }
     if (layout.queue.length > 60 || !layout.queue.every(okSlices)) return null;
     if (!Array.isArray(o.o) || o.o.length < 1 || o.o.length > 6) return null;
+    const okOrder = (x: unknown): boolean => {
+      if (typeof x !== 'object' || x === null) return false;
+      const r = x as Record<string, unknown>;
+      const amount = r.kind === 'chain' ? r.depth : r.count;
+      if (!isNum(amount) || amount < 1 || amount > 99) return false;
+      if (r.kind === 'complete-flavor') return typeof r.flavor === 'string';
+      return r.kind === 'complete-any' || r.kind === 'complete-distinct' || r.kind === 'chain';
+    };
+    if (!o.o.every(okOrder)) return null;
     const mask = Array.isArray(o.m) ? (o.m as string[]) : undefined;
     if (
       mask &&
@@ -163,7 +174,13 @@ export function decodeRescue(text: string, id: string): LevelDefinition | null {
       layout,
       orders: o.o as OrderDefinition[],
       moveTarget: 999,
-      ...(Array.isArray(o.x) ? { allowedTools: o.x as LevelDefinition['allowedTools'] } : {}),
+      ...(Array.isArray(o.x)
+        ? {
+            allowedTools: o.x.filter((t): t is ToolId =>
+              (TOOL_IDS as readonly unknown[]).includes(t),
+            ),
+          }
+        : {}),
     };
     const s = createInitialState(level);
     if (s.board.every((p) => p === null) && layout.queue.length === 0) return null;
