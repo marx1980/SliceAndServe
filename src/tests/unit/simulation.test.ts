@@ -32,7 +32,10 @@ describe('simulation', () => {
     const s = summarize(level.id, 'random', 'slot', recs, 0);
     expect(s.winRateLow).toBeLessThanOrEqual(s.winRate);
     expect(s.winRateHigh).toBeGreaterThanOrEqual(s.winRate);
-    const failures = checkBalance([{ ...s, winRate: 0.1 }], [level.id]);
+    const failures = checkBalance(
+      [{ ...s, winRate: 0.1, winRateLow: 0.05, winRateHigh: 0.15 }],
+      [level.id],
+    );
     expect(failures[0]).toMatchObject({ level: 'L01', agent: 'random', metric: 'winRate' });
   });
 
