@@ -102,3 +102,11 @@ Generate readable identifiers, for example `5x5-6S-DIAG-Q5-NOBOOST`.
 
 ## Social expansion, later only
 After the offline game is proven, consider friends' bakeries, asynchronous same-puzzle duels, weekly cooperative catering totals, recipe comparisons, and curated community puzzles. Do not prioritize chat, guild administration, or real-time multiplayer.
+
+## Phase 5 implementation notes
+- The 30-level release has two 15-level chapters; levels 12 and 27 are relief levels with an easier balance band, 13-14 and 28-29 are the mastery-challenge stretches, 15 and 30 close a chapter (reopening, town festival).
+- Tools arrive one at a time: Cake server at 6, Oven mitt at 9, Tasting spoon at 12, Bin at 15.
+- Recipes: 30 stamps, one per level, in six families (French, Croatian, Italian, Japanese, American, Seasonal). A stamp is earned by completing its level.
+- Bakery: seven areas restored at 2, 6, 10, 15, 20, 25 and 30 completed levels. Each restored area offers two visual styles; nothing is gated.
+- Characters appear in a few optional lines per chapter; the Settings toggle skips all of them.
+- Chain depth is a mastery goal, not an order, because chain-only orders were not winnable by the ordinary-play agent within the balance bands.

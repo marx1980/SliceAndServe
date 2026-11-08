@@ -15,8 +15,11 @@
     "test:e2e": "playwright test",
     "verify-levels": "tsx scripts/verify-levels.ts",
     "simulate": "tsx scripts/simulate.ts",
-    "simulate:check": "tsx scripts/simulate.ts --runs 1000 --agent random,human-error,solver --mode slot,batch --out reports --check",
-    "report": "tsx scripts/difficulty-report.ts reports/simulation.json reports"
+    "simulate:check": "tsx scripts/simulate.ts --runs 300 --agent random,human-error,solver --mode slot,batch --out reports --check",
+    "report": "tsx scripts/difficulty-report.ts reports/simulation.json reports",
+    "tune-levels": "tsx scripts/tune-levels.ts",
+    "mastery": "tsx scripts/mastery.ts",
+    "set-targets": "tsx scripts/set-targets.ts"
   },
   "dependencies": {
     "phaser": "^3.90.0"

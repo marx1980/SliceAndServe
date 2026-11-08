@@ -19,7 +19,10 @@ import type { FailureReport } from '../game/analysis/failure';
 import { receiptStatus, type Receipt } from '../game/analysis/receipt';
 import { requestFailure, requestHints } from '../game/analysis/client';
 import type { EngineResult, GameState, OrderSpec, PlacePlateCommand } from '../game/model/types';
-import type { AnimationSpeed, Language, TrayModeSetting } from '../save/storage';
+import { hatCount, exportSaves, importSaves } from '../save/storage';
+import type { AnimationSpeed, Language, PlateTheme, TrayModeSetting } from '../save/storage';
+import { buildBakery, buildRecipes, goalLabel, showEnding, showStory } from './panels';
+import { createToolsUi } from './toolsUi';
 
 const $ = <T extends HTMLElement>(id: string): T => {
   const el = document.getElementById(id);
@@ -74,6 +77,8 @@ new Phaser.Game({
   },
 });
 
+const tools = createToolsUi(session, scene, document.getElementById('tools') as HTMLElement);
+
 // ---- HUD -----------------------------------------------------------------------------------
 
 function orderLabel(spec: OrderSpec): { swatch?: number; text: string } {
@@ -97,6 +102,9 @@ function updateHud(selectedSlot: number | null): void {
   $('v-moves').textContent = `${L('moves')} ${state.moveNumber}`;
   $('v-target').textContent = `${L('target')} ${session.level.moveTarget}`;
   $('v-score').textContent = `${L('score')} ${state.score}`;
+  $('v-goal').textContent = session.level.mastery
+    ? `★ ${goalLabel(lang(), session.level.mastery)}`
+    : '';
 
   const list = $('orders');
   list.replaceChildren();
@@ -126,6 +134,7 @@ function updateHud(selectedSlot: number | null): void {
     list.appendChild(li);
   });
 
+  tools.render();
   $('btn-undo').toggleAttribute('disabled', !session.history.canUndo());
   $('btn-hint').toggleAttribute('disabled', state.status !== 'playing');
   $('btn-place').toggleAttribute(
@@ -164,6 +173,10 @@ function applyStrings(): void {
   set('btn-restart', 'restart');
   set('menu-title', 'levels');
   set('menu-fair', 'fairBake');
+  set('menu-recipes', 'recipes');
+  set('menu-bakery', 'bakery');
+  set('recipes-close', 'close');
+  set('bakery-close', 'close');
   set('menu-close', 'close');
   set('settings-title', 'settings');
   set('settings-close', 'close');
@@ -443,7 +456,7 @@ function buildMenu(): void {
     title.textContent = level.title;
     const h = document.createElement('span');
     h.className = 'hats';
-    h.textContent = hats(p?.hats ?? 0);
+    h.textContent = hats(hatCount(p));
     b.append(num, title, h);
     b.addEventListener('click', () => {
       show('menu', false);
@@ -536,6 +549,33 @@ function buildSettings(): void {
       buildSettings();
     },
   );
+  segmented<'on' | 'off'>(
+    body,
+    'skipDialogue',
+    [
+      ['on', 'on'],
+      ['off', 'off'],
+    ],
+    s.skipDialogue ? 'on' : 'off',
+    (v) => {
+      session.updateSettings({ skipDialogue: v === 'on' });
+      buildSettings();
+    },
+  );
+  segmented<PlateTheme>(
+    body,
+    'plateTheme',
+    [
+      ['classic', 'classic'],
+      ['pastel', 'pastel'],
+    ],
+    s.plateTheme,
+    (v) => {
+      session.updateSettings({ plateTheme: v });
+      scene.refresh();
+      buildSettings();
+    },
+  );
   segmented<Language>(
     body,
     'language',
@@ -566,10 +606,45 @@ function buildSettings(): void {
   });
   row.append(label, range);
   body.appendChild(row);
+
+  const saves = document.createElement('div');
+  saves.className = 'row';
+  const savesLabel = document.createElement('label');
+  savesLabel.textContent = L('saves');
+  const box = document.createElement('div');
+  box.className = 'seg';
+  box.appendChild(
+    button(L('exportSaves'), () => {
+      const url = URL.createObjectURL(new Blob([exportSaves()], { type: 'application/json' }));
+      const a = Object.assign(document.createElement('a'), {
+        href: url,
+        download: 'sliceandserve-saves.json',
+      });
+      a.click();
+      URL.revokeObjectURL(url);
+    }),
+  );
+  const file = Object.assign(document.createElement('input'), {
+    type: 'file',
+    accept: 'application/json',
+    hidden: true,
+  });
+  file.addEventListener('change', () => {
+    void file.files?.[0]?.text().then((text) => {
+      if (importSaves(text)) location.reload();
+    });
+  });
+  box.append(
+    button(L('importSaves'), () => file.click()),
+    file,
+  );
+  saves.append(savesLabel, box);
+  body.appendChild(saves);
 }
 
 // ---- timeline ------------------------------------------------------------------------------
 
+let storyShown = false;
 let replaying = false;
 let replayCancel = false;
 
@@ -681,6 +756,12 @@ function failureRows(
 function showResult(): void {
   const state = session.state;
   if (state.status === 'playing') return;
+  if (state.status === 'won' && !storyShown) {
+    storyShown = true;
+    showStory(session, session.pendingDialogue('after'), showResult);
+    return;
+  }
+  storyShown = false;
   $('result-title').textContent =
     state.status === 'won'
       ? L('complete')
@@ -695,7 +776,18 @@ function showResult(): void {
     if (cls) s.className = cls;
     values.appendChild(s);
   };
-  if (state.status === 'won') add(hats(session.hatsFor(state.moveNumber)), 'hats-big');
+  if (state.status === 'won') {
+    const earned = session.hatsFor(state);
+    add(hats(1 + (earned.moves ? 1 : 0) + (earned.mastery ? 1 : 0)), 'hats-big');
+    add(
+      `${L('hatMoves')} ${state.moveNumber}/${session.level.moveTarget} ${earned.moves ? '✓' : '✗'}`,
+    );
+    if (session.level.mastery) {
+      add(
+        `${L('hatMastery')} ${goalLabel(lang(), session.level.mastery)} ${earned.mastery ? '✓' : '✗'}`,
+      );
+    }
+  }
   add(`${L('moves')} ${state.moveNumber}`);
   add(`${L('score')} ${state.score}`);
 
@@ -761,6 +853,16 @@ function showResult(): void {
       });
   }
   act('menu', () => openMenu());
+  if (
+    state.status === 'won' &&
+    session.level.id === LEVELS[LEVELS.length - 1]?.id &&
+    !session.progress.endingSeen
+  ) {
+    session.markEndingSeen();
+    show('result', false);
+    showEnding(session);
+    return;
+  }
   show('result', true);
   (actions.firstElementChild as HTMLElement | null)?.focus();
 }
@@ -808,7 +910,9 @@ function openMenu(): void {
 function startLevel(id: string): void {
   show('result', false);
   closeCoach();
+  tools.cancel();
   session.startLevel(id);
+  showStory(session, session.pendingDialogue('before'), () => undefined);
 }
 
 function refreshAll(): void {
@@ -829,6 +933,8 @@ session.subscribe((e) => {
   show('result', false);
   window.clearTimeout(resultTimer);
   if (!demoRunning) closeCoach();
+  if (e.kind !== 'move') tools.cancel();
+  if (e.kind === 'move' && e.result?.events[0]?.type === 'tool') announceMove(e.result);
   if (e.kind === 'level' || e.kind === 'restart') scene.loadLevel();
   else {
     const effects = pendingEffects ?? undefined;
@@ -846,6 +952,18 @@ $('menu-fair').addEventListener('click', () => {
   show('fairbake', true);
 });
 $('fair-close').addEventListener('click', () => show('fairbake', false));
+$('menu-recipes').addEventListener('click', () => {
+  buildRecipes(session);
+  show('menu', false);
+  show('recipes', true);
+});
+$('menu-bakery').addEventListener('click', () => {
+  buildBakery(session, () => undefined);
+  show('menu', false);
+  show('bakery', true);
+});
+$('recipes-close').addEventListener('click', () => show('recipes', false));
+$('bakery-close').addEventListener('click', () => show('bakery', false));
 $('btn-settings').addEventListener('click', () => {
   buildSettings();
   show('settings', true);
@@ -873,7 +991,7 @@ $('btn-restart').addEventListener('click', () => session.restart());
 $('btn-place').addEventListener('click', () => scene.confirmPreview());
 window.addEventListener('keydown', (ev) => {
   if (ev.key === 'Escape') {
-    for (const id of ['menu', 'settings', 'timeline', 'fairbake']) {
+    for (const id of ['menu', 'settings', 'timeline', 'fairbake', 'recipes', 'bakery']) {
       if (!$(id).hidden) {
         show(id, false);
         return;
@@ -902,7 +1020,10 @@ const sas: Record<string, unknown> = {
 };
 if (new URLSearchParams(location.search).has('e2e')) {
   sas.play = (cmd: PlacePlateCommand) => scene.playCommand(cmd);
+  sas.debugStart = (patch: Partial<GameState>) => session.debugStart(patch);
 }
 (window as unknown as { __sas: unknown }).__sas = sas;
 updateHud(null);
 prefetchTeach(session.state);
+if (session.state.moveNumber === 0)
+  showStory(session, session.pendingDialogue('before'), () => undefined);

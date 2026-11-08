@@ -3,15 +3,16 @@ This is the source of truth for what should be built next.
 
 ## NEXT
 
-### 9. Phase 5: progression
+### 10. Phase 6: modes
 Status: NEXT
 Goal:
-30 levels, recipe book, bakery, tools, mastery (hat 3), suspend and resume with the full timeline, save migrations. New levels must pass `npm run simulate:check` and have current receipts.
+Daily Bake framework, Endless Service, Zen Kitchen, Rescue Kitchen, Recipe Challenges, Pass-the-Cake. See `06_IMPLEMENTATION_ROADMAP.md`.
 
 ---
 
 ## QUEUED
 
+Phase 7 (Bakery Workshop) and later: see `06_IMPLEMENTATION_ROADMAP.md`.
 
 ## COMPLETED
 
@@ -30,6 +31,13 @@ Goal:
 - L01-L05 retuned: random wins about 91%, 93%, 83% on L01-L03; human-error agent 95% and 89-91% on L04-L05; solver wins all in both tray models.
 - CI workflow runs typecheck, lint, format, unit tests, build, simulation check and e2e.
 
+### 5. Phase 5: progression (DONE)
+- 30 levels in two chapters (L01-L05 hand authored, L06-L30 tuned by `npm run tune-levels` from `scripts/level-specs.ts`), all verified in both tray models with current receipts and balanced to the bands.
+- Earned chef tools (Cake server, Oven mitt, Tasting spoon, Bin) with sugar energy; tools live in the timeline and are never required.
+- Third hat: per-level mastery goals with replayable witness lines; move targets (hat 2) from best known lines.
+- Recipe book (30 stamps in six families), bakery with seven restorable areas and two styles each, short skippable dialogue, ending screen.
+- Suspend and resume with the full timeline per level; saves are version 2 with migrations from version 1; export and import.
+
 ---
 
 ## Decisions / Important Context
@@ -37,7 +45,9 @@ Goal:
 - Tray model (slot or batch) is a setting applied at the next restart. Both consume the same fixed queue.
 - Level supply is generated from a seed with zero leftover slices; levels carry slack by making more cakes than the order needs.
 - Only the first two chef hats exist. Move targets are the larger per-mode best known line plus 3, and a test requires them to be reachable; most known lines are upper bounds (marked `?` in the report), not proven minimums.
-- Hat 3 (mastery goal) and tools are not built yet. The timeline is not persisted across sessions yet.
+- Tools and energy are per level and do not carry over. Bakery restoration is cosmetic and gates nothing.
+- The campaign has no chain-depth orders: the ordinary agent rarely plans chains, so chain depth appears as mastery goals instead.
+- Level data: L01-L05 in `src/content/levels/index.ts`, L06-L30 in `campaign.json`; mastery in `mastery.json`; move targets in `targets.json`. After editing a level run `npm run verify-levels -- --write`, `npm run mastery` and `npm run set-targets`.
 - Hints and analysis use bounded solver searches; the badge says Heuristic or Best known when a search is not conclusive.
 - Receipts (`src/content/receipts.json`) carry a level hash; editing a level without re-running `verify-levels -- --write` marks it outdated and fails a unit test.
 - Restart keeps the timeline unless the tray setting changed.

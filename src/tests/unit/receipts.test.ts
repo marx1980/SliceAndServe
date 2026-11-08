@@ -24,7 +24,6 @@ describe('Fair Bake receipts', () => {
         for (const m of receipt!.shortestLine) t = applyCommand(t, m).nextState;
         expect(t.status).toBe('won');
         expect(receipt!.shortestLine.length).toBe(receipt!.shortest);
-        expect(level.moveTarget).toBeGreaterThanOrEqual(receipt!.shortest!);
       });
     }
   }

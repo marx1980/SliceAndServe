@@ -1,0 +1,731 @@
+[
+  {
+    "schemaVersion": 1,
+    "id": "L06",
+    "title": "Double Batch",
+    "rows": 4,
+    "columns": 5,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L06-b",
+      "cakesPerFlavor": [3, 3, 3, 3],
+      "startingPlates": 5,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 8
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L07",
+    "title": "Rush Hour",
+    "rows": 4,
+    "columns": 4,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L07-b",
+      "cakesPerFlavor": [3, 3, 3, 3],
+      "startingPlates": 5,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-flavor",
+        "flavor": "strawberry",
+        "count": 2
+      },
+      {
+        "kind": "complete-flavor",
+        "flavor": "chocolate",
+        "count": 1
+      },
+      {
+        "kind": "complete-any",
+        "count": 1
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L08",
+    "title": "Plus Plate",
+    "rows": 4,
+    "columns": 5,
+    "mask": [".###.", "#####", "#####", ".###."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L08-h",
+      "cakesPerFlavor": [3, 3, 3, 3],
+      "startingPlates": 4,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 8
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L09",
+    "title": "Rainbow Tray",
+    "rows": 4,
+    "columns": 5,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry"],
+    "generation": {
+      "seed": "L09-j",
+      "cakesPerFlavor": [2, 2, 2, 2, 2],
+      "startingPlates": 5,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-distinct",
+        "count": 4
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L10",
+    "title": "Sunday Special",
+    "rows": 4,
+    "columns": 5,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L10-a",
+      "cakesPerFlavor": [3, 3, 3, 3],
+      "startingPlates": 5,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-distinct",
+        "count": 4
+      },
+      {
+        "kind": "complete-any",
+        "count": 7
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L11",
+    "title": "Lunch Crowd",
+    "rows": 4,
+    "columns": 4,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry"],
+    "generation": {
+      "seed": "L11-d",
+      "cakesPerFlavor": [3, 3, 2, 2, 2],
+      "startingPlates": 5,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 7
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L12",
+    "title": "Quiet Afternoon",
+    "rows": 5,
+    "columns": 5,
+    "mask": ["#####", "#####", "#####", ".###.", "..#.."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L12-c",
+      "cakesPerFlavor": [3, 3, 3, 3],
+      "startingPlates": 4,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 7
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L13",
+    "title": "Critic Calling",
+    "rows": 4,
+    "columns": 5,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L13-i",
+      "cakesPerFlavor": [4, 3, 3, 3],
+      "startingPlates": 5,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-flavor",
+        "flavor": "strawberry",
+        "count": 2
+      },
+      {
+        "kind": "complete-flavor",
+        "flavor": "lemon",
+        "count": 1
+      },
+      {
+        "kind": "complete-any",
+        "count": 8
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L14",
+    "title": "Sofia Tastes",
+    "rows": 4,
+    "columns": 5,
+    "mask": [".###.", "#####", "#####", ".###."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry", "caramel"],
+    "generation": {
+      "seed": "L14-e",
+      "cakesPerFlavor": [2, 2, 2, 2, 2, 2],
+      "startingPlates": 5,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-distinct",
+        "count": 4
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L15",
+    "title": "Grand Reopening",
+    "rows": 5,
+    "columns": 5,
+    "mask": ["#####", "#####", "#####", ".###.", "..#.."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry"],
+    "generation": {
+      "seed": "L15-a",
+      "cakesPerFlavor": [3, 3, 3, 3, 3],
+      "startingPlates": 6,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 8
+      },
+      {
+        "kind": "complete-flavor",
+        "flavor": "blueberry",
+        "count": 2
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L16",
+    "title": "Fresh Start",
+    "rows": 4,
+    "columns": 5,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L16-j",
+      "cakesPerFlavor": [3, 3, 3, 3],
+      "startingPlates": 4,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 8
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L17",
+    "title": "Window Display",
+    "rows": 4,
+    "columns": 4,
+    "mask": ["####", "#..#", "#..#", "####"],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon"],
+    "generation": {
+      "seed": "L17-a",
+      "cakesPerFlavor": [3, 3, 3],
+      "startingPlates": 3,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 5
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L18",
+    "title": "Tea Garden",
+    "rows": 5,
+    "columns": 5,
+    "mask": ["#####", "#####", "#####", ".###.", "..#.."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry"],
+    "generation": {
+      "seed": "L18-h",
+      "cakesPerFlavor": [3, 3, 3, 3, 3],
+      "startingPlates": 6,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-distinct",
+        "count": 5
+      },
+      {
+        "kind": "complete-any",
+        "count": 9
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L19",
+    "title": "Chocolate Room",
+    "rows": 4,
+    "columns": 5,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L19-l",
+      "cakesPerFlavor": [4, 4, 3, 3],
+      "startingPlates": 5,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-flavor",
+        "flavor": "chocolate",
+        "count": 3
+      },
+      {
+        "kind": "complete-any",
+        "count": 10
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L20",
+    "title": "Double Chain",
+    "rows": 5,
+    "columns": 5,
+    "mask": ["#####", "#####", "#####", ".###.", "..#.."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L20-k",
+      "cakesPerFlavor": [3, 3, 3, 3],
+      "startingPlates": 6,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-flavor",
+        "flavor": "pistachio",
+        "count": 2
+      },
+      {
+        "kind": "complete-any",
+        "count": 2
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L21",
+    "title": "Delivery Run",
+    "rows": 4,
+    "columns": 5,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry"],
+    "generation": {
+      "seed": "L21-c",
+      "cakesPerFlavor": [3, 3, 3, 3, 3],
+      "startingPlates": 5,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 10
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L22",
+    "title": "Wedding Planner",
+    "rows": 5,
+    "columns": 5,
+    "mask": ["#####", "#####", "#####", ".###.", "..#.."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry"],
+    "generation": {
+      "seed": "L22-f",
+      "cakesPerFlavor": [4, 3, 3, 3, 3],
+      "startingPlates": 6,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-flavor",
+        "flavor": "strawberry",
+        "count": 2
+      },
+      {
+        "kind": "complete-flavor",
+        "flavor": "pistachio",
+        "count": 2
+      },
+      {
+        "kind": "complete-any",
+        "count": 1
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L23",
+    "title": "Tight Squeeze",
+    "rows": 4,
+    "columns": 4,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L23-c",
+      "cakesPerFlavor": [3, 3, 3, 3],
+      "startingPlates": 5,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 8
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L24",
+    "title": "Pastry Parade",
+    "rows": 5,
+    "columns": 5,
+    "mask": ["#####", "#####", "#####", ".###.", "..#.."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry", "caramel"],
+    "generation": {
+      "seed": "L24-m",
+      "cakesPerFlavor": [3, 3, 3, 3, 3, 3],
+      "startingPlates": 6,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-distinct",
+        "count": 6
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L25",
+    "title": "Rival Baker",
+    "rows": 4,
+    "columns": 5,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry"],
+    "generation": {
+      "seed": "L25-f",
+      "cakesPerFlavor": [3, 3, 3, 3, 3],
+      "startingPlates": 6,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-flavor",
+        "flavor": "strawberry",
+        "count": 2
+      },
+      {
+        "kind": "complete-flavor",
+        "flavor": "lemon",
+        "count": 1
+      },
+      {
+        "kind": "complete-any",
+        "count": 9
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L26",
+    "title": "Rooftop Cafe",
+    "rows": 5,
+    "columns": 5,
+    "mask": ["#####", "#####", "#####", ".###.", "..#.."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry"],
+    "generation": {
+      "seed": "L26-b",
+      "cakesPerFlavor": [3, 3, 3, 3, 3],
+      "startingPlates": 6,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 9
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L27",
+    "title": "Slow Sunday",
+    "rows": 5,
+    "columns": 5,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio"],
+    "generation": {
+      "seed": "L27-a",
+      "cakesPerFlavor": [3, 3, 3, 3],
+      "startingPlates": 4,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-any",
+        "count": 7
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L28",
+    "title": "Critics Panel",
+    "rows": 4,
+    "columns": 5,
+    "mask": [".###.", "#####", "#####", ".###."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry"],
+    "generation": {
+      "seed": "L28-b",
+      "cakesPerFlavor": [3, 3, 3, 3, 3],
+      "startingPlates": 7,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-flavor",
+        "flavor": "strawberry",
+        "count": 1
+      },
+      {
+        "kind": "complete-flavor",
+        "flavor": "chocolate",
+        "count": 1
+      },
+      {
+        "kind": "complete-flavor",
+        "flavor": "lemon",
+        "count": 1
+      },
+      {
+        "kind": "complete-flavor",
+        "flavor": "pistachio",
+        "count": 1
+      },
+      {
+        "kind": "complete-flavor",
+        "flavor": "blueberry",
+        "count": 2
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L29",
+    "title": "Last Order",
+    "rows": 5,
+    "columns": 5,
+    "mask": ["#####", "#####", "#####", ".###.", "..#.."],
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry", "caramel"],
+    "generation": {
+      "seed": "L29-e",
+      "cakesPerFlavor": [3, 3, 3, 3, 3, 3],
+      "startingPlates": 7,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-distinct",
+        "count": 5
+      },
+      {
+        "kind": "complete-any",
+        "count": 8
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "L30",
+    "title": "Town Festival",
+    "rows": 5,
+    "columns": 5,
+    "cakeSize": 6,
+    "flavors": ["strawberry", "chocolate", "lemon", "pistachio", "blueberry", "caramel"],
+    "generation": {
+      "seed": "L30-i",
+      "cakesPerFlavor": [3, 3, 3, 3, 3, 3],
+      "startingPlates": 7,
+      "minSlices": 2,
+      "maxSlices": 4,
+      "maxFlavorsPerPlate": 3
+    },
+    "orders": [
+      {
+        "kind": "complete-distinct",
+        "count": 6
+      },
+      {
+        "kind": "complete-any",
+        "count": 10
+      }
+    ],
+    "moveTarget": 99,
+    "allowedTools": ["server", "mitt", "spoon", "bin"]
+  }
+]

@@ -211,6 +211,74 @@ export class History {
     }
     return this.current;
   }
+
+  serialize(): SerializedHistory {
+    return {
+      nodes: this.nodes.map((n) => ({
+        id: n.id,
+        parent: n.parent,
+        command: n.command,
+        bookmark: n.bookmark,
+        lastChild: n.lastChild,
+      })),
+      cursor: this.cursor,
+      leaf: this.leaf,
+    };
+  }
+
+  /**
+   * Rebuilds a timeline from a saved one by replaying every command with the real engine.
+   * Returns null when the data does not fit this initial state (stale or corrupted save).
+   */
+  static restore(initial: GameState, data: unknown): History | null {
+    try {
+      const d = data as SerializedHistory;
+      if (!d || !Array.isArray(d.nodes) || d.nodes.length === 0 || d.nodes.length > 5000)
+        return null;
+      const h = new History(initial);
+      for (const n of d.nodes.slice(1)) {
+        if (n.parent === null || n.parent >= h.nodes.length || !n.command) return null;
+        const parent = h.node(n.parent);
+        const result = applyAny(parent.state, n.command);
+        const id = h.nodes.length;
+        if (n.id !== id) return null;
+        h.nodes.push({
+          id,
+          parent: parent.id,
+          command: n.command,
+          state: result.nextState,
+          depth: parent.depth + 1,
+          children: [],
+          bookmark: n.bookmark === true,
+          lastChild: null,
+        });
+        parent.children.push(id);
+      }
+      for (const n of d.nodes) {
+        const lc = n.lastChild;
+        if (lc !== null && lc !== undefined && lc < h.nodes.length) h.node(n.id).lastChild = lc;
+      }
+      if (d.cursor >= h.nodes.length || d.leaf >= h.nodes.length) return null;
+      h.cursor = d.cursor;
+      h.leaf = d.leaf;
+      return h;
+    } catch {
+      return null;
+    }
+  }
+}
+
+/** Persistable form of a timeline: commands only. States are recomputed by replay. */
+export interface SerializedHistory {
+  nodes: Array<{
+    id: number;
+    parent: number | null;
+    command: Command | null;
+    bookmark: boolean;
+    lastChild: number | null;
+  }>;
+  cursor: number;
+  leaf: number;
 }
 
 /** Replays commands from an initial state; used by tests and saves. */
