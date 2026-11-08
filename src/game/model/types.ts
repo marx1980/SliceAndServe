@@ -146,6 +146,16 @@ export interface LevelGeneration {
   readonly maxFlavorsPerPlate: number;
 }
 
+/** Explicit starting position, used by Rescue and Recipe Challenge puzzles instead of generation. */
+export interface FixedLayout {
+  /** Starting plates: board cell index and slices (flavour indices). */
+  readonly cells: readonly { readonly cell: number; readonly slices: readonly number[] }[];
+  /** Tray content first (up to three), then the queue, in order. */
+  readonly queue: readonly (readonly number[])[];
+}
+
+export type ModeId = 'campaign' | 'daily' | 'endless' | 'zen' | 'rescue' | 'recipe' | 'pass';
+
 export interface LevelDefinition {
   readonly schemaVersion: 1;
   readonly id: string;
@@ -157,6 +167,8 @@ export interface LevelDefinition {
   readonly cakeSize: number;
   readonly flavors: readonly FlavorId[];
   readonly generation: LevelGeneration;
+  /** When present the layout is used as given and `generation` only carries the seed. */
+  readonly layout?: FixedLayout;
   readonly orders: readonly OrderDefinition[];
   /** Suggested move count for the second chef hat. */
   readonly moveTarget: number;

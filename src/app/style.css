@@ -447,3 +447,41 @@ input[type='range'] {
   font-size: 1.1rem;
   margin: 8px 0 16px;
 }
+
+#queue {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 2px 8px;
+}
+#queue .qplate {
+  display: inline-flex;
+  flex: none;
+  gap: 1px;
+  padding: 2px 4px;
+  border: 1px solid #8884;
+  border-radius: 8px;
+}
+#queue .qplate i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.mode-group {
+  margin: 8px 0;
+}
+.mode-group h3 {
+  margin: 4px 0;
+}
+.mode-group input,
+.mode-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  padding: 6px;
+}
+.mode-group .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}

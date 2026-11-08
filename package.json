@@ -19,6 +19,7 @@
     "report": "tsx scripts/difficulty-report.ts reports/simulation.json reports",
     "tune-levels": "tsx scripts/tune-levels.ts",
     "mastery": "tsx scripts/mastery.ts",
+    "build-modes": "tsx scripts/build-modes.ts",
     "set-targets": "tsx scripts/set-targets.ts"
   },
   "dependencies": {

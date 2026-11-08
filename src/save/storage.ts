@@ -31,8 +31,30 @@ export interface LevelProgress {
   hatMastery: boolean;
 }
 
+/** Best result for one mode puzzle (daily date, recipe challenge, rescue board). */
+export interface ModeResult {
+  completed: boolean;
+  bestMoves: number;
+  bestScore: number;
+  bestChain: number;
+  /** Lowest peak number of occupied cells in a winning run. */
+  lowPeak: number;
+}
+
+export interface ModeProgress {
+  results: Record<string, ModeResult>;
+  endless: { bestStage: number; bestScore: number; lastSeed: string };
+  /** Rescue codes imported or converted by the player. */
+  rescues: Array<{ id: string; code: string }>;
+}
+
+export function defaultModes(): ModeProgress {
+  return { results: {}, endless: { bestStage: 0, bestScore: 0, lastSeed: 'sunny' }, rescues: [] };
+}
+
 export interface Progress {
-  schemaVersion: 2;
+  schemaVersion: 3;
+  modes: ModeProgress;
   levels: Record<string, LevelProgress>;
   /** Chosen visual style per restored bakery area. */
   bakeryStyles: Record<string, BakeryStyle>;
@@ -66,7 +88,8 @@ export function defaultSettings(): Settings {
 
 export function defaultProgress(): Progress {
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
+    modes: defaultModes(),
     levels: {},
     bakeryStyles: {},
     seenDialogue: [],
@@ -110,9 +133,48 @@ export function migrateSettings(raw: unknown): Settings | null {
   };
 }
 
+function migrateModes(raw: unknown): ModeProgress {
+  const m = defaultModes();
+  if (!isObject(raw)) return m;
+  if (isObject(raw.results)) {
+    for (const [id, v] of Object.entries(raw.results)) {
+      if (!isObject(v)) continue;
+      const n = (x: unknown): number => (typeof x === 'number' && x >= 0 ? x : 0);
+      m.results[id] = {
+        completed: v.completed === true,
+        bestMoves: n(v.bestMoves),
+        bestScore: n(v.bestScore),
+        bestChain: n(v.bestChain),
+        lowPeak: n(v.lowPeak),
+      };
+    }
+  }
+  if (isObject(raw.endless)) {
+    const e = raw.endless;
+    m.endless = {
+      bestStage: typeof e.bestStage === 'number' ? e.bestStage : 0,
+      bestScore: typeof e.bestScore === 'number' ? e.bestScore : 0,
+      lastSeed: typeof e.lastSeed === 'string' && e.lastSeed ? e.lastSeed.slice(0, 20) : 'sunny',
+    };
+  }
+  if (Array.isArray(raw.rescues)) {
+    m.rescues = raw.rescues
+      .filter(
+        (r): r is { id: string; code: string } =>
+          isObject(r) && typeof r.id === 'string' && typeof r.code === 'string',
+      )
+      .slice(0, 20);
+  }
+  return m;
+}
+
 /** Version 1 stored a single hat count; version 2 stores each hat. */
 export function migrateProgress(raw: unknown): Progress | null {
-  if (!isObject(raw) || (raw.schemaVersion !== 1 && raw.schemaVersion !== 2)) return null;
+  if (
+    !isObject(raw) ||
+    (raw.schemaVersion !== 1 && raw.schemaVersion !== 2 && raw.schemaVersion !== 3)
+  )
+    return null;
   if (!isObject(raw.levels)) return null;
   const levels: Record<string, LevelProgress> = {};
   for (const [id, v] of Object.entries(raw.levels)) {
@@ -132,7 +194,8 @@ export function migrateProgress(raw: unknown): Progress | null {
       if (v === 'a' || v === 'b') styles[k] = v;
   }
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
+    modes: migrateModes(raw.modes),
     levels,
     bakeryStyles: styles,
     seenDialogue: Array.isArray(raw.seenDialogue)
@@ -193,6 +256,33 @@ export function recordWin(
         bestMoves: prev && prev.bestMoves > 0 ? Math.min(prev.bestMoves, moves) : moves,
         hatMoves: (prev?.hatMoves ?? false) || hats.moves,
         hatMastery: (prev?.hatMastery ?? false) || hats.mastery,
+      },
+    },
+  };
+}
+
+/** Record a mode win. Results only ever improve; failure removes nothing. */
+export function recordModeWin(
+  p: Progress,
+  id: string,
+  r: { moves: number; score: number; chain: number; peak: number },
+): Progress {
+  const prev = p.modes.results[id];
+  const better = (a: number, b: number, low: boolean): number =>
+    a > 0 ? (low ? Math.min(a, b) : Math.max(a, b)) : b;
+  return {
+    ...p,
+    modes: {
+      ...p.modes,
+      results: {
+        ...p.modes.results,
+        [id]: {
+          completed: true,
+          bestMoves: better(prev?.bestMoves ?? 0, r.moves, true),
+          bestScore: Math.max(prev?.bestScore ?? 0, r.score),
+          bestChain: Math.max(prev?.bestChain ?? 0, r.chain),
+          lowPeak: better(prev?.lowPeak ?? 0, r.peak, true),
+        },
       },
     },
   };

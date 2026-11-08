@@ -322,3 +322,69 @@ test('a hat is shown for the mastery goal', async ({ page }) => {
   await page.locator('#level-grid .level-btn').nth(5).click();
   await expect(page.locator('#v-goal')).toContainText('★');
 });
+
+async function openModes(page: Page) {
+  await page.locator('#btn-menu').click();
+  await page.locator('#menu-modes').click();
+  await expect(page.locator('#modes')).toBeVisible();
+}
+
+test('modes: Zen Kitchen shows no score', async ({ page }) => {
+  await openModes(page);
+  await page.locator('#start-zen').click();
+  await expect(page.locator('#modes')).toBeHidden();
+  await expect(page.locator('#level-title')).toContainText('Zen Kitchen');
+  await expect(page.locator('#v-score')).toBeEmpty();
+});
+
+test('modes: Endless Service starts at stage 1 and is labelled unchecked', async ({ page }) => {
+  await openModes(page);
+  await page.locator('#mode-seed').fill('pie');
+  await page.locator('#start-endless').click();
+  await expect(page.locator('#level-title')).toContainText('Stage 1');
+  await page.locator('#btn-menu').click();
+  await page.locator('#menu-fair').click();
+  await expect(page.locator('#fair-rows')).toContainText('Not solver-checked');
+  await expect(page.locator('#fair-rows')).toContainText('pie');
+});
+
+test('modes: the daily puzzle for a date is fixed and listed for a week', async ({ page }) => {
+  await page.goto('/?e2e=1&today=2026-11-08');
+  await expect(page.locator('#stage canvas')).toBeVisible();
+  await openModes(page);
+  await expect(page.locator('[data-day]')).toHaveCount(7);
+  await page.locator('[data-day="2026-11-08"]').click();
+  await expect(page.locator('#level-title')).toContainText('Daily Bake');
+  const id = await page.evaluate(() => (window as unknown as { __sas: Sas }).__sas.level());
+  expect(id).toBe('D-2026-11-08');
+});
+
+test('modes: recipe challenge shows the whole queue', async ({ page }) => {
+  await openModes(page);
+  await page.locator('[data-puzzle="C01"]').click();
+  await expect(page.locator('#queue')).toBeVisible();
+  expect(await page.locator('#queue .qplate').count()).toBeGreaterThan(3);
+});
+
+test('modes: Pass-the-Cake alternates players and undo hands the turn back', async ({ page }) => {
+  await openModes(page);
+  await page.locator('#start-pass').click();
+  await expect(page.locator('#v-goal')).toContainText('Player 1');
+  const s = await state(page);
+  const cell = s.board.findIndex((p, i) => p === null && s.playable[i]);
+  await page.evaluate(
+    ([row, column]) =>
+      (window as unknown as { __sas: Sas }).__sas.play({ slot: 0, row: row!, column: column! }),
+    [Math.floor(cell / s.columns), cell % s.columns],
+  );
+  await expect(page.locator('#v-goal')).toContainText('Player 2');
+  await page.locator('#btn-undo').click();
+  await expect(page.locator('#v-goal')).toContainText('Player 1');
+});
+
+test('modes: a bad Rescue code is rejected', async ({ page }) => {
+  await openModes(page);
+  await page.locator('#rescue-code').fill('not a code');
+  await page.locator('#rescue-import').click();
+  await expect(page.locator('#rescue-note')).toContainText('Invalid code');
+});

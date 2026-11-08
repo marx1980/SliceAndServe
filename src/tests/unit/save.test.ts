@@ -49,7 +49,7 @@ describe('saves', () => {
         L02: { completed: true, bestMoves: 5, hats: 1 },
       },
     });
-    expect(p?.schemaVersion).toBe(2);
+    expect(p?.schemaVersion).toBe(3);
     expect(p?.levels.L01).toEqual({
       completed: true,
       bestMoves: 8,
@@ -58,7 +58,7 @@ describe('saves', () => {
     });
     expect(p?.levels.L02?.hatMoves).toBe(false);
     expect(p?.lastLevel).toBe('L01');
-    expect(migrateProgress({ schemaVersion: 3, levels: {} })).toBeNull();
+    expect(migrateProgress({ schemaVersion: 4, levels: {} })).toBeNull();
   });
 });
 

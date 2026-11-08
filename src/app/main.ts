@@ -23,6 +23,9 @@ import { hatCount, exportSaves, importSaves } from '../save/storage';
 import type { AnimationSpeed, Language, PlateTheme, TrayModeSetting } from '../save/storage';
 import { buildBakery, buildRecipes, goalLabel, showEnding, showStory } from './panels';
 import { createToolsUi } from './toolsUi';
+import { addRescue, buildModes, MODES } from './modes';
+import { lastRescuableIndex, rescueFromState } from '../game/modes/rescue';
+import type { LevelDefinition, ModeId } from '../game/model/types';
 
 const $ = <T extends HTMLElement>(id: string): T => {
   const el = document.getElementById(id);
@@ -96,15 +99,51 @@ function orderLabel(spec: OrderSpec): { swatch?: number; text: string } {
   }
 }
 
+function renderQueue(): void {
+  const q = $('queue');
+  const state = session.state;
+  const fixed = session.level.layout !== undefined;
+  q.hidden = !fixed;
+  q.replaceChildren();
+  if (!fixed) return;
+  q.setAttribute('aria-label', L('queueLeft'));
+  for (const plate of state.queue.slice(state.queueIndex)) {
+    const chip = document.createElement('span');
+    chip.className = 'qplate';
+    chip.title = describePlate(plate.slices, flavorNames());
+    for (const f of plate.slices) {
+      const dot = document.createElement('i');
+      const id = session.level.flavors[f] ?? '';
+      dot.style.background = `#${(FLAVORS[id]?.color ?? 0x888888).toString(16).padStart(6, '0')}`;
+      chip.appendChild(dot);
+    }
+    q.appendChild(chip);
+  }
+}
+
 function updateHud(selectedSlot: number | null): void {
   const state = session.state;
-  $('level-title').textContent = `${session.level.id.replace('L', '')}. ${session.level.title}`;
+  const mode = session.mode;
+  $('level-title').textContent =
+    mode === 'campaign'
+      ? `${session.level.id.replace('L', '')}. ${session.level.title}`
+      : mode === 'endless'
+        ? `${L('endless')} ${L('stage')} ${session.endless.stage}`
+        : `${L(mode === 'recipe' ? 'recipe' : mode)} ${session.level.title}`;
   $('v-moves').textContent = `${L('moves')} ${state.moveNumber}`;
-  $('v-target').textContent = `${L('target')} ${session.level.moveTarget}`;
-  $('v-score').textContent = `${L('score')} ${state.score}`;
-  $('v-goal').textContent = session.level.mastery
-    ? `★ ${goalLabel(lang(), session.level.mastery)}`
-    : '';
+  $('v-target').textContent =
+    mode === 'campaign' ? `${L('target')} ${session.level.moveTarget}` : '';
+  $('v-score').textContent =
+    mode === 'zen'
+      ? ''
+      : `${L('score')} ${mode === 'endless' ? session.endless.banked + state.score : state.score}`;
+  $('v-goal').textContent =
+    mode === 'pass'
+      ? `${L('player')} ${session.passPlayer() + 1}`
+      : session.level.mastery && mode === 'campaign'
+        ? `★ ${goalLabel(lang(), session.level.mastery)}`
+        : '';
+  renderQueue();
 
   const list = $('orders');
   list.replaceChildren();
@@ -174,6 +213,8 @@ function applyStrings(): void {
   set('menu-title', 'levels');
   set('menu-fair', 'fairBake');
   set('menu-recipes', 'recipes');
+  set('menu-modes', 'modes');
+  set('modes-close', 'close');
   set('menu-bakery', 'bakery');
   set('recipes-close', 'close');
   set('bakery-close', 'close');
@@ -753,6 +794,34 @@ function failureRows(
   return rows;
 }
 
+/** The next fixed puzzle after the current recipe challenge or rescue board, if any. */
+function nextSibling(): LevelDefinition | null {
+  const list =
+    session.mode === 'recipe' ? MODES.recipes : session.mode === 'rescue' ? MODES.rescue : [];
+  const i = list.findIndex((l) => l.id === session.level.id);
+  return i >= 0 ? (list[i + 1] ?? null) : null;
+}
+
+/** Walks the finished timeline back to the last position the solver can still win from. */
+async function convertToRescue(): Promise<void> {
+  const states = session.history.statesToCursor();
+  const idx = lastRescuableIndex(states);
+  const note = $('result-analysis');
+  if (idx === null) {
+    rowsList(note, [{ label: L('nothingToRescue'), values: [''] }]);
+    return;
+  }
+  const level = rescueFromState(
+    states[idx] as GameState,
+    session.level,
+    `X${Date.now().toString(36)}`,
+    `${session.progress.modes.rescues.length + 1}`,
+  );
+  const code = addRescue(session, level);
+  show('result', false);
+  openModes(code);
+}
+
 function showResult(): void {
   const state = session.state;
   if (state.status === 'playing') return;
@@ -765,9 +834,11 @@ function showResult(): void {
   $('result-title').textContent =
     state.status === 'won'
       ? L('complete')
-      : state.tray.every((p) => p === null) && state.board.some((p) => p === null)
-        ? L('noPlates')
-        : L('noSpace');
+      : session.mode === 'zen'
+        ? L('stuck')
+        : state.tray.every((p) => p === null) && state.board.some((p) => p === null)
+          ? L('noPlates')
+          : L('noSpace');
   const values = $('result-values');
   values.replaceChildren();
   const add = (text: string, cls?: string): void => {
@@ -776,7 +847,23 @@ function showResult(): void {
     if (cls) s.className = cls;
     values.appendChild(s);
   };
-  if (state.status === 'won') {
+  if (state.status === 'won' && session.mode !== 'campaign') {
+    const w = session.winStats();
+    add(`${L('moves')} ${w.moves}`);
+    if (session.mode === 'endless') {
+      add(`${L('stage')} ${session.endless.stage}`);
+      add(`${L('score')} ${session.endless.banked + w.score}`);
+    } else if (session.mode === 'pass') {
+      const ps = session.passStats();
+      ps.forEach((p, i) =>
+        add(`${L('player')} ${i + 1}: ${L('cakes')} ${p.cakes} · ${L('score')} ${p.score}`),
+      );
+    } else if (session.mode !== 'zen') {
+      add(`${L('score')} ${w.score}`);
+      add(`${L('chain')} ${w.chain}`);
+      add(`${L('peak')} ${w.peak}`);
+    }
+  } else if (state.status === 'won') {
     const earned = session.hatsFor(state);
     add(hats(1 + (earned.moves ? 1 : 0) + (earned.mastery ? 1 : 0)), 'hats-big');
     add(
@@ -788,8 +875,10 @@ function showResult(): void {
       );
     }
   }
-  add(`${L('moves')} ${state.moveNumber}`);
-  add(`${L('score')} ${state.score}`);
+  if (session.mode === 'campaign' || state.status !== 'won') {
+    add(`${L('moves')} ${state.moveNumber}`);
+    if (session.mode !== 'zen') add(`${L('score')} ${state.score}`);
+  }
 
   const analysis = $('result-analysis');
   analysis.replaceChildren();
@@ -810,20 +899,25 @@ function showResult(): void {
   if (state.status === 'won') {
     const next = session.nextLevelId();
     if (next) act('next', () => startLevel(next), true);
+    if (session.mode === 'endless') act('next', () => session.nextEndless(), true);
+    const sibling = nextSibling();
+    if (sibling) act('next', () => startMode(sibling, session.mode), true);
     act('watch', () => void replayActive());
     act('replay', () => session.restart());
   } else {
     act('explore', () => undefined, true);
     act('restart', () => session.restart());
+    if (session.mode !== 'zen') act('toRescue', () => void convertToRescue());
     // Failure analysis runs in a worker; the neutral summary appears when it is ready.
     const states = session.history.statesToCursor();
     const moves = [...session.history.moves];
     const placements = moves.filter((m): m is PlacePlateCommand => !isToolCommand(m));
     const analysable = placements.length === moves.length;
-    analysis.appendChild(
-      Object.assign(document.createElement('dt'), { textContent: L('analyzing') }),
-    );
-    if (analysable)
+    if (analysable && session.mode !== 'zen')
+      analysis.appendChild(
+        Object.assign(document.createElement('dt'), { textContent: L('analyzing') }),
+      );
+    if (analysable && session.mode !== 'zen')
       void requestFailure(states, placements).then((report) => {
         if (session.state !== state || $('result').hidden) return;
         rowsList(analysis, failureRows(report, state));
@@ -853,7 +947,9 @@ function showResult(): void {
       });
   }
   act('menu', () => openMenu());
+  if (session.mode !== 'campaign') act('modes', () => openModes());
   if (
+    session.mode === 'campaign' &&
     state.status === 'won' &&
     session.level.id === LEVELS[LEVELS.length - 1]?.id &&
     !session.progress.endingSeen
@@ -876,6 +972,22 @@ function buildFair(): void {
     (r) => r.levelId === level.id && r.trayMode === mode,
   );
   const status = receiptStatus(level, receipt);
+  if (session.mode !== 'campaign') {
+    const checked =
+      session.mode === 'daily' || session.mode === 'recipe' || session.mode === 'rescue';
+    rowsList($('fair-rows'), [
+      { label: L('mode'), values: [L(session.mode === 'recipe' ? 'recipe' : session.mode)] },
+      { label: L('levelId'), values: [level.id] },
+      { label: L('seed'), values: [level.generation.seed] },
+      { label: L('trayModel'), values: [L(mode)] },
+      { label: L('status'), values: [L(checked ? 'verified' : 'unverified')] },
+      { label: L('flavourCount'), values: [String(level.flavors.length)] },
+      { label: L('plates'), values: [String(session.state.board.filter(Boolean).length)] },
+      { label: L('sequence'), values: [L('fixed')] },
+      { label: L('randomness'), values: [L('none')] },
+    ]);
+    return;
+  }
   const rows: Array<{ label: string; values: string[] }> = [
     { label: L('levelId'), values: [level.id] },
     { label: L('seed'), values: [level.generation.seed] },
@@ -913,6 +1025,14 @@ function startLevel(id: string): void {
   tools.cancel();
   session.startLevel(id);
   showStory(session, session.pendingDialogue('before'), () => undefined);
+}
+
+function startMode(level: LevelDefinition, mode: ModeId): void {
+  show('modes', false);
+  show('result', false);
+  closeCoach();
+  tools.cancel();
+  session.startPuzzle(level, mode);
 }
 
 function refreshAll(): void {
@@ -962,6 +1082,24 @@ $('menu-bakery').addEventListener('click', () => {
   show('menu', false);
   show('bakery', true);
 });
+const modeHandlers = {
+  start: startMode,
+  startEndless: (seed: string) => {
+    show('modes', false);
+    show('result', false);
+    closeCoach();
+    tools.cancel();
+    session.startEndless(seed);
+  },
+  close: () => show('modes', false),
+};
+function openModes(code?: string): void {
+  buildModes(session, modeHandlers, code ? { code } : {});
+  show('menu', false);
+  show('modes', true);
+}
+$('menu-modes').addEventListener('click', () => openModes());
+$('modes-close').addEventListener('click', () => show('modes', false));
 $('recipes-close').addEventListener('click', () => show('recipes', false));
 $('bakery-close').addEventListener('click', () => show('bakery', false));
 $('btn-settings').addEventListener('click', () => {
@@ -991,7 +1129,7 @@ $('btn-restart').addEventListener('click', () => session.restart());
 $('btn-place').addEventListener('click', () => scene.confirmPreview());
 window.addEventListener('keydown', (ev) => {
   if (ev.key === 'Escape') {
-    for (const id of ['menu', 'settings', 'timeline', 'fairbake', 'recipes', 'bakery']) {
+    for (const id of ['menu', 'settings', 'timeline', 'fairbake', 'recipes', 'bakery', 'modes']) {
       if (!$(id).hidden) {
         show(id, false);
         return;
