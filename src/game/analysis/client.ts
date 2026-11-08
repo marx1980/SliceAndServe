@@ -18,7 +18,7 @@ const waiting = new Map<number, (r: AnalysisResponse) => void>();
 
 function getWorker(): Worker | null {
   if (worker) return worker;
-  if (typeof Worker === 'undefined') return null;
+  if (typeof Worker === 'undefined' || import.meta.env.VITE_NO_WORKER) return null;
   try {
     worker = new Worker(new URL('./analysis.worker.ts', import.meta.url), { type: 'module' });
     worker.onmessage = (e: MessageEvent<AnalysisResponse>) => {
