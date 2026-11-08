@@ -58,7 +58,7 @@ Collect:
 - No normal campaign level requires a tool
 - Most wins should include a two-cake chain
 - Avoid more than four moves without positive feedback
-- Most turns should offer at least two meaningful choices
+- Most turns should offer at least two meaningful choices (moves leading to different canonical states after resolution)
 
 Treat these as balancing targets, not hard-coded rules.
 
@@ -103,7 +103,8 @@ Where practical verify:
 - Exact rewind restoration
 - Verified failure alternative where one exists
 - Relaxed and Classic profiles
-- Eight desserts distinguishable without colour alone
+- Tray model setting (slot and batch), with every level verified in both
+- Eight flavours distinguishable without colour alone
 - Working orders and chains
 - Persistent bakery and recipes
 - 320-pixel usability

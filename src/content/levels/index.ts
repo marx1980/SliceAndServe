@@ -1,0 +1,107 @@
+import type { LevelDefinition } from '../../game/model/types';
+
+/** Phase 2 vertical-slice levels. Every level is verified solvable in both tray modes (see verify-levels). */
+export const LEVELS: readonly LevelDefinition[] = [
+  {
+    schemaVersion: 1,
+    id: 'L01',
+    title: 'First Slice',
+    rows: 4,
+    columns: 4,
+    cakeSize: 6,
+    flavors: ['strawberry', 'chocolate', 'lemon'],
+    generation: {
+      seed: 'L01-a',
+      cakesPerFlavor: [3, 3, 3],
+      startingPlates: 2,
+      minSlices: 2,
+      maxSlices: 3,
+      maxFlavorsPerPlate: 2,
+    },
+    orders: [{ kind: 'complete-any', count: 2 }],
+    moveTarget: 10,
+  },
+  {
+    schemaVersion: 1,
+    id: 'L02',
+    title: 'Pair Up',
+    rows: 4,
+    columns: 4,
+    cakeSize: 6,
+    flavors: ['strawberry', 'chocolate', 'lemon'],
+    generation: {
+      seed: 'L02-a',
+      cakesPerFlavor: [3, 3, 3],
+      startingPlates: 2,
+      minSlices: 2,
+      maxSlices: 3,
+      maxFlavorsPerPlate: 2,
+    },
+    orders: [{ kind: 'complete-flavor', flavor: 'strawberry', count: 2 }],
+    moveTarget: 12,
+  },
+  {
+    schemaVersion: 1,
+    id: 'L03',
+    title: 'Sweet Couple',
+    rows: 4,
+    columns: 4,
+    cakeSize: 6,
+    flavors: ['strawberry', 'chocolate', 'lemon', 'pistachio'],
+    generation: {
+      seed: 'L03-a',
+      cakesPerFlavor: [3, 3, 3, 3],
+      startingPlates: 3,
+      minSlices: 2,
+      maxSlices: 4,
+      maxFlavorsPerPlate: 3,
+    },
+    orders: [
+      { kind: 'complete-flavor', flavor: 'strawberry', count: 1 },
+      { kind: 'complete-flavor', flavor: 'chocolate', count: 1 },
+    ],
+    moveTarget: 12,
+  },
+  {
+    schemaVersion: 1,
+    id: 'L04',
+    title: 'Birthday Party',
+    rows: 4,
+    columns: 5,
+    cakeSize: 6,
+    flavors: ['strawberry', 'chocolate', 'lemon', 'pistachio'],
+    generation: {
+      seed: 'L04-a',
+      cakesPerFlavor: [3, 3, 3, 3],
+      startingPlates: 4,
+      minSlices: 2,
+      maxSlices: 4,
+      maxFlavorsPerPlate: 3,
+    },
+    orders: [{ kind: 'complete-any', count: 5 }],
+    moveTarget: 20,
+  },
+  {
+    schemaVersion: 1,
+    id: 'L05',
+    title: 'Festival',
+    rows: 4,
+    columns: 4,
+    cakeSize: 6,
+    flavors: ['strawberry', 'chocolate', 'lemon', 'pistachio', 'blueberry'],
+    generation: {
+      seed: 'L05-a',
+      cakesPerFlavor: [2, 2, 2, 2, 2],
+      startingPlates: 5,
+      minSlices: 2,
+      maxSlices: 4,
+      maxFlavorsPerPlate: 3,
+    },
+    orders: [{ kind: 'complete-distinct', count: 4 }],
+    moveTarget: 22,
+  },
+];
+
+export function levelById(id: string): LevelDefinition | undefined {
+  return LEVELS.find((l) => l.id === id);
+}

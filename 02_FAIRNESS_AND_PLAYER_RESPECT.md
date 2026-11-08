@@ -11,10 +11,12 @@ Players can:
 - Return to a previous branch.
 - Replay a completed solution.
 
-History entries include the previous and resulting state, move number, selection, destination, random-generator state, resolution events, completed cakes, and order progress. Rewind may affect optional mastery records, but never blocks completion or progression.
+History stores the command log plus periodic snapshots; any state is recomputed by replay, which determinism guarantees. Each entry records the move number, selection, destination, random-generator state, resolution events, completed cakes, and order progress. Rewind may affect optional mastery records, but never blocks completion or progression.
 
 ## Educational hint ladder
 Hints are unlimited:
+Every hint is labelled either solver-confirmed (a verified winning route exists) or heuristic.
+
 1. Highlight three promising cells.
 2. Narrow to two.
 3. Show the recommended placement.
@@ -47,9 +49,11 @@ Before campaign acceptance:
 8. Record agent win rates and tool dependency.
 9. Save a verification record.
 
+Every campaign level is verified in both tray modes. A route is a distinct sequence of the first N moves (N is recorded in the receipt) that the solver confirms reaches a win. Counts from bounded search are reported as lower bounds.
+
 Normal campaign guidance:
 - At least three viable first moves.
-- At least five known winning routes.
+- At least five known winning routes (lower bound).
 - At least one recovery route after an early suboptimal move.
 - No required tool.
 - No dynamically worsening sequence.

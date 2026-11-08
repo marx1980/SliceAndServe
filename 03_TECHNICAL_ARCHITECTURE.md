@@ -5,7 +5,7 @@ The rules engine receives immutable state plus a command and returns a new state
 
 ```ts
 interface PlacePlateCommand {
-  incomingChoiceId: string;
+  slot: number;
   row: number;
   column: number;
 }
@@ -120,6 +120,12 @@ The editor must serialize:
 - Ruleset and metadata
 
 Support compact share codes plus JSON import/export. Keep future community storage behind a repository interface so offline editor work is not blocked by a backend.
+
+## Solver state
+Keep the readable model for the engine. For the solver use a canonical string or hash of the state (plates sorted by flavour index, queue position, tray) for transposition tables and duplicate detection.
+
+## Localization
+All UI strings live in string tables from the start, with English and Croatian.
 
 ## Performance
 Target a typical mid-range phone:

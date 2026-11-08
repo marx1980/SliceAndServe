@@ -5,8 +5,8 @@
 Minimise unnecessary context gathering.
 
 When starting a new task:
-1. Read README.md and PLAN.md first, if they exist.
-2. Use PLAN.md to identify the current NEXT task.
+1. Read README.md and plan.md first, if they exist.
+2. Use plan.md to identify the current NEXT task.
 3. Inspect only the files directly relevant to that task.
 4. Expand to additional files only when required to understand dependencies or implement the task correctly.
 
@@ -23,7 +23,7 @@ If the relevant files can be identified directly, open those files rather than e
 
 ## Implementation
 
-Work on one PLAN.md task at a time.
+Work on one plan.md task at a time.
 
 Before changing code:
 -   understand the task and its acceptance criteria;
@@ -53,9 +53,9 @@ Do not run expensive or exhaustive test suites automatically when focused valida
 After completing a task:
 1. Verify the acceptance criteria.
 2. Mark the task DONE.
-3. Update PLAN.md with any important implementation decision that a future session needs.
+3. Update plan.md with any important implementation decision that a future session needs.
 4. Identify the next unfinished task as NEXT.
-5. Keep PLAN.md concise. Do not turn it into a detailed development log.
+5. Keep plan.md concise. Do not turn it into a detailed development log.
 
 ## Session completion
 At the end of the task, briefly report:
@@ -64,4 +64,4 @@ At the end of the task, briefly report:
 -   any unresolved issue;
 -   what is NEXT.
 Do not begin the next
-PLAN.md task unless explicitly asked.
+plan.md task unless explicitly asked.

@@ -64,8 +64,8 @@ src/
 1. Deterministic core sorting
 2. Predictable chain reactions
 3. Customer orders
-4. Full rewind and branching
-5. Solver verification
+4. Basic solver verification (needed before any content)
+5. Full rewind and branching
 6. Failure analysis and educational hints
 7. Automated balancing agents
 8. Bakery restoration and recipe collection
@@ -73,8 +73,9 @@ src/
 10. Additional modes
 11. Community services only after the offline game is proven
 
-Read the remaining files in this package before implementation:
+Read `README.md` and `plan.md` first, then only the design files the current task needs. `00_RULES_SPEC.md` is authoritative for game rules and is required reading for any rules, solver or UI-preview work.
 
+- `00_RULES_SPEC.md`: formal rules (wins over the others)
 - `01_GAME_DESIGN.md`
 - `02_FAIRNESS_AND_PLAYER_RESPECT.md`
 - `03_TECHNICAL_ARCHITECTURE.md`
@@ -87,6 +88,7 @@ Read the remaining files in this package before implementation:
 - The same state, seed, and commands always produce the same result.
 - Placement previews use the real rules engine.
 - Rewind is unlimited and free.
+- Every level is verified solvable in both tray models (slot and batch).
 - Hints are unlimited and educational.
 - Failure never removes earned progress.
 - Campaign progression has a real ending.

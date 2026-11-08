@@ -21,7 +21,7 @@ Families:
 - American bakery
 - Seasonal collection
 
-Include stylized Croatian recipes such as Madarica, Kremsnita, Makovnjaca, Orehnjaca, Rozata, and Rapska torta. Use correct diacritics in the user interface when assets and fonts support them.
+Include stylized Croatian recipes such as Madarica, Kremsnita, Makovnjača, Orehnjača, Rozata, and Rapska torta. Use correct diacritics in the user interface when assets and fonts support them.
 
 Recipe pages may unlock plates, decorations, music, completion effects, outfits, and editor pieces. Never use paid randomized loot boxes.
 
@@ -55,10 +55,10 @@ Difficulty must not rise continuously. Include relief and experimentation levels
 Authored deterministic levels, orders, bakery restoration, recipes, and a real ending.
 
 ### Daily Bake
-Same deterministic puzzle for all players. No paid tools. Score by moves, chains, and peak occupancy. Missed puzzles remain available for a reasonable period.
+Same deterministic puzzle for all players, drawn from a pre-verified pool shipped in a manifest (the date selects the entry), so solvability is guaranteed offline. No paid tools. Score by moves, chains, and peak occupancy. Missed puzzles remain available for a reasonable period.
 
 ### Endless Service
-Continue until full, with gradually increasing flavour and order complexity. Show the seed and generation rules.
+Generated puzzles are not solver-guaranteed and are labelled as such. Continue until full, with gradually increasing flavour and order complexity. Show the seed and generation rules.
 
 ### Rush Hour
 Optional timed mode. Never impose time pressure on the main campaign.
