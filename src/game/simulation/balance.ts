@@ -14,12 +14,20 @@ export function bandsFor(index: number): Band[] {
   if (index < 3) {
     bands.push({ agent: 'random', min: 0.8, max: 1, label: 'levels 1-3: random above 80%' });
   }
-  if (index < 10) {
+  if (index < 3) {
+    // Random above 80% already implies a strong agent wins nearly always, so only a floor applies.
+    bands.push({
+      agent: 'human-error',
+      min: 0.85,
+      max: 1,
+      label: 'levels 1-3: ordinary agent at least 85%',
+    });
+  } else if (index < 10) {
     bands.push({
       agent: 'human-error',
       min: 0.85,
       max: 0.95,
-      label: 'levels 1-10: ordinary agent 85-95%',
+      label: 'levels 4-10: ordinary agent 85-95%',
     });
   } else if (index < 30) {
     bands.push({ agent: 'human-error', min: 0.7, max: 0.85, label: 'levels 11-30: 70-85%' });
@@ -44,7 +52,12 @@ export function checkBalance(summaries: Summary[], levelIds: string[]): BalanceF
   levelIds.forEach((id, index) => {
     for (const band of bandsFor(index)) {
       for (const s of summaries.filter((x) => x.level === id && x.agent === band.agent)) {
-        if (s.winRate < band.min || s.winRate > band.max) {
+        // Bands are targets: fail only when the 95% interval misses the band entirely.
+        // The deterministic solver must hit its band exactly.
+        const exact = band.agent === 'solver';
+        const lo = exact ? s.winRate : s.winRateLow;
+        const hi = exact ? s.winRate : s.winRateHigh;
+        if (hi < band.min || lo > band.max) {
           failures.push({
             level: id,
             trayMode: s.trayMode,

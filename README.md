@@ -16,7 +16,8 @@ See `plan.md` for the current task and decisions. Rules are specified in `00_RUL
 - Lint: `npm run lint`
 - Build: `npm run build` (relative asset paths, works under a GitHub Pages subpath)
 - Verify levels: `npm run verify-levels` (solver receipts for every level in both tray modes); add `-- --write` to refresh `src/content/receipts.json`
-- Simulate: `npm run simulate -- --agent greedy --runs 1000 --mode batch --format csv`
+- Simulate: `npm run simulate -- --agent random,human-error,solver --runs 1000 --mode slot,batch --out reports` (parallel; JSON and CSV)
+- Balance check: `npm run simulate:check`; difficulty report: `npm run report` (writes `reports/difficulty.{md,json,csv}`)
 
 ## Notes
 - Rules live in framework-independent TypeScript under `src/game`. Phaser only renders.

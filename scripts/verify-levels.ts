@@ -16,7 +16,7 @@ for (const level of LEVELS) {
     if (!ok) failed++;
     console.log(
       `${ok ? 'OK  ' : 'FAIL'} ${level.id} ${trayMode.padEnd(5)} solvable=${r.solvable} ` +
-        `viable=${r.viableFirstMoves}/${r.firstMoves} ${r.exact ? 'shortest' : 'solution'}=${r.shortest} ` +
+        `viable=${r.viableFirstMoves}/${r.firstMoves} shortest=${r.shortest}${r.shortestProven ? '' : '?'} ` +
         `routes${r.exact ? '=' : '>='}${r.routes} (${Date.now() - t0} ms)`,
     );
   }

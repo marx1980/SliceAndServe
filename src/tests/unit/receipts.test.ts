@@ -18,14 +18,25 @@ describe('Fair Bake receipts', () => {
         let s = createInitialState(level, { trayMode: mode });
         for (const m of receipt!.solution) s = applyCommand(s, m).nextState;
         expect(s.status).toBe('won');
-        expect(receipt!.solution.length).toBe(receipt!.shortest);
+        expect(receipt!.shortest).not.toBeNull();
+        // The stored shortest line replays to a win and the move target is reachable.
+        let t = createInitialState(level, { trayMode: mode });
+        for (const m of receipt!.shortestLine) t = applyCommand(t, m).nextState;
+        expect(t.status).toBe('won');
+        expect(receipt!.shortestLine.length).toBe(receipt!.shortest);
+        expect(level.moveTarget).toBeGreaterThanOrEqual(receipt!.shortest!);
       });
     }
   }
   it('reports an outdated receipt when the level changes', () => {
     const level = LEVELS[0]!;
     const receipt = receipts.find((r) => r.levelId === level.id)!;
-    const edited = { ...level, title: level.title, moveTarget: level.moveTarget + 1 };
+    const edited = {
+      ...level,
+      title: level.title,
+      moveTarget: level.moveTarget,
+      rows: level.rows + 1,
+    };
     expect(receiptStatus(edited, receipt)).toBe('outdated');
     expect(receiptStatus(level, undefined)).toBe('missing');
   });

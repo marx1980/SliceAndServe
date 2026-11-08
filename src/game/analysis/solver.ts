@@ -178,3 +178,55 @@ export function verify(
     nodes: found.nodes + full.nodes,
   };
 }
+
+export interface ShortestResult {
+  /** Length of the shortest winning line found, or null. */
+  length: number | null;
+  moves: PlacePlateCommand[];
+  /** True when every shorter depth was exhausted, so `length` is the true minimum. */
+  proven: boolean;
+  nodes: number;
+}
+
+/**
+ * Iterative-deepening search for the shortest winning line. A transposition table
+ * remembers the largest remaining depth already proven insufficient for a state,
+ * so each deepening pass reuses earlier work.
+ */
+export function shortestLine(
+  state: GameState,
+  maxDepth = 24,
+  nodeBudget = 150_000,
+): ShortestResult {
+  let nodes = 0;
+  const failedAt = new Map<string, number>();
+  let budgetHit = false;
+  const path: PlacePlateCommand[] = [];
+
+  const dfs = (s: GameState, key: string, left: number): boolean => {
+    if (s.status === 'won') return true;
+    if (s.status === 'lost' || left === 0) return false;
+    if ((failedAt.get(key) ?? -1) >= left) return false;
+    if (nodes++ >= nodeBudget) {
+      budgetHit = true;
+      return false;
+    }
+    for (const c of children(s)) {
+      path.push(c.cmd);
+      if (dfs(c.state, c.key, left - 1)) return true;
+      path.pop();
+      if (budgetHit) return false;
+    }
+    failedAt.set(key, left);
+    return false;
+  };
+
+  const rootKey = stateKey(state);
+  for (let depth = 0; depth <= maxDepth; depth++) {
+    path.length = 0;
+    if (dfs(state, rootKey, depth))
+      return { length: path.length, moves: path.slice(), proven: true, nodes };
+    if (budgetHit) return { length: null, moves: [], proven: false, nodes };
+  }
+  return { length: null, moves: [], proven: false, nodes };
+}
