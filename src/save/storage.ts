@@ -336,6 +336,14 @@ export const loadSuspended = (levelId: string): SuspendedGame | undefined =>
 export function saveSuspended(game: SuspendedGame): void {
   const s = readSuspended();
   s.games[game.levelId] = game;
+  // Mode puzzles create many ids; keep only the most recent timelines.
+  const ids = Object.keys(s.games);
+  if (ids.length > 40) {
+    ids
+      .sort((a, b) => (s.games[a]?.savedAt ?? 0) - (s.games[b]?.savedAt ?? 0))
+      .slice(0, ids.length - 40)
+      .forEach((id) => delete s.games[id]);
+  }
   save(SUSPENDED_KEY, s);
 }
 

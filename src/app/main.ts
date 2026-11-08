@@ -974,7 +974,9 @@ function buildFair(): void {
   const status = receiptStatus(level, receipt);
   if (session.mode !== 'campaign') {
     const checked =
-      session.mode === 'daily' || session.mode === 'recipe' || session.mode === 'rescue';
+      session.mode === 'daily' ||
+      session.mode === 'recipe' ||
+      (session.mode === 'rescue' && MODES.rescue.some((r) => r.id === level.id));
     rowsList($('fair-rows'), [
       { label: L('mode'), values: [L(session.mode === 'recipe' ? 'recipe' : session.mode)] },
       { label: L('levelId'), values: [level.id] },

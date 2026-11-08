@@ -4,6 +4,7 @@ import { dailyLevel, dateKey, playableDays, type DailyEntry } from '../game/mode
 import { endlessRules, passLevel, zenLevel, type ZenConfig } from '../game/modes/generate';
 import { checkRescue, decodeRescue, encodeRescue, type RescueCheck } from '../game/modes/rescue';
 import type { LevelDefinition, ModeId } from '../game/model/types';
+import { hashSeed } from '../game/rules/rng';
 import { saveProgress } from '../save/storage';
 import { t } from '../ui/strings';
 
@@ -226,7 +227,7 @@ export function buildModes(
   const note = el('div', { id: 'rescue-note' }, importNote);
   const imp = el('button', { type: 'button', className: 'btn', id: 'rescue-import' }, L('import'));
   imp.addEventListener('click', () => {
-    const level = decodeRescue(codeBox.value, `X${session.progress.modes.rescues.length + 1}`);
+    const level = decodeRescue(codeBox.value, `X${hashSeed(codeBox.value.trim()).toString(36)}`);
     if (!level) {
       importNote = L('invalid');
       note.textContent = importNote;
