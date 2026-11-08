@@ -2,7 +2,7 @@
   {
     "levelId": "L01",
     "trayMode": "slot",
-    "levelHash": 3979314143,
+    "levelHash": 417769186,
     "seed": "L01-a",
     "solvable": true,
     "solution": [
@@ -51,12 +51,35 @@
     "viableFirstMoves": 42,
     "exact": false,
     "routes": 42,
-    "shortest": 8
+    "shortest": 4,
+    "shortestProven": true,
+    "shortestLine": [
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 2
+      },
+      {
+        "slot": 0,
+        "row": 3,
+        "column": 2
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 3,
+        "column": 1
+      }
+    ]
   },
   {
     "levelId": "L01",
     "trayMode": "batch",
-    "levelHash": 3979314143,
+    "levelHash": 417769186,
     "seed": "L01-a",
     "solvable": true,
     "solution": [
@@ -105,37 +128,65 @@
     "viableFirstMoves": 42,
     "exact": false,
     "routes": 42,
-    "shortest": 8
+    "shortest": 4,
+    "shortestProven": true,
+    "shortestLine": [
+      {
+        "slot": 0,
+        "row": 3,
+        "column": 2
+      },
+      {
+        "slot": 1,
+        "row": 2,
+        "column": 0
+      },
+      {
+        "slot": 2,
+        "row": 2,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 3,
+        "column": 1
+      }
+    ]
   },
   {
     "levelId": "L02",
     "trayMode": "slot",
-    "levelHash": 3331363733,
-    "seed": "L02-a",
+    "levelHash": 2624384521,
+    "seed": "L02-b",
     "solvable": true,
     "solution": [
       {
-        "slot": 1,
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 2,
         "row": 1,
-        "column": 3
+        "column": 0
       },
       {
-        "slot": 0,
+        "slot": 1,
         "row": 0,
-        "column": 3
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 2
+        "column": 0
       },
       {
         "slot": 2,
         "row": 0,
-        "column": 1
+        "column": 0
       },
       {
-        "slot": 2,
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 1,
         "row": 0,
         "column": 1
       },
@@ -146,8 +197,18 @@
       },
       {
         "slot": 0,
+        "row": 2,
+        "column": 3
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 0,
         "row": 0,
-        "column": 1
+        "column": 0
       },
       {
         "slot": 1,
@@ -155,31 +216,109 @@
         "column": 2
       }
     ],
-    "firstMoves": 42,
-    "viableFirstMoves": 42,
+    "firstMoves": 54,
+    "viableFirstMoves": 54,
     "exact": false,
-    "routes": 42,
-    "shortest": 8
+    "routes": 54,
+    "shortest": 11,
+    "shortestProven": false,
+    "shortestLine": [
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 3
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 2
+      }
+    ]
   },
   {
     "levelId": "L02",
     "trayMode": "batch",
-    "levelHash": 3331363733,
-    "seed": "L02-a",
+    "levelHash": 2624384521,
+    "seed": "L02-b",
     "solvable": true,
     "solution": [
       {
-        "slot": 1,
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 2,
         "row": 1,
-        "column": 3
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 0
       },
       {
         "slot": 0,
         "row": 0,
-        "column": 3
+        "column": 0
       },
       {
         "slot": 2,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 0,
         "row": 0,
         "column": 0
       },
@@ -189,9 +328,29 @@
         "column": 2
       },
       {
-        "slot": 0,
+        "slot": 2,
         "row": 0,
-        "column": 1
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 3
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 4
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 3
       },
       {
         "slot": 2,
@@ -201,200 +360,100 @@
       {
         "slot": 0,
         "row": 1,
+        "column": 4
+      }
+    ],
+    "firstMoves": 54,
+    "viableFirstMoves": 54,
+    "exact": false,
+    "routes": 54,
+    "shortest": 15,
+    "shortestProven": false,
+    "shortestLine": [
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 0,
         "column": 2
       },
       {
         "slot": 2,
         "row": 0,
-        "column": 2
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 3
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 4
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 4
       }
-    ],
-    "firstMoves": 42,
-    "viableFirstMoves": 42,
-    "exact": false,
-    "routes": 42,
-    "shortest": 8
+    ]
   },
   {
     "levelId": "L03",
     "trayMode": "slot",
-    "levelHash": 1622990109,
-    "seed": "L03-a",
+    "levelHash": 168533728,
+    "seed": "L03-b",
     "solvable": true,
     "solution": [
-      {
-        "slot": 1,
-        "row": 1,
-        "column": 3
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 0
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 1
-      },
-      {
-        "slot": 1,
-        "row": 0,
-        "column": 2
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 2
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 3
-      },
-      {
-        "slot": 0,
-        "row": 1,
-        "column": 2
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 2
-      },
-      {
-        "slot": 0,
-        "row": 1,
-        "column": 0
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 0
-      },
-      {
-        "slot": 0,
-        "row": 1,
-        "column": 1
-      },
-      {
-        "slot": 0,
-        "row": 2,
-        "column": 3
-      },
-      {
-        "slot": 0,
-        "row": 1,
-        "column": 3
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 3
-      },
-      {
-        "slot": 0,
-        "row": 2,
-        "column": 0
-      },
-      {
-        "slot": 2,
-        "row": 1,
-        "column": 0
-      }
-    ],
-    "firstMoves": 39,
-    "viableFirstMoves": 39,
-    "exact": false,
-    "routes": 39,
-    "shortest": 16
-  },
-  {
-    "levelId": "L03",
-    "trayMode": "batch",
-    "levelHash": 1622990109,
-    "seed": "L03-a",
-    "solvable": true,
-    "solution": [
-      {
-        "slot": 1,
-        "row": 1,
-        "column": 3
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 0
-      },
-      {
-        "slot": 2,
-        "row": 0,
-        "column": 1
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 2
-      },
-      {
-        "slot": 1,
-        "row": 0,
-        "column": 3
-      },
-      {
-        "slot": 2,
-        "row": 0,
-        "column": 2
-      },
-      {
-        "slot": 0,
-        "row": 1,
-        "column": 1
-      },
-      {
-        "slot": 1,
-        "row": 0,
-        "column": 1
-      },
-      {
-        "slot": 2,
-        "row": 0,
-        "column": 0
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 2
-      }
-    ],
-    "firstMoves": 39,
-    "viableFirstMoves": 39,
-    "exact": false,
-    "routes": 39,
-    "shortest": 10
-  },
-  {
-    "levelId": "L04",
-    "trayMode": "slot",
-    "levelHash": 3506933830,
-    "seed": "L04-a",
-    "solvable": true,
-    "solution": [
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 0
-      },
-      {
-        "slot": 0,
-        "row": 2,
-        "column": 2
-      },
-      {
-        "slot": 0,
-        "row": 1,
-        "column": 0
-      },
       {
         "slot": 0,
         "row": 0,
@@ -418,12 +477,241 @@
       {
         "slot": 0,
         "row": 1,
+        "column": 4
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 4
+      },
+      {
+        "slot": 0,
+        "row": 1,
         "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 1
       },
       {
         "slot": 0,
         "row": 1,
         "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 1
+      }
+    ],
+    "firstMoves": 51,
+    "viableFirstMoves": 51,
+    "exact": false,
+    "routes": 51,
+    "shortest": 12,
+    "shortestProven": false,
+    "shortestLine": [
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 4
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 4
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 4
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 1
+      }
+    ]
+  },
+  {
+    "levelId": "L03",
+    "trayMode": "batch",
+    "levelHash": 168533728,
+    "seed": "L03-b",
+    "solvable": true,
+    "solution": [
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 2
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 1,
+        "row": 2,
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 2
+      }
+    ],
+    "firstMoves": 51,
+    "viableFirstMoves": 51,
+    "exact": false,
+    "routes": 51,
+    "shortest": 5,
+    "shortestProven": true,
+    "shortestLine": [
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 2,
+        "column": 1
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 0
+      }
+    ]
+  },
+  {
+    "levelId": "L04",
+    "trayMode": "slot",
+    "levelHash": 970771850,
+    "seed": "L04-b",
+    "solvable": true,
+    "solution": [
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 0
       },
       {
         "slot": 0,
@@ -437,8 +725,23 @@
       },
       {
         "slot": 0,
+        "row": 2,
+        "column": 3
+      },
+      {
+        "slot": 1,
         "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 2,
         "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 2
       },
       {
         "slot": 0,
@@ -449,25 +752,158 @@
         "slot": 0,
         "row": 0,
         "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 2
       }
     ],
-    "firstMoves": 48,
-    "viableFirstMoves": 48,
+    "firstMoves": 36,
+    "viableFirstMoves": 36,
     "exact": false,
-    "routes": 48,
-    "shortest": 14
+    "routes": 36,
+    "shortest": 15,
+    "shortestProven": false,
+    "shortestLine": [
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 3
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 2
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 2
+      }
+    ]
   },
   {
     "levelId": "L04",
     "trayMode": "batch",
-    "levelHash": 3506933830,
-    "seed": "L04-a",
+    "levelHash": 970771850,
+    "seed": "L04-b",
     "solvable": true,
     "solution": [
       {
         "slot": 0,
         "row": 0,
-        "column": 0
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 2
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 1
       },
       {
         "slot": 1,
@@ -475,13 +911,8 @@
         "column": 1
       },
       {
-        "slot": 2,
-        "row": 0,
-        "column": 2
-      },
-      {
         "slot": 0,
-        "row": 2,
+        "row": 1,
         "column": 2
       },
       {
@@ -495,51 +926,144 @@
         "column": 2
       },
       {
-        "slot": 2,
-        "row": 1,
-        "column": 1
-      },
-      {
-        "slot": 0,
-        "row": 2,
-        "column": 1
-      },
-      {
-        "slot": 1,
-        "row": 2,
-        "column": 1
-      },
-      {
-        "slot": 1,
-        "row": 0,
-        "column": 1
-      },
-      {
-        "slot": 0,
-        "row": 1,
-        "column": 3
-      },
-      {
-        "slot": 2,
-        "row": 0,
-        "column": 1
-      },
-      {
         "slot": 0,
         "row": 1,
         "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 2,
+        "column": 0
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 2,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 2
       }
     ],
-    "firstMoves": 48,
-    "viableFirstMoves": 48,
+    "firstMoves": 36,
+    "viableFirstMoves": 36,
     "exact": false,
-    "routes": 48,
-    "shortest": 13
+    "routes": 36,
+    "shortest": 20,
+    "shortestProven": false,
+    "shortestLine": [
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 2
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 2
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 2,
+        "column": 0
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 2,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 2
+      }
+    ]
   },
   {
     "levelId": "L05",
     "trayMode": "slot",
-    "levelHash": 1528315970,
+    "levelHash": 295067136,
     "seed": "L05-a",
     "solvable": true,
     "solution": [
@@ -618,12 +1142,85 @@
     "viableFirstMoves": 31,
     "exact": false,
     "routes": 31,
-    "shortest": 14
+    "shortest": 14,
+    "shortestProven": false,
+    "shortestLine": [
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 2,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 2
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 1
+      }
+    ]
   },
   {
     "levelId": "L05",
     "trayMode": "batch",
-    "levelHash": 1528315970,
+    "levelHash": 295067136,
     "seed": "L05-a",
     "solvable": true,
     "solution": [
@@ -697,6 +1294,74 @@
     "viableFirstMoves": 31,
     "exact": false,
     "routes": 31,
-    "shortest": 13
+    "shortest": 13,
+    "shortestProven": false,
+    "shortestLine": [
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 0,
+        "column": 2
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 0
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 0
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 1,
+        "row": 2,
+        "column": 1
+      },
+      {
+        "slot": 2,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 1,
+        "column": 3
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 0,
+        "row": 0,
+        "column": 1
+      },
+      {
+        "slot": 2,
+        "row": 0,
+        "column": 3
+      },
+      {
+        "slot": 1,
+        "row": 1,
+        "column": 2
+      }
+    ]
   }
 ]

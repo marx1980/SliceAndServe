@@ -1,0 +1,11 @@
+level,title,trayMode,moveTarget,shortest,shortestProven,routes,viableFirstMoves,avgMovesHumanError,avgPeakOccupancy,win_random,win_human-error,win_solver
+L01,First Slice,slot,7,4,true,42,42/42,4.66,0.19,0.911,1,1
+L01,First Slice,batch,7,4,true,42,42/42,5.46,0.242,0.904,1,1
+L02,Pair Up,slot,18,11,false,54,54/54,8.55,0.167,0.932,1,1
+L02,Pair Up,batch,18,15,false,54,54/54,9.84,0.163,0.944,1,1
+L03,Sweet Couple,slot,15,12,false,51,51/51,6.87,0.307,0.828,1,1
+L03,Sweet Couple,batch,15,5,true,51,51/51,9.5,0.348,0.83,1,1
+L04,Birthday Party,slot,23,15,false,36,36/36,15.06,0.538,0.026,0.953,1
+L04,Birthday Party,batch,23,20,false,36,36/36,15.63,0.567,0.036,0.952,1
+L05,Festival,slot,17,14,false,31,31/33,11,0.477,0.016,0.887,1
+L05,Festival,batch,17,13,false,31,31/33,11.07,0.514,0.01,0.907,1

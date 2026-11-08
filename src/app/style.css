@@ -107,8 +107,14 @@ body {
   gap: 6px;
   padding: 8px 0;
 }
+#actions {
+  flex-wrap: wrap;
+}
 #actions .btn {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-inline: 6px;
+  white-space: nowrap;
 }
 .btn {
   min-width: 44px;
