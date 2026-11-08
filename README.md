@@ -17,6 +17,7 @@ See `plan.md` for the current task and decisions. Rules are specified in `00_RUL
 - Build: `npm run build` (relative asset paths, works under a GitHub Pages subpath)
 - Verify levels: `npm run verify-levels` (solver receipts for every level in both tray modes); add `-- --write` to refresh `src/content/receipts.json`
 - Simulate: `npm run simulate -- --agent random,human-error,solver --runs 1000 --mode slot,batch --out reports` (parallel; JSON and CSV)
+- Tune levels: `npm run tune-levels -- --only L07` (writes `src/content/levels/campaign.json`); then `npm run verify-levels -- --write`, `npm run mastery`, `npm run set-targets`
 - Balance check: `npm run simulate:check`; difficulty report: `npm run report` (writes `reports/difficulty.{md,json,csv}`)
 
 ## Notes

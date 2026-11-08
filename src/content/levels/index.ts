@@ -1,7 +1,10 @@
-import type { LevelDefinition } from '../../game/model/types';
+import type { LevelDefinition, MasteryGoal } from '../../game/model/types';
+import campaign from './campaign.json';
+import masteryData from '../mastery.json';
+import targetData from '../targets.json';
 
 /** Phase 2 vertical-slice levels. Every level is verified solvable in both tray modes (see verify-levels). */
-export const LEVELS: readonly LevelDefinition[] = [
+const BASE: readonly LevelDefinition[] = [
   {
     schemaVersion: 1,
     id: 'L01',
@@ -98,6 +101,17 @@ export const LEVELS: readonly LevelDefinition[] = [
     moveTarget: 17,
   },
 ];
+
+const mastery = masteryData as Record<string, { goal: MasteryGoal }>;
+
+/** Slice levels L01-L05 are hand authored; L06-L30 come from the tuned campaign data. */
+export const LEVELS: readonly LevelDefinition[] = [...BASE, ...(campaign as LevelDefinition[])].map(
+  (l) => ({
+    ...l,
+    moveTarget: (targetData as Record<string, number>)[l.id] ?? l.moveTarget,
+    ...(mastery[l.id] ? { mastery: mastery[l.id]?.goal } : {}),
+  }),
+);
 
 export function levelById(id: string): LevelDefinition | undefined {
   return LEVELS.find((l) => l.id === id);

@@ -75,5 +75,14 @@ Because placement needs an empty cell, a full board is a genuine deadlock. Loss 
 ## Preview
 A preview clones the state and runs the real engine. It returns the same events as the real move. Hidden information (future mystery slices) must be redacted by the caller, not by changing the engine.
 
+## Earned tools (Phase 5)
+Levels list `allowedTools`; with none, no energy is earned. Tools are never needed to win: the solver, receipts and agents ignore them.
+- **Sugar energy** accrues after resolution: +1 per completed cake, +1 bonus when the move's chain depth is 2 or more, +2 per order completed by the move. Every 6 energy becomes one **grant**; the player spends a grant by choosing any allowed tool (`grant` command, no move cost).
+- **Cake server** (`server`): move one named-flavour slice from a plate to an orthogonally adjacent plate with fewer than `cakeSize` slices. Counts as a move; resolution starts at the destination.
+- **Oven mitt** (`mitt`): move a plate to any empty playable cell. Counts as a move; resolution starts at the new cell.
+- **Tasting spoon** (`spoon`): reveals the next three incoming plates (`revealed`). No move cost.
+- **Bin** (`bin`): discards a tray plate, refilled by the tray model as after a placement. No move cost; can end a level by exhausting the supply.
+Tool commands live in the timeline, so undo, branches, bookmarks and replay work unchanged.
+
 ## Deferred rules (not in the core)
 Special slices, special plates, tools, diagonal interaction beyond the order above, and house rules sit behind `ruleset` flags and need entries in this file before implementation.

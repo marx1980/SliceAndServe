@@ -146,4 +146,12 @@ Display a concise promise:
 - **Failure analysis** finds the last position with a solver-confirmed route by binary search along the lost line, which is valid because a position without a route never leads back to one. It reports the closing move, moves played afterwards, the most spread flavour, a missed completion and the best verified alternative. If the solver budget runs out the report says Best known.
 - **Fair Bake receipts** live in `src/content/receipts.json`, one per level and tray model, with a hash of the level definition so edits mark a receipt outdated. Regenerate with `npm run verify-levels -- --write`. Each receipt stores a replayable solution; a unit test replays every one.
 - Solver work runs in a Web Worker, with a main-thread fallback.
-- Deferred: converting a failed board into a Rescue challenge (Phase 6), persisting the timeline across sessions (Phase 5 suspend and resume), a third hat.
+- Deferred: converting a failed board into a Rescue challenge (Phase 6).
+
+## Phase 5 implementation notes
+- **Hats**: one for winning, one for finishing within the move target, one for the level's mastery goal. Mastery never blocks progress. Goal kinds: chain depth, score, free spaces kept after every move, and no tools.
+- **Move targets** are the best known winning line in the slower tray model plus 3. Best known is the shortest of the solver's line and the shortest winning game found by the simulation agents; lines are stored and replayed by a test.
+- **Mastery goals** are chosen by `npm run mastery`, which only keeps a goal that ordinary play reaches in at least 10% of won games in both tray models, and stores a replayable witness line per model. A test replays every witness.
+- **Suspend and resume**: the whole timeline (commands, branches, bookmarks, cursor) is saved after each stable change, per level, and restored by replaying with the real engine. A save made for a different level definition or tray model is discarded and the level starts fresh.
+- Saves are versioned: settings and progress are version 2, with migrations from version 1. Export and import cover settings, progress and suspended puzzles.
+- Dialogue is optional, short, skippable per set and globally.

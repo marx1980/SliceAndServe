@@ -1,10 +1,10 @@
-import { applyCommand } from '../rules/engine';
-import type { EngineResult, GameState, PlacePlateCommand } from '../model/types';
+import { applyAny, sameCommand } from '../rules/apply';
+import type { Command, EngineResult, GameState } from '../model/types';
 
 export interface HistoryNode {
   readonly id: number;
   readonly parent: number | null;
-  readonly command: PlacePlateCommand | null;
+  readonly command: Command | null;
   readonly state: GameState;
   readonly depth: number;
   readonly children: number[];
@@ -20,9 +20,6 @@ export interface BranchInfo {
   status: GameState['status'];
   active: boolean;
 }
-
-const sameMove = (a: PlacePlateCommand, b: PlacePlateCommand): boolean =>
-  a.slot === b.slot && a.row === b.row && a.column === b.column;
 
 /**
  * Timeline tree of stable states. Nothing is ever discarded: undo and scrubbing move a cursor,
@@ -74,10 +71,10 @@ export class History {
   }
 
   /** Commands from the start to the cursor. */
-  get moves(): readonly PlacePlateCommand[] {
+  get moves(): readonly Command[] {
     return this.pathTo(this.cursor)
       .slice(1)
-      .map((n) => n.command as PlacePlateCommand);
+      .map((n) => n.command as Command);
   }
 
   pathTo(id: number): HistoryNode[] {
@@ -108,12 +105,10 @@ export class History {
     return n.id;
   }
 
-  play(cmd: PlacePlateCommand): EngineResult {
+  play(cmd: Command): EngineResult {
     const here = this.node(this.cursor);
-    const result = applyCommand(here.state, cmd);
-    const existing = here.children.find((c) =>
-      sameMove(this.node(c).command as PlacePlateCommand, cmd),
-    );
+    const result = applyAny(here.state, cmd);
+    const existing = here.children.find((c) => sameCommand(this.node(c).command as Command, cmd));
     let id: number;
     if (existing !== undefined) {
       id = existing;
@@ -216,11 +211,79 @@ export class History {
     }
     return this.current;
   }
+
+  serialize(): SerializedHistory {
+    return {
+      nodes: this.nodes.map((n) => ({
+        id: n.id,
+        parent: n.parent,
+        command: n.command,
+        bookmark: n.bookmark,
+        lastChild: n.lastChild,
+      })),
+      cursor: this.cursor,
+      leaf: this.leaf,
+    };
+  }
+
+  /**
+   * Rebuilds a timeline from a saved one by replaying every command with the real engine.
+   * Returns null when the data does not fit this initial state (stale or corrupted save).
+   */
+  static restore(initial: GameState, data: unknown): History | null {
+    try {
+      const d = data as SerializedHistory;
+      if (!d || !Array.isArray(d.nodes) || d.nodes.length === 0 || d.nodes.length > 5000)
+        return null;
+      const h = new History(initial);
+      for (const n of d.nodes.slice(1)) {
+        if (n.parent === null || n.parent >= h.nodes.length || !n.command) return null;
+        const parent = h.node(n.parent);
+        const result = applyAny(parent.state, n.command);
+        const id = h.nodes.length;
+        if (n.id !== id) return null;
+        h.nodes.push({
+          id,
+          parent: parent.id,
+          command: n.command,
+          state: result.nextState,
+          depth: parent.depth + 1,
+          children: [],
+          bookmark: n.bookmark === true,
+          lastChild: null,
+        });
+        parent.children.push(id);
+      }
+      for (const n of d.nodes) {
+        const lc = n.lastChild;
+        if (lc !== null && lc !== undefined && lc < h.nodes.length) h.node(n.id).lastChild = lc;
+      }
+      if (d.cursor >= h.nodes.length || d.leaf >= h.nodes.length) return null;
+      h.cursor = d.cursor;
+      h.leaf = d.leaf;
+      return h;
+    } catch {
+      return null;
+    }
+  }
+}
+
+/** Persistable form of a timeline: commands only. States are recomputed by replay. */
+export interface SerializedHistory {
+  nodes: Array<{
+    id: number;
+    parent: number | null;
+    command: Command | null;
+    bookmark: boolean;
+    lastChild: number | null;
+  }>;
+  cursor: number;
+  leaf: number;
 }
 
 /** Replays commands from an initial state; used by tests and saves. */
-export function replay(initial: GameState, commands: readonly PlacePlateCommand[]): GameState {
+export function replay(initial: GameState, commands: readonly Command[]): GameState {
   let state = initial;
-  for (const cmd of commands) state = applyCommand(state, cmd).nextState;
+  for (const cmd of commands) state = applyAny(state, cmd).nextState;
   return state;
 }

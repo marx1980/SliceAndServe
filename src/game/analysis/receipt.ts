@@ -31,6 +31,8 @@ export function levelHash(level: LevelDefinition): number {
   const rules: { -readonly [K in keyof LevelDefinition]?: LevelDefinition[K] } = { ...level };
   delete rules.moveTarget;
   delete rules.title;
+  delete rules.mastery;
+  delete rules.allowedTools;
   return hashSeed(JSON.stringify(rules));
 }
 

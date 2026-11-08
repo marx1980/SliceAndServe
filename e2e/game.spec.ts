@@ -124,7 +124,7 @@ test('settings: tray mode toggle persists and applies to the next restart', asyn
 
 test('level menu lists all levels and switching works; Croatian labels', async ({ page }) => {
   await page.locator('#btn-menu').click();
-  await expect(page.locator('#level-grid .level-btn')).toHaveCount(5);
+  await expect(page.locator('#level-grid .level-btn')).toHaveCount(30);
   await page.locator('#level-grid .level-btn').nth(2).click();
   await expect
     .poll(async () => page.evaluate(() => (window as unknown as { __sas: Sas }).__sas.level()))
@@ -265,4 +265,60 @@ test('Teach Me compares a played move with the recommendation', async ({ page })
   await expect(page.locator('#coach')).toContainText('Teach Me', { timeout: 20000 });
   await expect(page.locator('#coach .badge')).toHaveText(/Matches|Differs/);
   await expect(page.locator('#coach dl.rows')).toContainText('Route');
+});
+
+test('suspend and resume: the timeline survives a reload', async ({ page }) => {
+  await playMove(page, true);
+  const before = await page.evaluate(() => (window as unknown as { __sas: Sas }).__sas.history());
+  expect(before.length).toBeGreaterThan(1);
+  await page.reload();
+  await expect(page.locator('#stage canvas')).toBeVisible();
+  const after = await page.evaluate(() => (window as unknown as { __sas: Sas }).__sas.history());
+  expect(after.length).toBe(before.length);
+  expect((await state(page)).moveNumber).toBeGreaterThan(0);
+});
+
+test('recipe book and bakery list their collections', async ({ page }) => {
+  await page.locator('#btn-menu').click();
+  await page.locator('#menu-recipes').click();
+  await expect(page.locator('#recipes-body .stamp')).toHaveCount(30);
+  await expect(page.locator('#recipes-title')).toContainText('0/30');
+  await page.locator('#recipes-close').click();
+  await page.locator('#btn-menu').click();
+  await page.locator('#menu-bakery').click();
+  await expect(page.locator('#bakery-body .area')).toHaveCount(7);
+  await page.locator('#bakery-close').click();
+});
+
+test('story lines appear once and can be dismissed', async ({ page }) => {
+  await page.goto('/?e2e=1&story=1');
+  await expect(page.locator('#story')).toBeVisible();
+  await expect(page.locator('#story-speaker')).toHaveText('Mira');
+  await page.locator('#story-next').click();
+  await expect(page.locator('#story')).toBeHidden();
+  await page.reload();
+  await expect(page.locator('#stage canvas')).toBeVisible();
+  await expect(page.locator('#story')).toBeHidden();
+});
+
+test('earned tools: choose a tool, reveal upcoming plates with the spoon', async ({ page }) => {
+  await page.locator('#btn-menu').click();
+  await page.locator('#level-grid .level-btn').nth(11).click();
+  await expect(page.locator('#tools')).toBeVisible();
+  await page.evaluate(() =>
+    (window as unknown as { __sas: { debugStart(p: object): void } }).__sas.debugStart({
+      grants: 1,
+    }),
+  );
+  await expect(page.locator('#tools')).toContainText('Choose');
+  await page.locator('#tools button', { hasText: 'Tasting spoon' }).click();
+  await expect(page.locator('#tools button', { hasText: 'Tasting spoon ×1' })).toBeVisible();
+  await page.locator('#tools button', { hasText: 'Tasting spoon ×1' }).click();
+  await expect(page.locator('#tools')).toContainText('Next');
+});
+
+test('a hat is shown for the mastery goal', async ({ page }) => {
+  await page.locator('#btn-menu').click();
+  await page.locator('#level-grid .level-btn').nth(5).click();
+  await expect(page.locator('#v-goal')).toContainText('★');
 });

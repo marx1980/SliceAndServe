@@ -51,6 +51,8 @@ export class BoardScene extends Phaser.Scene {
   private fx: Phaser.GameObjects.GameObject[] = [];
   private hint: HintMarks | null = null;
   private hintTexts: Phaser.GameObjects.Text[] = [];
+  private picker: ((hit: { cell: number; slot: number }) => void) | null = null;
+  private pickFrom: number | null = null;
 
   constructor(
     private readonly session: GameSession,
@@ -150,9 +152,31 @@ export class BoardScene extends Phaser.Scene {
 
   // ---- input -------------------------------------------------------------------------------
 
+  /** Routes the next taps to `fn` (for earned tools) instead of placing plates. */
+  beginPick(fn: (hit: { cell: number; slot: number }) => void): void {
+    this.cancelSelection();
+    this.picker = fn;
+  }
+
+  endPick(): void {
+    this.picker = null;
+    this.pickFrom = null;
+    this.render();
+  }
+
+  /** Highlights the plate a tool will act on. */
+  markPicked(cell: number | null): void {
+    this.pickFrom = cell;
+    this.render();
+  }
+
   private onDown(p: Phaser.Input.Pointer): void {
     sfx.unlock();
     if (this.session.state.status !== 'playing') return;
+    if (this.picker) {
+      this.picker({ cell: this.cellAt(p.x, p.y), slot: this.slotAt(p.x, p.y) });
+      return;
+    }
     const slot = this.slotAt(p.x, p.y);
     if (slot >= 0) {
       this.pending = { slot, x: p.x, y: p.y, wasSelected: this.selectedSlot === slot };
@@ -363,10 +387,18 @@ export class BoardScene extends Phaser.Scene {
       const y = y0 + Math.floor(i / s.columns) * cs;
       const empty = s.board[i] === null;
       const highlight = this.selectedSlot !== null && empty;
-      g.fillStyle(highlight ? 0xfff0c2 : 0xefe3cc, 1);
+      const pastel = this.session.settings.plateTheme === 'pastel';
+      g.fillStyle(highlight ? 0xfff0c2 : pastel ? 0xf6e3ec : 0xefe3cc, 1);
       g.fillRoundedRect(x + 3, y + 3, cs - 6, cs - 6, 10);
-      g.lineStyle(highlight ? 3 : 1.5, highlight ? 0xe0a030 : 0xd2c1a0, 1);
+      g.lineStyle(highlight ? 3 : 1.5, highlight ? 0xe0a030 : pastel ? 0xe2b9cc : 0xd2c1a0, 1);
       g.strokeRoundedRect(x + 3, y + 3, cs - 6, cs - 6, 10);
+    }
+
+    if (this.pickFrom !== null && s.playable[this.pickFrom]) {
+      const x = x0 + (this.pickFrom % s.columns) * cs;
+      const y = y0 + Math.floor(this.pickFrom / s.columns) * cs;
+      g.lineStyle(4, 0xc2410c, 1);
+      g.strokeRoundedRect(x + 1, y + 1, cs - 2, cs - 2, 12);
     }
 
     // Keyboard cursor (visible focus).

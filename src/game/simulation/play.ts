@@ -2,7 +2,7 @@ import { createInitialState } from '../generation/expand';
 import { applyCommand } from '../rules/engine';
 import { createRng } from '../rules/rng';
 import { boardMetrics } from '../analysis/metrics';
-import type { LevelDefinition, TrayMode } from '../model/types';
+import type { LevelDefinition, PlacePlateCommand, TrayMode } from '../model/types';
 import { candidates, type GameAgent } from './agents/agents';
 
 /** What happened in one simulated game. */
@@ -26,6 +26,10 @@ export interface GameRecord {
   maxChain: number;
   combos: number;
   resolveMs: number;
+  finalScore: number;
+  /** Fewest empty playable cells after any move. */
+  minEmpty: number;
+  commands: PlacePlateCommand[];
 }
 
 const MAX_TURNS = 300;
@@ -55,6 +59,9 @@ export function playGame(
     maxChain: 0,
     combos: 0,
     resolveMs: 0,
+    finalScore: 0,
+    minEmpty: playable,
+    commands: [],
   };
   let dry = 0;
   let turn = 0;
@@ -84,6 +91,8 @@ export function playGame(
     const r = applyCommand(state, cmd);
     rec.resolveMs += performance.now() - t0;
     state = r.nextState;
+    rec.commands.push(cmd);
+    rec.minEmpty = Math.min(rec.minEmpty, r.analysis.emptyCellsAfter);
     turn++;
     const occupancy = 1 - r.analysis.emptyCellsAfter / playable;
     rec.occupancyByTurn.push(occupancy);
@@ -98,6 +107,7 @@ export function playGame(
     if (r.analysis.chainDepth >= 2) rec.combos++;
   }
   rec.moves = turn;
+  rec.finalScore = state.score;
   rec.won = state.status === 'won';
   if (state.status === 'lost') rec.failureTurn = turn;
   return rec;

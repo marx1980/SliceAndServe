@@ -35,6 +35,11 @@ export interface OrderProgress {
   readonly complete: boolean;
 }
 
+export type ToolId = 'server' | 'mitt' | 'spoon' | 'bin';
+export const TOOL_IDS: readonly ToolId[] = ['server', 'mitt', 'spoon', 'bin'];
+export type ToolInventory = Readonly<Record<ToolId, number>>;
+export const NO_TOOLS: ToolInventory = { server: 0, mitt: 0, spoon: 0, bin: 0 };
+
 export type GameStatus = 'playing' | 'won' | 'lost';
 
 export interface GameState {
@@ -58,6 +63,15 @@ export interface GameState {
   readonly score: number;
   readonly moveNumber: number;
   readonly status: GameStatus;
+  /** Tools the level allows; empty means no tools and no energy. */
+  readonly allowedTools: readonly ToolId[];
+  /** Sugar energy toward the next earned tool (0-5). */
+  readonly energy: number;
+  /** Earned tools waiting for the player's choice. */
+  readonly grants: number;
+  readonly tools: ToolInventory;
+  /** Absolute queue index up to which the tasting spoon has revealed incoming plates. */
+  readonly revealed: number;
 }
 
 export interface PlacePlateCommand {
@@ -65,6 +79,16 @@ export interface PlacePlateCommand {
   readonly row: number;
   readonly column: number;
 }
+
+export type ToolCommand =
+  | { readonly tool: 'grant'; readonly choose: ToolId }
+  | { readonly tool: 'server'; readonly from: number; readonly to: number; readonly flavor: number }
+  | { readonly tool: 'mitt'; readonly from: number; readonly to: number }
+  | { readonly tool: 'spoon' }
+  | { readonly tool: 'bin'; readonly slot: number };
+
+/** Any player action recorded in the timeline. */
+export type Command = PlacePlateCommand | ToolCommand;
 
 export type GameEvent =
   | { type: 'placed'; plateId: string; cell: number; slot: number }
@@ -90,6 +114,7 @@ export type GameEvent =
   | { type: 'chain'; depth: number }
   | { type: 'tray-refill'; slots: number[] }
   | { type: 'order-progress'; index: number; progress: OrderProgress }
+  | { type: 'tool'; tool: ToolId | 'grant'; detail?: number }
   | { type: 'status'; status: GameStatus };
 
 export interface MoveAnalysis {
@@ -135,4 +160,15 @@ export interface LevelDefinition {
   readonly orders: readonly OrderDefinition[];
   /** Suggested move count for the second chef hat. */
   readonly moveTarget: number;
+  /** Earned chef tools usable on this level; never required to win. */
+  readonly allowedTools?: readonly ToolId[];
+  /** Optional third-hat goal. */
+  readonly mastery?: MasteryGoal;
 }
+
+/** Level-specific mastery goal for the third chef hat. */
+export type MasteryGoal =
+  | { readonly kind: 'chain'; readonly depth: number }
+  | { readonly kind: 'score'; readonly points: number }
+  | { readonly kind: 'tidy'; readonly minEmpty: number }
+  | { readonly kind: 'no-tools' };

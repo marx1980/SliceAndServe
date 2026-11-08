@@ -152,7 +152,7 @@ export interface VerificationReceipt {
 /** Fair Bake receipt for one state. */
 export function verify(
   state: GameState,
-  budgets = { find: 300_000, analyze: 150_000, perFirst: 30_000 },
+  budgets = { find: 300_000, analyze: 60_000, perFirst: 30_000 },
 ): VerificationReceipt {
   const found = findSolution(state, budgets.find);
   const full = analyze(state, budgets.analyze);
@@ -193,11 +193,7 @@ export interface ShortestResult {
  * remembers the largest remaining depth already proven insufficient for a state,
  * so each deepening pass reuses earlier work.
  */
-export function shortestLine(
-  state: GameState,
-  maxDepth = 24,
-  nodeBudget = 150_000,
-): ShortestResult {
+export function shortestLine(state: GameState, maxDepth = 24, nodeBudget = 60_000): ShortestResult {
   let nodes = 0;
   const failedAt = new Map<string, number>();
   let budgetHit = false;

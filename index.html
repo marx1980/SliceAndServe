@@ -23,6 +23,7 @@
             <span id="v-moves"></span>
             <span id="v-target"></span>
             <span id="v-score"></span>
+            <span id="v-goal"></span>
           </div>
         </div>
         <button id="btn-timeline" class="btn icon" type="button">
@@ -60,6 +61,7 @@
       </header>
       <ul id="orders"></ul>
       <main id="stage" tabindex="0"></main>
+      <section id="tools" hidden></section>
       <section id="coach" hidden></section>
       <footer id="actions">
         <button id="btn-undo" class="btn" type="button"></button>
@@ -74,6 +76,8 @@
           <h2 id="menu-title"></h2>
           <div id="level-grid"></div>
           <div class="button-row">
+            <button id="menu-recipes" class="btn" type="button"></button>
+            <button id="menu-bakery" class="btn" type="button"></button>
             <button id="menu-fair" class="btn" type="button"></button>
             <button id="menu-close" class="btn" type="button"></button>
           </div>
@@ -112,6 +116,42 @@
           <h2 id="fair-title"></h2>
           <dl id="fair-rows" class="rows"></dl>
           <button id="fair-close" class="btn" type="button"></button>
+        </div>
+      </section>
+
+      <section id="recipes" class="overlay" hidden role="dialog" aria-modal="true">
+        <div class="panel">
+          <h2 id="recipes-title"></h2>
+          <div id="recipes-body"></div>
+          <button id="recipes-close" class="btn" type="button"></button>
+        </div>
+      </section>
+
+      <section id="bakery" class="overlay" hidden role="dialog" aria-modal="true">
+        <div class="panel">
+          <h2 id="bakery-title"></h2>
+          <div id="bakery-body"></div>
+          <button id="bakery-close" class="btn" type="button"></button>
+        </div>
+      </section>
+
+      <section id="story" class="overlay" hidden role="dialog" aria-modal="true">
+        <div class="panel">
+          <h2 id="story-speaker"></h2>
+          <p id="story-text"></p>
+          <div class="button-row">
+            <button id="story-skip" class="btn" type="button"></button>
+            <button id="story-next" class="btn primary" type="button"></button>
+          </div>
+        </div>
+      </section>
+
+      <section id="ending" class="overlay" hidden role="dialog" aria-modal="true">
+        <div class="panel">
+          <h2 id="ending-title"></h2>
+          <dl id="ending-rows" class="rows"></dl>
+          <p id="ending-credits"></p>
+          <button id="ending-close" class="btn primary" type="button"></button>
         </div>
       </section>
 

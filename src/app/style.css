@@ -374,3 +374,76 @@ input[type='range'] {
 .badge {
   font-size: 0.75rem;
 }
+
+/* Earned tools */
+#tools {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0;
+  font-size: 0.85rem;
+}
+#tools .tools-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+#tools .tools-energy {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+#tools .btn {
+  min-height: 44px;
+  padding: 4px 10px;
+}
+#tools .btn[aria-pressed='true'] {
+  border-color: var(--accent, #c2410c);
+}
+#tools .peek {
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+/* Recipe book and bakery */
+.recipe-group h3 {
+  margin: 8px 0 4px;
+  font-size: 0.95rem;
+}
+.stamp {
+  padding: 4px 10px;
+  border: 2px dashed var(--edge);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  opacity: 0.55;
+}
+.stamp.got {
+  border-style: solid;
+  opacity: 1;
+  background: var(--panel);
+}
+#bakery-body {
+  display: grid;
+  gap: 8px;
+}
+.area {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 2px solid var(--edge);
+  border-radius: 12px;
+  opacity: 0.6;
+}
+.area.restored {
+  opacity: 1;
+  background: var(--panel);
+}
+.area .need {
+  font-variant-numeric: tabular-nums;
+}
+#story-text {
+  font-size: 1.1rem;
+  margin: 8px 0 16px;
+}

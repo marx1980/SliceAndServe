@@ -1,0 +1,2057 @@
+{
+  "L01": {
+    "goal": { "kind": "score", "points": 200 },
+    "levelHash": 417769186,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 }
+      ]
+    }
+  },
+  "L02": {
+    "goal": { "kind": "score", "points": 300 },
+    "levelHash": 2624384521,
+    "witness": {
+      "slot": [
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 1, "row": 3, "column": 4 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 1, "row": 2, "column": 3 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 0, "column": 4 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 0, "row": 1, "column": 3 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 3, "column": 4 },
+        { "slot": 0, "row": 3, "column": 4 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 0, "row": 3, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 0, "row": 2, "column": 4 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 3, "column": 4 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 }
+      ]
+    }
+  },
+  "L03": {
+    "goal": { "kind": "tidy", "minEmpty": 3 },
+    "levelHash": 168533728,
+    "witness": {
+      "slot": [
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 0, "row": 0, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 0 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 0, "row": 0, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 0 }
+      ]
+    }
+  },
+  "L04": {
+    "goal": { "kind": "chain", "depth": 2 },
+    "levelHash": 970771850,
+    "witness": {
+      "slot": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 3, "column": 0 },
+        { "slot": 1, "row": 1, "column": 0 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 2, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 1, "column": 0 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 }
+      ]
+    }
+  },
+  "L05": {
+    "goal": { "kind": "score", "points": 400 },
+    "levelHash": 295067136,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ]
+    }
+  },
+  "L06": {
+    "goal": { "kind": "tidy", "minEmpty": 3 },
+    "levelHash": 1043411750,
+    "witness": {
+      "slot": [
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 2, "row": 0, "column": 4 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 1, "row": 1, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 3, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 0, "row": 1, "column": 3 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 2, "row": 0, "column": 4 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 1, "row": 1, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 3, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 0, "row": 1, "column": 3 }
+      ]
+    }
+  },
+  "L07": {
+    "goal": { "kind": "score", "points": 700 },
+    "levelHash": 2907824660,
+    "witness": {
+      "slot": [
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 }
+      ]
+    }
+  },
+  "L08": {
+    "goal": { "kind": "score", "points": 800 },
+    "levelHash": 638016055,
+    "witness": {
+      "slot": [
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 1 }
+      ]
+    }
+  },
+  "L09": {
+    "goal": { "kind": "tidy", "minEmpty": 3 },
+    "levelHash": 2158855378,
+    "witness": {
+      "slot": [
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 3 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 0, "column": 4 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 4 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 3 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 0, "column": 4 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 4 }
+      ]
+    }
+  },
+  "L10": {
+    "goal": { "kind": "score", "points": 700 },
+    "levelHash": 1818639573,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 0, "row": 2, "column": 4 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 0, "row": 2, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 0, "row": 2, "column": 4 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 0, "row": 2, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 }
+      ]
+    }
+  },
+  "L11": {
+    "goal": { "kind": "score", "points": 700 },
+    "levelHash": 3323832884,
+    "witness": {
+      "slot": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 3, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 0, "row": 2, "column": 2 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 3, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 0, "row": 2, "column": 2 }
+      ]
+    }
+  },
+  "L12": {
+    "goal": { "kind": "tidy", "minEmpty": 3 },
+    "levelHash": 720918281,
+    "witness": {
+      "slot": [
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 0 },
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 1, "row": 0, "column": 0 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 0 },
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 1, "row": 0, "column": 0 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ]
+    }
+  },
+  "L13": {
+    "goal": { "kind": "score", "points": 800 },
+    "levelHash": 2713360989,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 0, "row": 2, "column": 4 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 1, "row": 3, "column": 4 },
+        { "slot": 0, "row": 1, "column": 4 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 3, "column": 4 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 2, "row": 0, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 0, "row": 2, "column": 4 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 1, "row": 3, "column": 4 },
+        { "slot": 0, "row": 1, "column": 4 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 3, "column": 4 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 2, "row": 0, "column": 1 }
+      ]
+    }
+  },
+  "L14": {
+    "goal": { "kind": "no-tools" },
+    "levelHash": 3991356550,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 3 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 3 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 1 }
+      ]
+    }
+  },
+  "L15": {
+    "goal": { "kind": "tidy", "minEmpty": 3 },
+    "levelHash": 1794559124,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ]
+    }
+  },
+  "L16": {
+    "goal": { "kind": "score", "points": 800 },
+    "levelHash": 1240335685,
+    "witness": {
+      "slot": [
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 0, "row": 3, "column": 0 },
+        { "slot": 0, "row": 3, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 0, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 2, "column": 0 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 0, "row": 3, "column": 0 },
+        { "slot": 0, "row": 3, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 0, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 2, "column": 0 }
+      ]
+    }
+  },
+  "L17": {
+    "goal": { "kind": "score", "points": 500 },
+    "levelHash": 1402644336,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 0 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 0, "column": 0 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 0 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 0, "column": 0 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 }
+      ]
+    }
+  },
+  "L18": {
+    "goal": { "kind": "tidy", "minEmpty": 3 },
+    "levelHash": 4071772331,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 2, "row": 0, "column": 4 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 2, "row": 0, "column": 4 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 }
+      ]
+    }
+  },
+  "L19": {
+    "goal": { "kind": "score", "points": 1000 },
+    "levelHash": 2264658427,
+    "witness": {
+      "slot": [
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 0, "row": 2, "column": 4 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 2, "column": 4 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 0, "row": 2, "column": 4 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 2, "column": 4 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 0 }
+      ]
+    }
+  },
+  "L20": {
+    "goal": { "kind": "score", "points": 800 },
+    "levelHash": 621999905,
+    "witness": {
+      "slot": [
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 0, "row": 2, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 0, "row": 0, "column": 4 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 1, "row": 4, "column": 2 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 0 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 2, "row": 0, "column": 4 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 }
+      ]
+    }
+  },
+  "L21": {
+    "goal": { "kind": "tidy", "minEmpty": 3 },
+    "levelHash": 2532117099,
+    "witness": {
+      "slot": [
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 0, "column": 0 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 1, "row": 0, "column": 0 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 0 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 1, "row": 0, "column": 0 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 1, "row": 0, "column": 0 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 0 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 }
+      ]
+    }
+  },
+  "L22": {
+    "goal": { "kind": "chain", "depth": 2 },
+    "levelHash": 3248311609,
+    "witness": {
+      "slot": [
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 2, "row": 1, "column": 0 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 0, "row": 1, "column": 0 }
+      ]
+    }
+  },
+  "L23": {
+    "goal": { "kind": "score", "points": 800 },
+    "levelHash": 4111952902,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 0 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 0, "column": 0 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 0 }
+      ]
+    }
+  },
+  "L24": {
+    "goal": { "kind": "tidy", "minEmpty": 3 },
+    "levelHash": 1383641445,
+    "witness": {
+      "slot": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 0, "column": 2 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 }
+      ]
+    }
+  },
+  "L25": {
+    "goal": { "kind": "score", "points": 1000 },
+    "levelHash": 1281539966,
+    "witness": {
+      "slot": [
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 4 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 0, "row": 3, "column": 4 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 4 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 2, "row": 0, "column": 4 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 4 },
+        { "slot": 1, "row": 0, "column": 4 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 0, "row": 3, "column": 0 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 1, "row": 1, "column": 4 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 1, "row": 2, "column": 4 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 2, "row": 0, "column": 0 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 }
+      ]
+    }
+  },
+  "L26": {
+    "goal": { "kind": "score", "points": 900 },
+    "levelHash": 1455973159,
+    "witness": {
+      "slot": [
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 0, "column": 2 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 3, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 3 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 }
+      ],
+      "batch": [
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 0, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 0, "column": 2 }
+      ]
+    }
+  },
+  "L27": {
+    "goal": { "kind": "tidy", "minEmpty": 3 },
+    "levelHash": 678784172,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 4, "column": 1 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 0, "row": 4, "column": 0 },
+        { "slot": 2, "row": 4, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 0, "row": 4, "column": 1 },
+        { "slot": 0, "row": 3, "column": 0 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 1, "row": 3, "column": 0 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 4, "column": 1 },
+        { "slot": 0, "row": 3, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 1, "row": 1, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 0, "column": 0 },
+        { "slot": 0, "row": 2, "column": 0 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 4, "column": 1 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 0, "row": 4, "column": 0 },
+        { "slot": 2, "row": 4, "column": 2 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 0, "row": 4, "column": 1 },
+        { "slot": 0, "row": 3, "column": 0 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 1, "row": 3, "column": 0 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 4, "column": 1 },
+        { "slot": 0, "row": 3, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 0 },
+        { "slot": 1, "row": 1, "column": 0 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 1, "row": 0, "column": 0 },
+        { "slot": 0, "row": 2, "column": 0 }
+      ]
+    }
+  },
+  "L28": {
+    "goal": { "kind": "score", "points": 800 },
+    "levelHash": 2277981053,
+    "witness": {
+      "slot": [
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 2, "row": 3, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 0, "column": 3 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 0, "row": 2, "column": 3 }
+      ],
+      "batch": [
+        { "slot": 1, "row": 0, "column": 2 },
+        { "slot": 0, "row": 1, "column": 1 },
+        { "slot": 2, "row": 0, "column": 1 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 2, "column": 0 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 2, "row": 1, "column": 2 }
+      ]
+    }
+  },
+  "L29": {
+    "goal": { "kind": "no-tools" },
+    "levelHash": 915808590,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 1, "row": 0, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 0, "row": 0, "column": 2 },
+        { "slot": 1, "row": 0, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 0, "row": 1, "column": 0 },
+        { "slot": 0, "row": 0, "column": 1 },
+        { "slot": 1, "row": 1, "column": 1 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 1, "row": 0, "column": 2 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 0, "column": 3 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 1, "column": 3 },
+        { "slot": 2, "row": 1, "column": 0 },
+        { "slot": 2, "row": 1, "column": 1 }
+      ]
+    }
+  },
+  "L30": {
+    "goal": { "kind": "tidy", "minEmpty": 3 },
+    "levelHash": 2014974537,
+    "witness": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 0, "row": 3, "column": 4 },
+        { "slot": 0, "row": 4, "column": 3 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 4, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 1, "row": 4, "column": 0 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 1, "row": 4, "column": 4 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 4, "column": 0 },
+        { "slot": 2, "row": 3, "column": 4 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 1, "row": 1, "column": 0 }
+      ]
+    },
+    "best": {
+      "slot": [
+        { "slot": 0, "row": 2, "column": 1 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 0, "row": 3, "column": 4 },
+        { "slot": 0, "row": 4, "column": 3 },
+        { "slot": 0, "row": 3, "column": 2 },
+        { "slot": 0, "row": 4, "column": 1 },
+        { "slot": 2, "row": 3, "column": 1 },
+        { "slot": 2, "row": 1, "column": 1 },
+        { "slot": 1, "row": 4, "column": 0 },
+        { "slot": 0, "row": 1, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 2, "row": 2, "column": 2 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 0 },
+        { "slot": 1, "row": 3, "column": 1 },
+        { "slot": 1, "row": 2, "column": 3 },
+        { "slot": 1, "row": 4, "column": 4 }
+      ],
+      "batch": [
+        { "slot": 0, "row": 2, "column": 3 },
+        { "slot": 1, "row": 3, "column": 3 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 4, "column": 0 },
+        { "slot": 2, "row": 3, "column": 4 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 2, "row": 2, "column": 4 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 1, "row": 1, "column": 2 },
+        { "slot": 0, "row": 1, "column": 3 },
+        { "slot": 2, "row": 3, "column": 0 },
+        { "slot": 2, "row": 2, "column": 1 },
+        { "slot": 0, "row": 3, "column": 1 },
+        { "slot": 1, "row": 2, "column": 1 },
+        { "slot": 1, "row": 3, "column": 2 },
+        { "slot": 0, "row": 2, "column": 2 },
+        { "slot": 2, "row": 2, "column": 3 },
+        { "slot": 0, "row": 3, "column": 3 },
+        { "slot": 2, "row": 3, "column": 2 },
+        { "slot": 1, "row": 1, "column": 0 }
+      ]
+    }
+  }
+}

@@ -39,7 +39,7 @@ describe('simulation', () => {
     expect(failures[0]).toMatchObject({ level: 'L01', agent: 'random', metric: 'winRate' });
   });
 
-  it('the solver agent wins every level in both tray modes', () => {
+  it('the solver agent wins every level in both tray modes', { timeout: 180_000 }, () => {
     for (const l of LEVELS)
       for (const mode of ['slot', 'batch'] as const)
         expect(playGame(l, AGENTS['solver']!, 0, mode).won).toBe(true);
