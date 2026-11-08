@@ -1,18 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 <rect width="512" height="512" fill="#fff4dd"/>
 <g transform="translate(256 256) scale(1.0) translate(-256 -256)">
-<ellipse cx="256" cy="274" rx="214" ry="206" fill="#d8c8a8" opacity="0.55"/>
-<circle cx="256" cy="256" r="214" fill="#fffdf7" stroke="#d9cdb4" stroke-width="8"/>
-<circle cx="256" cy="256" r="172" fill="#f6efe0" stroke="#e4d9c0" stroke-width="6"/>
-<path d="M266.9 239.2 L336.6 131.9 A148 148 0 0 1 403.8 248.3 L276.0 255.0 A20 20 0 0 0 266.9 239.2Z" fill="none" stroke="#cdbfa6" stroke-width="7" stroke-dasharray="14 12" stroke-linejoin="round"/>
-<path d="M276.0 257.0 L403.8 263.7 A148 148 0 0 1 336.6 380.1 L266.9 272.8 A20 20 0 0 0 276.0 257.0Z" fill="none" stroke="#cdbfa6" stroke-width="7" stroke-dasharray="14 12" stroke-linejoin="round"/>
-<path d="M267.8 280.3 L317.8 382.7 A141 141 0 0 1 194.2 382.7 L244.2 280.3 A27 27 0 0 0 267.8 280.3Z" fill="#e5484d" stroke="#e5484d" stroke-width="14" stroke-linejoin="round"/>
-<circle cx="256.0" cy="352.0" r="12" fill="#ffc2c4"/>
-<path d="M240.9 278.4 L177.2 372.9 A141 141 0 0 1 115.3 265.8 L229.1 257.9 A27 27 0 0 0 240.9 278.4Z" fill="#7a4a2b" stroke="#7a4a2b" stroke-width="14" stroke-linejoin="round"/>
-<circle cx="172.9" cy="304.0" r="12" fill="#c9966b"/>
-<path d="M229.1 254.1 L115.3 246.2 A141 141 0 0 1 177.2 139.1 L240.9 233.6 A27 27 0 0 0 229.1 254.1Z" fill="#f2c94c" stroke="#f2c94c" stroke-width="14" stroke-linejoin="round"/>
-<circle cx="172.9" cy="208.0" r="12" fill="#fff2b0"/>
-<path d="M244.2 231.7 L194.2 129.3 A141 141 0 0 1 317.8 129.3 L267.8 231.7 A27 27 0 0 0 244.2 231.7Z" fill="#6fbf73" stroke="#6fbf73" stroke-width="14" stroke-linejoin="round"/>
-<circle cx="256.0" cy="160.0" r="12" fill="#cdeccf"/>
+<circle cx="256.0" cy="256.0" r="214.0" fill="#fffaf0" stroke="#cdbfa6" stroke-width="14.27"/>
+<path d="M256.00 256.00 L256.00 71.96 A184.04 184.04 0 0 1 415.38 163.98Z" fill="none" stroke="#cdbfa6" stroke-opacity="0.5" stroke-width="7.13"/>
+<path d="M256.00 256.00 L415.38 163.98 A184.04 184.04 0 0 1 415.38 348.02Z" fill="none" stroke="#cdbfa6" stroke-opacity="0.5" stroke-width="7.13"/>
+<path d="M256.00 256.00 L415.38 348.02 A184.04 184.04 0 0 1 256.00 440.04Z" fill="#e5484d" stroke="#ffffff" stroke-width="10.70"/>
+<circle cx="313.05" cy="354.82" r="22.26" fill="#ffc2c4"/>
+<path d="M256.00 256.00 L256.00 440.04 A184.04 184.04 0 0 1 96.62 348.02Z" fill="#7a4a2b" stroke="#ffffff" stroke-width="10.70"/>
+<rect x="179.47" y="335.34" width="38.95" height="38.95" fill="#c9966b"/>
+<path d="M256.00 256.00 L96.62 348.02 A184.04 184.04 0 0 1 96.62 163.98Z" fill="#f2c94c" stroke="#ffffff" stroke-width="10.70"/>
+<polygon points="141.90,228.18 168.32,276.87 115.47,276.87" fill="#fff2b0"/>
+<path d="M256.00 256.00 L96.62 163.98 A184.04 184.04 0 0 1 256.00 71.96Z" fill="#6fbf73" stroke="#ffffff" stroke-width="10.70"/>
+<polygon points="198.95,129.36 226.77,157.18 198.95,185.00 171.13,157.18" fill="#cdeccf"/>
 </g>
 </svg>
