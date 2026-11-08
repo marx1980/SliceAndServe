@@ -5,8 +5,9 @@ import { applyCommand, legalMoves } from '../../game/rules/engine';
 import { createRng } from '../../game/rules/rng';
 import { boardMetrics } from '../../game/analysis/metrics';
 import { compareMoves, computeHints, evaluateMoves, explainMove } from '../../game/analysis/hints';
+import { applyAny } from '../../game/rules/apply';
 import { analyzeFailure } from '../../game/analysis/failure';
-import { findSolution } from '../../game/analysis/solver';
+import { findSolution, movesLowerBound } from '../../game/analysis/solver';
 import type { GameState, PlacePlateCommand } from '../../game/model/types';
 
 /** Plays seeded random moves until the game ends; returns the line. */
@@ -102,6 +103,29 @@ describe('teach me comparison', () => {
   });
 });
 
+describe('failure analysis with tools in the line', () => {
+  it('accepts tool commands and reports a boundary that holds on both sides', () => {
+    const level = LEVELS[3]!;
+    const initial: GameState = { ...createInitialState(level), allowedTools: ['bin'], grants: 1 };
+    const grant = { tool: 'grant', choose: 'bin' } as const;
+    const afterGrant = applyAny(initial, grant).nextState;
+    let checked = false;
+    for (let i = 0; i < 40 && !checked; i++) {
+      const l = randomLine(afterGrant, `tool-fail-${i}`);
+      if (l.states.at(-1)!.status !== 'lost') continue;
+      const states = [initial, ...l.states];
+      const moves = [grant, ...l.moves];
+      const r = analyzeFailure(states, moves);
+      if (r.lastWinningIndex === null) continue;
+      checked = true;
+      expect(r.criticalMove).toEqual(moves[r.lastWinningIndex]);
+      expect(findSolution(states[r.lastWinningIndex]!, 400_000).solved).toBe(true);
+      if (r.lastWinningIndex === 0) expect(r.criticalPlate).toBeNull();
+    }
+    expect(checked).toBe(true);
+  }, 120_000);
+});
+
 describe('failure analysis', () => {
   it('finds the critical move, and the position before it still has a winning route', () => {
     const level = LEVELS[3]!; // random play loses often here
@@ -139,4 +163,22 @@ describe('failure analysis', () => {
     const s = createInitialState(LEVELS[0]!);
     expect(analyzeFailure([s], []).lastWinningIndex).toBeNull();
   });
+});
+
+describe('movesLowerBound', () => {
+  it('never exceeds the length of a real winning line', () => {
+    for (const level of LEVELS.slice(0, 6)) {
+      const state = createInitialState(level);
+      const sol = findSolution(state, 100_000);
+      if (!sol.solved) continue;
+      let s = state;
+      for (const [i, cmd] of sol.moves.entries()) {
+        expect(movesLowerBound(s), `${level.id} step ${i}`).toBeLessThanOrEqual(
+          sol.moves.length - i,
+        );
+        s = applyCommand(s, cmd).nextState;
+      }
+      expect(s.status).toBe('won');
+    }
+  }, 120_000);
 });

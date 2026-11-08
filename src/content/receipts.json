@@ -519,68 +519,33 @@
     "viableFirstMoves": 51,
     "exact": false,
     "routes": 51,
-    "shortest": 12,
-    "shortestProven": false,
+    "shortest": 5,
+    "shortestProven": true,
     "shortestLine": [
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 1
-      },
       {
         "slot": 0,
         "row": 0,
         "column": 2
       },
       {
-        "slot": 0,
+        "slot": 2,
         "row": 0,
-        "column": 3
-      },
-      {
-        "slot": 0,
-        "row": 0,
-        "column": 4
-      },
-      {
-        "slot": 0,
-        "row": 1,
-        "column": 4
-      },
-      {
-        "slot": 0,
-        "row": 2,
         "column": 1
       },
       {
         "slot": 0,
         "row": 0,
-        "column": 4
+        "column": 1
       },
       {
         "slot": 0,
+        "row": 1,
+        "column": 1
+      },
+      {
+        "slot": 2,
         "row": 1,
         "column": 0
-      },
-      {
-        "slot": 1,
-        "row": 1,
-        "column": 1
-      },
-      {
-        "slot": 1,
-        "row": 1,
-        "column": 1
-      },
-      {
-        "slot": 0,
-        "row": 1,
-        "column": 1
-      },
-      {
-        "slot": 0,
-        "row": 1,
-        "column": 1
       }
     ]
   },

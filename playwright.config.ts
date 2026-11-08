@@ -4,7 +4,7 @@ import { defineConfig } from '@playwright/test';
 const executablePath = process.env.PW_CHROME || undefined;
 
 export default defineConfig({
-  retries: process.env.CI ? 1 : 0,
+  retries: 0,
   testDir: 'e2e',
   timeout: 30000,
   use: {

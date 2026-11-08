@@ -154,7 +154,8 @@ export interface FixedLayout {
   readonly queue: readonly (readonly number[])[];
 }
 
-export type ModeId = 'campaign' | 'daily' | 'endless' | 'zen' | 'rescue' | 'recipe' | 'pass';
+export type ModeId =
+  'campaign' | 'daily' | 'endless' | 'zen' | 'rescue' | 'recipe' | 'pass' | 'tutorial';
 
 export interface LevelDefinition {
   readonly schemaVersion: 1;

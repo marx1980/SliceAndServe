@@ -179,6 +179,39 @@ export function verify(
   };
 }
 
+/**
+ * Admissible lower bound on the placements still needed: the orders ask for some number of cakes,
+ * every cake needs `cakeSize` slices, the board already holds some slices and each placement adds one
+ * plate. It ignores flavours and chains, so it never overestimates. Tools are not considered.
+ */
+export function movesLowerBound(state: GameState): number {
+  let cakesNeeded = 0;
+  let flavorSum = 0;
+  state.orders.forEach((spec, i) => {
+    const prog = state.orderProgress[i];
+    if (!prog || prog.complete || spec.kind === 'chain') return;
+    const left = prog.target - prog.value;
+    if (spec.kind === 'complete-flavor') flavorSum += left;
+    else cakesNeeded = Math.max(cakesNeeded, left);
+  });
+  cakesNeeded = Math.max(cakesNeeded, flavorSum);
+  if (cakesNeeded === 0) return 0;
+  let onBoard = 0;
+  for (const p of state.board) if (p) onBoard += p.slices.length;
+  const need = cakesNeeded * state.ruleset.cakeSize - onBoard;
+  if (need <= 0) return 0;
+  const sizes = [
+    ...state.tray.flatMap((p) => (p ? [p.slices.length] : [])),
+    ...state.queue.slice(state.queueIndex).map((p) => p.slices.length),
+  ].sort((a, b) => b - a);
+  let got = 0;
+  for (let k = 0; k < sizes.length; k++) {
+    got += sizes[k] as number;
+    if (got >= need) return k + 1;
+  }
+  return sizes.length + 1; // cannot be met at all
+}
+
 export interface ShortestResult {
   /** Length of the shortest winning line found, or null. */
   length: number | null;
@@ -203,6 +236,10 @@ export function shortestLine(state: GameState, maxDepth = 24, nodeBudget = 60_00
     if (s.status === 'won') return true;
     if (s.status === 'lost' || left === 0) return false;
     if ((failedAt.get(key) ?? -1) >= left) return false;
+    if (movesLowerBound(s) > left) {
+      failedAt.set(key, left);
+      return false;
+    }
     if (nodes++ >= nodeBudget) {
       budgetHit = true;
       return false;

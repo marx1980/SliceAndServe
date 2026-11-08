@@ -19,13 +19,14 @@ import type { FailureReport } from '../game/analysis/failure';
 import { receiptStatus, type Receipt } from '../game/analysis/receipt';
 import { requestFailure, requestHints } from '../game/analysis/client';
 import type { EngineResult, GameState, OrderSpec, PlacePlateCommand } from '../game/model/types';
-import { hatCount, exportSaves, importSaves } from '../save/storage';
+import { hatCount, completedCount, exportSaves, importSaves } from '../save/storage';
 import type { AnimationSpeed, Language, PlateTheme, TrayModeSetting } from '../save/storage';
 import { buildBakery, buildRecipes, goalLabel, showEnding, showStory } from './panels';
 import { createToolsUi } from './toolsUi';
 import { addRescue, buildModes, MODES } from './modes';
+import { LESSONS } from '../content/tutorials';
 import { lastRescuableIndex, rescueFromState } from '../game/modes/rescue';
-import type { LevelDefinition, ModeId } from '../game/model/types';
+import type { LevelDefinition, ModeId, ToolId } from '../game/model/types';
 
 const $ = <T extends HTMLElement>(id: string): T => {
   const el = document.getElementById(id);
@@ -99,6 +100,41 @@ function orderLabel(spec: OrderSpec): { swatch?: number; text: string } {
   }
 }
 
+function toolLabel(tool: ToolId): string {
+  return L(TOOL_KEY[tool]);
+}
+
+/** Lesson bar: step counter, one imperative label, and the ring on the scripted cell. */
+function renderLesson(): void {
+  const bar = $('lesson');
+  const tut = session.tutorial;
+  bar.hidden = !tut;
+  $('btn-timeline').hidden = !!tut;
+  if (!tut) return;
+  const step = session.tutorialStep;
+  $('lesson-step').textContent =
+    `${Math.min(tut.step + 1, tut.lesson.steps.length)}/${tut.lesson.steps.length}`;
+  let prompt = '';
+  let marks: HintMarks | null = null;
+  if (step?.kind === 'undo') prompt = L('tutUndo');
+  else if (step?.kind === 'hint') prompt = L('tutHint');
+  else if (step?.kind === 'play') {
+    const cmd = step.cmd;
+    if (!isToolCommand(cmd)) {
+      const cell = cmd.row * session.state.columns + cmd.column;
+      prompt = `${L('tutPlace')} ${cmd.slot + 1}`;
+      marks = { cells: [cell], slot: cmd.slot, target: cell, sequence: [] };
+    } else if (cmd.tool === 'grant') prompt = `${L('tutChoose')} ${toolLabel(cmd.choose)}`;
+    else if (cmd.tool === 'bin') {
+      prompt = `${L('tutBin')} ${cmd.slot + 1}`;
+      marks = { cells: [], slot: cmd.slot, target: null, sequence: [] };
+    }
+  }
+  $('lesson-prompt').textContent = prompt;
+  if (step?.kind !== 'hint' || !hint)
+    scene.setHintMarks(session.state.status === 'playing' ? marks : null);
+}
+
 function renderQueue(): void {
   const q = $('queue');
   const state = session.state;
@@ -127,9 +163,11 @@ function updateHud(selectedSlot: number | null): void {
   $('level-title').textContent =
     mode === 'campaign'
       ? `${session.level.id.replace('L', '')}. ${session.level.title}`
-      : mode === 'endless'
-        ? `${L('endless')} ${L('stage')} ${session.endless.stage}`
-        : `${L(mode === 'recipe' ? 'recipe' : mode)} ${session.level.title}`;
+      : mode === 'tutorial'
+        ? `${L('tutorials')}: ${L(session.tutorial?.lesson.titleKey ?? 'tutorials')}`
+        : mode === 'endless'
+          ? `${L('endless')} ${L('stage')} ${session.endless.stage}`
+          : `${L(mode === 'recipe' ? 'recipe' : mode)} ${session.level.title}`;
   $('v-moves').textContent = `${L('moves')} ${state.moveNumber}`;
   $('v-target').textContent =
     mode === 'campaign' ? `${L('target')} ${session.level.moveTarget}` : '';
@@ -144,6 +182,7 @@ function updateHud(selectedSlot: number | null): void {
         ? `★ ${goalLabel(lang(), session.level.mastery)}`
         : '';
   renderQueue();
+  renderLesson();
 
   const list = $('orders');
   list.replaceChildren();
@@ -174,8 +213,15 @@ function updateHud(selectedSlot: number | null): void {
   });
 
   tools.render();
-  $('btn-undo').toggleAttribute('disabled', !session.history.canUndo());
-  $('btn-hint').toggleAttribute('disabled', state.status !== 'playing');
+  const lessonStep = session.tutorial ? session.tutorialStep : null;
+  $('btn-undo').toggleAttribute(
+    'disabled',
+    !session.history.canUndo() || (!!session.tutorial && lessonStep?.kind !== 'undo'),
+  );
+  $('btn-hint').toggleAttribute(
+    'disabled',
+    state.status !== 'playing' || (!!session.tutorial && lessonStep?.kind !== 'hint'),
+  );
   $('btn-place').toggleAttribute(
     'disabled',
     !(lastPreview && selectedSlot !== null && state.status === 'playing'),
@@ -214,6 +260,9 @@ function applyStrings(): void {
   set('menu-fair', 'fairBake');
   set('menu-recipes', 'recipes');
   set('menu-modes', 'modes');
+  set('menu-tutorial', 'tutorials');
+  set('tutorials-close', 'close');
+  set('lesson-exit', 'exit');
   set('modes-close', 'close');
   set('menu-bakery', 'bakery');
   set('recipes-close', 'close');
@@ -323,6 +372,10 @@ function coachHead(title: string, badge?: { text: string; dead?: boolean }): HTM
 
 function startHint(): void {
   if (session.state.status !== 'playing') return;
+  if (session.tutorial) {
+    if (!session.tutorialAction('hint')) return;
+    updateHud(null);
+  }
   if (hint && hint.state === session.state) {
     moreHint();
     return;
@@ -440,7 +493,29 @@ function teachAfterMove(result: EngineResult): void {
   if (!session.settings.teachMe || demoRunning) return;
   const before = result.previousState;
   const played = session.history.moves.at(-1);
-  if (!played || isToolCommand(played)) return;
+  if (!played) return;
+  if (isToolCommand(played)) {
+    // Tools are not placements, so there is no move to compare; report what the position now offers.
+    void requestHints(result.nextState).then((data) => {
+      if (session.state !== result.nextState) return;
+      const el = coach();
+      el.hidden = false;
+      el.replaceChildren();
+      const head = coachHead(L('teachMe'), {
+        text:
+          data.certainty === 'confirmed'
+            ? L('confirmed')
+            : data.certainty === 'dead'
+              ? L('dead')
+              : L('heuristic'),
+        dead: data.certainty === 'dead',
+      });
+      head.appendChild(button(L('close'), closeCoach));
+      el.appendChild(head);
+      prefetchTeach(result.nextState);
+    });
+    return;
+  }
   const pending = teachCache.get(before) ?? requestHints(before);
   void pending.then((data) => {
     if (session.state !== result.nextState) return;
@@ -750,6 +825,13 @@ function scheduleResult(): void {
   resultTimer = window.setTimeout(showResult, 500 + 700 * animFactor());
 }
 
+const TOOL_KEY: Record<ToolId, string> = {
+  server: 'cakeServer',
+  mitt: 'ovenMitt',
+  spoon: 'tastingSpoon',
+  bin: 'binTool',
+};
+
 function failureRows(
   report: FailureReport,
   state: GameState,
@@ -760,14 +842,16 @@ function failureRows(
   const at = states[report.lastWinningIndex] ?? state;
   rows.push({ label: L('lastWinning'), values: [`${L('move')} ${report.lastWinningIndex}`] });
   if (!report.conclusive) rows.push({ label: L('bestKnown'), values: ['~'] });
-  if (report.criticalMove) {
+  const closing = report.criticalMove;
+  if (closing) {
     rows.push({
       label: L('closingMove'),
       values: [
-        moveText(
-          at.tray[report.criticalMove.slot]?.slices ?? report.criticalPlate,
-          report.criticalMove,
-        ),
+        isToolCommand(closing)
+          ? closing.tool === 'grant'
+            ? L(TOOL_KEY[closing.choose])
+            : L(TOOL_KEY[closing.tool])
+          : moveText(at.tray[closing.slot]?.slices ?? report.criticalPlate, closing),
       ],
     });
   }
@@ -834,11 +918,13 @@ function showResult(): void {
   $('result-title').textContent =
     state.status === 'won'
       ? L('complete')
-      : session.mode === 'zen'
+      : session.mode === 'tutorial'
         ? L('stuck')
-        : state.tray.every((p) => p === null) && state.board.some((p) => p === null)
-          ? L('noPlates')
-          : L('noSpace');
+        : session.mode === 'zen'
+          ? L('stuck')
+          : state.tray.every((p) => p === null) && state.board.some((p) => p === null)
+            ? L('noPlates')
+            : L('noSpace');
   const values = $('result-values');
   values.replaceChildren();
   const add = (text: string, cls?: string): void => {
@@ -847,7 +933,7 @@ function showResult(): void {
     if (cls) s.className = cls;
     values.appendChild(s);
   };
-  if (state.status === 'won' && session.mode !== 'campaign') {
+  if (state.status === 'won' && session.mode !== 'campaign' && session.mode !== 'tutorial') {
     const w = session.winStats();
     add(`${L('moves')} ${w.moves}`);
     if (session.mode === 'endless') {
@@ -863,7 +949,7 @@ function showResult(): void {
       add(`${L('chain')} ${w.chain}`);
       add(`${L('peak')} ${w.peak}`);
     }
-  } else if (state.status === 'won') {
+  } else if (state.status === 'won' && session.mode === 'campaign') {
     const earned = session.hatsFor(state);
     add(hats(1 + (earned.moves ? 1 : 0) + (earned.mastery ? 1 : 0)), 'hats-big');
     add(
@@ -896,7 +982,12 @@ function showResult(): void {
     if (front) actions.prepend(b);
     else actions.appendChild(b);
   };
-  if (state.status === 'won') {
+  if (session.mode === 'tutorial') {
+    const nextLesson = session.nextLessonId();
+    if (state.status === 'won' && nextLesson) act('next', () => startTutorial(nextLesson), true);
+    act('tutorials', () => openTutorials(), state.status === 'won' && !nextLesson);
+    act('replay', () => session.restart());
+  } else if (state.status === 'won') {
     const next = session.nextLevelId();
     if (next) act('next', () => startLevel(next), true);
     if (session.mode === 'endless') act('next', () => session.nextEndless(), true);
@@ -911,14 +1002,13 @@ function showResult(): void {
     // Failure analysis runs in a worker; the neutral summary appears when it is ready.
     const states = session.history.statesToCursor();
     const moves = [...session.history.moves];
-    const placements = moves.filter((m): m is PlacePlateCommand => !isToolCommand(m));
-    const analysable = placements.length === moves.length;
+    const analysable = true;
     if (analysable && session.mode !== 'zen')
       analysis.appendChild(
         Object.assign(document.createElement('dt'), { textContent: L('analyzing') }),
       );
     if (analysable && session.mode !== 'zen')
-      void requestFailure(states, placements).then((report) => {
+      void requestFailure(states, moves).then((report) => {
         if (session.state !== state || $('result').hidden) return;
         rowsList(analysis, failureRows(report, state));
         const idx = report.lastWinningIndex;
@@ -947,7 +1037,7 @@ function showResult(): void {
       });
   }
   act('menu', () => openMenu());
-  if (session.mode !== 'campaign') act('modes', () => openModes());
+  if (session.mode !== 'campaign' && session.mode !== 'tutorial') act('modes', () => openModes());
   if (
     session.mode === 'campaign' &&
     state.status === 'won' &&
@@ -1013,6 +1103,32 @@ function buildFair(): void {
   rows.push({ label: L('sequence'), values: [L('fixed')] });
   rows.push({ label: L('randomness'), values: [L('none')] });
   rowsList($('fair-rows'), rows);
+}
+
+function startTutorial(id: string): void {
+  show('tutorials', false);
+  show('result', false);
+  closeCoach();
+  tools.cancel();
+  hint = null;
+  session.startTutorial(id);
+}
+
+function openTutorials(): void {
+  const body = $('tutorials-body');
+  body.replaceChildren();
+  $('tutorials-title').textContent = L('tutorials');
+  const done = session.progress.modes.tutorials;
+  for (const lesson of LESSONS) {
+    const b = button(`${L(lesson.titleKey)}${done.includes(lesson.id) ? ' ✓' : ''}`, () =>
+      startTutorial(lesson.id),
+    );
+    b.dataset.lesson = lesson.id;
+    body.appendChild(b);
+  }
+  show('menu', false);
+  show('tutorials', true);
+  (body.firstElementChild as HTMLElement | null)?.focus();
 }
 
 function openMenu(): void {
@@ -1101,6 +1217,14 @@ function openModes(code?: string): void {
   show('modes', true);
 }
 $('menu-modes').addEventListener('click', () => openModes());
+$('menu-tutorial').addEventListener('click', () => openTutorials());
+$('tutorials-close').addEventListener('click', () => show('tutorials', false));
+$('lesson-exit').addEventListener('click', () => {
+  hint = null;
+  closeCoach();
+  scene.setHintMarks(null);
+  startLevel(session.progress.lastLevel);
+});
 $('modes-close').addEventListener('click', () => show('modes', false));
 $('recipes-close').addEventListener('click', () => show('recipes', false));
 $('bakery-close').addEventListener('click', () => show('bakery', false));
@@ -1131,7 +1255,16 @@ $('btn-restart').addEventListener('click', () => session.restart());
 $('btn-place').addEventListener('click', () => scene.confirmPreview());
 window.addEventListener('keydown', (ev) => {
   if (ev.key === 'Escape') {
-    for (const id of ['menu', 'settings', 'timeline', 'fairbake', 'recipes', 'bakery', 'modes']) {
+    for (const id of [
+      'menu',
+      'settings',
+      'timeline',
+      'fairbake',
+      'recipes',
+      'bakery',
+      'modes',
+      'tutorials',
+    ]) {
       if (!$(id).hidden) {
         show(id, false);
         return;
@@ -1165,5 +1298,14 @@ if (new URLSearchParams(location.search).has('e2e')) {
 (window as unknown as { __sas: unknown }).__sas = sas;
 updateHud(null);
 prefetchTeach(session.state);
+// A fresh profile is shown the lesson list once. Tests start with ?e2e=1 and skip it.
+if (
+  !new URLSearchParams(location.search).has('e2e') &&
+  completedCount(session.progress) === 0 &&
+  !session.progress.seenDialogue.includes('tut-offer')
+) {
+  session.markTutorialOffered();
+  openTutorials();
+}
 if (session.state.moveNumber === 0)
   showStory(session, session.pendingDialogue('before'), () => undefined);

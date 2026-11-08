@@ -1,4 +1,4 @@
-import type { GameState, PlacePlateCommand } from '../model/types';
+import type { GameState, Command } from '../model/types';
 import type { FailureReport } from './failure';
 import { analyzeFailure } from './failure';
 import type { HintData } from './hints';
@@ -6,7 +6,7 @@ import { computeHints } from './hints';
 
 export type AnalysisRequest =
   | { id: number; type: 'hints'; state: GameState }
-  | { id: number; type: 'failure'; states: GameState[]; moves: PlacePlateCommand[] };
+  | { id: number; type: 'failure'; states: GameState[]; moves: Command[] };
 
 export type AnalysisResponse =
   | { id: number; type: 'hints'; result: HintData }
@@ -58,10 +58,7 @@ export function requestHints(state: GameState): Promise<HintData> {
   ) as Promise<HintData>;
 }
 
-export function requestFailure(
-  states: GameState[],
-  moves: PlacePlateCommand[],
-): Promise<FailureReport> {
+export function requestFailure(states: GameState[], moves: Command[]): Promise<FailureReport> {
   return request(
     (id) => ({ id, type: 'failure', states, moves }),
     () => analyzeFailure(states, moves),

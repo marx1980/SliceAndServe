@@ -48,6 +48,14 @@ Phase 8 and later: see `06_IMPLEMENTATION_ROADMAP.md`.
 - Pass-the-Cake: two players alternate placements on one device; turn is derived from the timeline so undo hands the turn back; tools on or off (shared).
 - Saves are version 3 (adds mode results, Endless best, imported rescues) with migrations from versions 1 and 2.
 
+### 10b. Phase 6.1: loose ends and tutorials (DONE)
+- Flaky keyboard e2e traced to a near-miss on the 30 s test timeout (the loop took ~25 s); trimmed and given room, CI retry removed.
+- Failure analysis and Teach Me now handle tool moves. A tool move can restore a tool-free route, so with tools in a line the reported closing move is a boundary, not necessarily the only one.
+- Shortest-line search gained an admissible lower bound (`movesLowerBound`). It proves more small levels (L01 and L03 both tray models) but not the bigger ones: a full proof run was not feasible, so most receipts still say "?".
+- Pass-the-Cake has a third tools option, Separate: each earned tool belongs to the player whose move earned it (derived from the timeline; energy stays shared).
+- Rescue conversion has a browser test.
+- Tutorials (Menu > Tutorials): six lessons (Serve a cake, Orders, Chain, Undo, Hint, Tools) on the real rules engine. Only the scripted move is accepted, the target cell is ringed, one imperative label per step. Every lesson's script is replayed by a unit test in both tray models. A fresh profile sees the lesson list once.
+
 ---
 
 ## Decisions / Important Context
@@ -69,4 +77,5 @@ Phase 8 and later: see `06_IMPLEMENTATION_ROADMAP.md`.
 - Mode puzzles never touch hats, the recipe book or the bakery.
 - Rescue conversion keeps the remaining orders, tray and queue; in batch mode a partly used tray becomes a fresh tray, so imported boards are re-checked in the player's current tray model.
 - Rush Hour and Puzzle of the Week are not part of Phase 6.
+- Tutorial lessons live in `src/content/tutorials.ts` as fixed layouts; progress is stored in `modes.tutorials`. They never touch hats, the bakery or campaign progress.
 

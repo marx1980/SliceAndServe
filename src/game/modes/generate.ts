@@ -156,9 +156,11 @@ export function zenLevel(cfg: ZenConfig): LevelDefinition {
 
 // ---- Pass-the-Cake ---------------------------------------------------------------------------
 
-export function passLevel(seed: string, tools: boolean): LevelDefinition {
+export type PassTools = 'off' | 'shared' | 'separate';
+
+export function passLevel(seed: string, tools: PassTools): LevelDefinition {
   const level = buildWithRetry({
-    id: `P-${seed}-${tools ? 't' : 'n'}`,
+    id: `P-${seed}-${tools === 'off' ? 'n' : tools === 'shared' ? 't' : 's'}`,
     title: 'Pass',
     seed: `pass:${seed}`,
     rows: 4,
@@ -169,7 +171,7 @@ export function passLevel(seed: string, tools: boolean): LevelDefinition {
     maxSlices: 4,
     maxFlavorsPerPlate: 3,
     orders: [{ kind: 'complete-any', count: 8 }],
-    tools: tools ? ['server', 'mitt', 'spoon', 'bin'] : [],
+    tools: tools === 'off' ? [] : ['server', 'mitt', 'spoon', 'bin'],
   });
   if (!level) throw new Error('Could not generate shared puzzle');
   return level;

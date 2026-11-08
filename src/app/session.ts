@@ -1,4 +1,6 @@
+import { NO_TOOLS, TOOL_IDS } from '../game/model/types';
 import type {
+  ToolId,
   ModeId,
   Command,
   LevelDefinition,
@@ -10,10 +12,11 @@ import type {
 import { masteryMet, playOutcome } from '../game/progression/mastery';
 import { levelHash } from '../game/analysis/receipt';
 import { dialogueFor, type DialogueLine } from '../content/dialogue';
-import { isToolCommand } from '../game/rules/apply';
+import { isToolCommand, sameCommand } from '../game/rules/apply';
 import { createInitialState } from '../game/generation/expand';
 import { History } from '../game/history/history';
 import { LEVELS } from '../content/levels';
+import { LESSONS, lessonById, type Lesson } from '../content/tutorials';
 import { endlessLevel } from '../game/modes/generate';
 import {
   clearSuspended,
@@ -46,6 +49,8 @@ export class GameSession {
   mode: ModeId = 'campaign';
   /** Running Endless Service session: seed, stage and score banked from cleared stages. */
   endless = { seed: '', stage: 0, banked: 0 };
+  /** Running tutorial lesson and the index of the step the player must do next. */
+  tutorial: { lesson: Lesson; step: number } | null = null;
   private listeners: Listener[] = [];
 
   constructor() {
@@ -72,6 +77,7 @@ export class GameSession {
 
   /** Autosave after every stable state change. A finished or untouched timeline is not stored. */
   private suspend(): void {
+    if (this.mode === 'tutorial') return;
     const h = this.history;
     if (h.length <= 1 && h.cursorId === 0) {
       clearSuspended(this.level.id);
@@ -92,7 +98,8 @@ export class GameSession {
   }
 
   private newState(level: LevelDefinition): GameState {
-    return createInitialState(level, { trayMode: this.settings.trayMode });
+    const base = createInitialState(level, { trayMode: this.settings.trayMode });
+    return this.tutorial?.lesson.grants ? { ...base, grants: this.tutorial.lesson.grants } : base;
   }
 
   get state(): GameState {
@@ -110,6 +117,7 @@ export class GameSession {
   startLevel(id: string): void {
     this.level = LEVELS.find((l) => l.id === id) ?? (LEVELS[0] as LevelDefinition);
     this.mode = 'campaign';
+    this.tutorial = null;
     this.history = this.restoreOrNew(this.level);
     this.progress = { ...this.progress, lastLevel: this.level.id };
     saveProgress(this.progress);
@@ -120,6 +128,7 @@ export class GameSession {
   startPuzzle(level: LevelDefinition, mode: ModeId): void {
     this.level = level;
     this.mode = mode;
+    this.tutorial = null;
     this.history = this.restoreOrNew(level);
     this.emit({ kind: 'level' });
   }
@@ -145,6 +154,40 @@ export class GameSession {
     );
   }
 
+  startTutorial(id: string): void {
+    const lesson = lessonById(id) ?? (LESSONS[0] as Lesson);
+    this.level = lesson.level;
+    this.mode = 'tutorial';
+    this.tutorial = { lesson, step: 0 };
+    this.history = new History(this.newState(lesson.level));
+    this.emit({ kind: 'level' });
+  }
+
+  nextLessonId(): string | null {
+    if (!this.tutorial) return null;
+    const i = LESSONS.findIndex((l) => l.id === this.tutorial?.lesson.id);
+    return LESSONS[i + 1]?.id ?? null;
+  }
+
+  /** The step the player must do next, or null outside a lesson or after the last step. */
+  get tutorialStep(): Lesson['steps'][number] | null {
+    return this.tutorial ? (this.tutorial.lesson.steps[this.tutorial.step] ?? null) : null;
+  }
+
+  /** During a lesson only the scripted command is allowed. */
+  permits(cmd: Command): boolean {
+    if (!this.tutorial) return true;
+    const step = this.tutorialStep;
+    return step?.kind === 'play' && sameCommand(step.cmd, cmd);
+  }
+
+  /** Advance past a non-command step (Hint button). */
+  tutorialAction(kind: 'hint' | 'undo'): boolean {
+    if (this.tutorialStep?.kind !== kind || !this.tutorial) return false;
+    this.tutorial = { ...this.tutorial, step: this.tutorial.step + 1 };
+    return true;
+  }
+
   nextLevelId(): string | null {
     if (this.mode !== 'campaign') return null;
     const i = LEVELS.findIndex((l) => l.id === this.level.id);
@@ -160,7 +203,9 @@ export class GameSession {
   }
 
   private act(cmd: Command): EngineResult {
+    if (!this.permits(cmd)) throw new Error('Not part of this lesson');
     const result = this.history.play(cmd);
+    if (this.tutorial) this.tutorial = { ...this.tutorial, step: this.tutorial.step + 1 };
     if (result.nextState.status === 'won') {
       this.recordWinFor(result.nextState);
       clearSuspended(this.level.id);
@@ -174,6 +219,51 @@ export class GameSession {
   /** Whose turn it is in Pass-the-Cake (0 or 1). Derived from the active timeline, so undo hands the turn back. */
   passPlayer(): number {
     return this.history.moves.filter((m) => !isToolCommand(m)).length % 2;
+  }
+
+  /** True for Pass-the-Cake puzzles where each earned tool belongs to the player who earned it. */
+  get separateTools(): boolean {
+    return this.mode === 'pass' && this.level.id.endsWith('-s');
+  }
+
+  /**
+   * Grants and tools per player, derived from the timeline: a grant belongs to the player whose move
+   * earned it, and the tool they choose or use comes out of their own pool. The sums always equal
+   * the shared inventory the rules engine keeps.
+   */
+  toolPools(): Array<{ grants: number; tools: Record<ToolId, number> }> {
+    const pools = [0, 1].map(() => ({
+      grants: 0,
+      tools: { ...NO_TOOLS } as Record<ToolId, number>,
+    }));
+    const states = this.history.statesToCursor();
+    const first = states[0] as GameState;
+    (pools[0] as (typeof pools)[number]).grants += first.grants; // only non-zero in test setups
+    for (const tool of TOOL_IDS)
+      (pools[0] as (typeof pools)[number]).tools[tool] += first.tools[tool];
+    let placements = 0;
+    this.history.moves.forEach((m, i) => {
+      const a = states[i] as GameState;
+      const b = states[i + 1] as GameState;
+      const mine = pools[placements % 2] as (typeof pools)[number];
+      if (isToolCommand(m)) {
+        if (m.tool === 'grant') {
+          mine.grants -= 1;
+          mine.tools[m.choose] += 1;
+        } else mine.tools[m.tool] -= 1;
+        mine.grants += Math.max(0, b.grants - a.grants + (m.tool === 'grant' ? 1 : 0));
+      } else {
+        mine.grants += Math.max(0, b.grants - a.grants);
+        placements++;
+      }
+    });
+    return pools;
+  }
+
+  /** What the player to move may spend. With shared tools that is the whole inventory. */
+  availableTools(): { grants: number; tools: Record<ToolId, number> } {
+    if (!this.separateTools) return { grants: this.state.grants, tools: { ...this.state.tools } };
+    return this.toolPools()[this.passPlayer()] as { grants: number; tools: Record<ToolId, number> };
   }
 
   /** Cakes and score credited to each player by the placements they made. */
@@ -228,6 +318,15 @@ export class GameSession {
           },
         },
       };
+    } else if (this.mode === 'tutorial') {
+      const id = this.tutorial?.lesson.id;
+      const done = this.progress.modes.tutorials;
+      if (id && !done.includes(id)) {
+        this.progress = {
+          ...this.progress,
+          modes: { ...this.progress.modes, tutorials: [...done, id] },
+        };
+      }
     } else if (this.mode !== 'zen' && this.mode !== 'pass') {
       this.progress = recordModeWin(this.progress, this.level.id, this.winStats());
     }
@@ -275,6 +374,15 @@ export class GameSession {
     saveProgress(this.progress);
   }
 
+  markTutorialOffered(): void {
+    if (this.progress.seenDialogue.includes('tut-offer')) return;
+    this.progress = {
+      ...this.progress,
+      seenDialogue: [...this.progress.seenDialogue, 'tut-offer'],
+    };
+    saveProgress(this.progress);
+  }
+
   markEndingSeen(): void {
     this.progress = { ...this.progress, endingSeen: true };
     saveProgress(this.progress);
@@ -282,12 +390,14 @@ export class GameSession {
 
   undo(): void {
     if (!this.history.canUndo()) return;
+    if (this.tutorial && !this.tutorialAction('undo')) return;
     this.history.undo();
     this.suspend();
     this.emit({ kind: 'undo' });
   }
 
   redo(): void {
+    if (this.tutorial) return;
     if (!this.history.canRedo()) return;
     this.history.redo();
     this.suspend();
@@ -296,24 +406,28 @@ export class GameSession {
 
   /** Scrub to the state after `index` moves on the active branch. */
   seek(index: number): void {
+    if (this.tutorial) return;
     this.history.rewindTo(index);
     this.suspend();
     this.emit({ kind: 'seek' });
   }
 
   goToNode(id: number): void {
+    if (this.tutorial) return;
     this.history.goToNode(id);
     this.suspend();
     this.emit({ kind: 'seek' });
   }
 
   switchBranch(leafId: number): void {
+    if (this.tutorial) return;
     this.history.switchBranch(leafId);
     this.suspend();
     this.emit({ kind: 'seek' });
   }
 
   toggleBookmark(): void {
+    if (this.tutorial) return;
     this.history.toggleBookmark();
     this.suspend();
     this.emit({ kind: 'seek' });
@@ -321,6 +435,12 @@ export class GameSession {
 
   /** Back to the start. The timeline is kept unless the tray model setting changed. */
   restart(): void {
+    if (this.tutorial) {
+      this.tutorial = { ...this.tutorial, step: 0 };
+      this.history = new History(this.newState(this.level));
+      this.emit({ kind: 'restart' });
+      return;
+    }
     if (this.state.ruleset.trayMode === this.settings.trayMode) {
       this.history.restart();
     } else {

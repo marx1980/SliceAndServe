@@ -64,6 +64,11 @@
       <main id="stage" tabindex="0"></main>
       <section id="tools" hidden></section>
       <section id="coach" hidden></section>
+      <section id="lesson" hidden>
+        <span id="lesson-step"></span>
+        <span id="lesson-prompt"></span>
+        <button id="lesson-exit" class="btn" type="button"></button>
+      </section>
       <footer id="actions">
         <button id="btn-undo" class="btn" type="button"></button>
         <button id="btn-hint" class="btn" type="button"></button>
@@ -77,6 +82,7 @@
           <h2 id="menu-title"></h2>
           <div id="level-grid"></div>
           <div class="button-row">
+            <button id="menu-tutorial" class="btn" type="button"></button>
             <button id="menu-modes" class="btn" type="button"></button>
             <button id="menu-recipes" class="btn" type="button"></button>
             <button id="menu-bakery" class="btn" type="button"></button>
@@ -118,6 +124,14 @@
           <h2 id="fair-title"></h2>
           <dl id="fair-rows" class="rows"></dl>
           <button id="fair-close" class="btn" type="button"></button>
+        </div>
+      </section>
+
+      <section id="tutorials" class="overlay" hidden role="dialog" aria-modal="true">
+        <div class="panel">
+          <h2 id="tutorials-title"></h2>
+          <div id="tutorials-body" class="chips"></div>
+          <button id="tutorials-close" class="btn" type="button"></button>
         </div>
       </section>
 
